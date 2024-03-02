@@ -1,16 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import Home from '@/views/Home.vue'
 import Register from '@/views/Register.vue'
 import SignIn from '@/views/SignIn.vue'
 import Dashboard from '@/views/Dashboard.vue'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import VitePressPage from '@/components/VitePressPage.vue'
 
 const routes = [
-  {
-    path: '/docs',
-    component: VitePressPage
-  },
   {
     path: '/',
     name: 'Home',
