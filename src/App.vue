@@ -1,6 +1,9 @@
 <template>
   <div className="w-full flex justify-center pt-12">
-    <div className="grid grid-cols-4 h-fit w-fit gap-8 text-center" id="nav">
+    <div
+      className="grid grid-cols-4 h-fit w-fit gap-8 text-center bg-tBeige p-5 rounded-lg shadow-md"
+      id="nav"
+    >
       <router-link to="/"><p>Home</p></router-link>
       <router-link to="/dashboard"><p>Dashboard</p></router-link>
       <router-link to="/sign-in"><p>Sign-In</p></router-link>
