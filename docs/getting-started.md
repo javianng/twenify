@@ -46,7 +46,7 @@ cd twenity
 npm install
 ```
 
-5. Start the development server, then navigate to [`http://localhost:5173`](http://localhost:5173) in your browser.
+5. Start the development server, then navigate to `http://localhost:5173` in your browser.
    You should see the twenity landing page.
 
 ```

@@ -8,179 +8,70 @@ and then check out the documentation of each of the libraries and frameworks men
 
 ```
 twenity
+├─ docs
 ├─ public
 │  └─ *
 ├─ src
 │  ├─ assets
-│  │  └─ *
 │  ├─ components
-│  │  └─ common
-│  │  └─ *
-│  ├─ pages
-│  │  ├─ docs
-│  │  │  └─ *
-│  │  ├─ _app.tsx
-│  │  └─ index.tsx
+│  ├─ views
+│  │  └─ Dashboard.vue
+│  │  ├─ Home.vue
+│  │  ├─ Register.vue
+│  │  ├─ SignIn.vue
+│  ├─ App.vue
+│  ├─ main.js
 ├─ .gitignore
-├─ env.mjs
 ├─ package.json
 └─ package-lock.json
 ```
 
+# Documentation
+
 ## `public`
 
-The `public` folder contains static files that are served to the client.
-This includes the twenity logo in `favicon.ico` and various images used in banners and promotions.
+The `public` folder contains static files that are served to the client. This includes the Twenity logo in `favicon.ico` and various images used in banners and promotions.
 
 ## `src`
 
-The `src` folder is where you will spend the majority of your time.
-It does not contain any files directly; instead, its sub-directories are of interest.
+The `src` folder is where you will spend the majority of your time. It does not contain any files directly; instead, its sub-directories are of interest.
 
-### `src/pages`
+### `src/assets`
 
-The `src/pages` directory defines the different routes of the website.
-This directory also contains special `4xx.tsx` pages for client-side errors.
-
-In addition, the `src/pages/_app.tsx` and `src/pages/_document.tsx` files are special Next.js files that
-form the root of every page. **These should not be modified.**
-
-<Callout type="info" emoji="ℹ️">
-    Next.js uses file-based routing. As a convention, we name all our pages `index.tsx`, even though Next.js
-    allows different names for pages.
-
-    This means that `pages/index.tsx` is the homepage at `/`, `pages/admin/index.tsx` is the admin dashboard at `/admin`,
-    and so on.
-
-</Callout>
-
-If you need to create a new page, create new folder(s) in `pages` and add an `index.tsx` file in it for the page itself.
-
-Read the section on [creating a new page](/creating-a-new-page) for a guide on how to write a new page with `index.tsx`.
-
-For more information on how Next.js handles routing, see the [Next.js documentation](https://nextjs.org/docs/routing/introduction).
-
-#### `src/pages/docs`
-
-The `docs` folder contains the documentation for the website (including this page!).
-
-Unlike the other folders in `src/pages`, this is the only directory in which `*.mdx` files are used to define pages
-instead of `index.tsx` files. In addition, the naming convention of `index.tsx` does not apply here — any filename is
-allowed to name a page.
-
-The layout of documentation pages is automatically taken care of by [Nextra](https://nextra.site).
+The `assets` directory is used for storing project assets like images, fonts, etc.
 
 ### `src/components`
 
-Often, writing a page in a single file results in files with hundreds if not upwards of a thousand lines of code.
+The `components` directory contains reusable Vue components. These components can be used across different views/pages.
 
-To prevent page definition `.tsx` files from exploding in size, we extract components into the `components` directory
-and import them into the page file where necessary.
+### `src/views`
 
-<Callout type="info" emoji="ℹ️">
-    **Components should be defined following the same path as the page that uses them.** For example, if a component is needed
-    in `pages/admin/index.tsx`, it should be defined in `components/admin/*.tsx`.
+The `views` directory contains Vue components that represent different views or pages in the application.
 
-    Each component should be defined in its own file, and the file should be named after the component.
+#### `src/views/Dashboard.vue`
 
-    **If a component is used in multiple pages, it should be defined in the `components/common` directory.**
+The `Dashboard.vue` file represents the dashboard view of the application.
 
-</Callout>
+#### `src/views/Home.vue`
 
-### `src/app`
+The `Home.vue` file represents the home page of the application.
 
-The `src/app` directory, also known as "app dir", is the directory used by the beta Next.js App Router.
+#### `src/views/Register.vue`
 
-Pages in the `app` directory take a drastically different approach to rendering pages than those in the `pages` directory.
-The most prominent difference is that pages in the `app` directory can be nested
-and follow a different naming convention (`page.tsx` instead of `index.tsx`).
+The `Register.vue` file represents the register page of the application.
 
-The app directory is currently in beta, and existing libraries such as tRPC do not work with it.
-As such, we have not migrated our pages yet.
+#### `src/views/SignIn.vue`
 
-For more information on the Next.js App Router, read their [beta documentation](https://beta.nextjs.org/docs).
+The `SignIn.vue` file represents the sign-in page of the application.
 
-### `src/server`
+### `src/App.vue`
 
-All of the above directories are for client-side (frontend) code.
-The `src/server` directory contains all of the code that runs exclusively server-side.
+The `App.vue` file is the root Vue component that serves as the entry point for the application.
 
-This prevents the client from being able to access sensitive information and call server functions from the client.
+### `src/main.js`
 
-#### `src/server/auth.ts`
+The `main.js` file is the main JavaScript file where the Vue application is initialized and configured.
 
-The `auth.ts` file contains the code for authenticating users with [NextAuth](https://next-auth.js.org/).
+### `docs`
 
-We currently allow users to sign in either with credentials (username and password) or with OAuth using their Google account.
-In the future, if more sign in methods (known as providers) are added, they should be added to the `providers` array in this file.
-
-We also use JWTs to authenticate users. The `jwt` object in this file defines the JWT payload and how it is encoded and decoded.
-
-<Callout type="warning" emoji="⚠️">
-    JWTs should not be used to store sensitive information on the client, as they are only meant to provide integrity
-    about its payload. If you need to store sensitive information, write to the database instead.
-</Callout>
-
-For more information on how JWTs work, check out [jwt.io](https://jwt.io/).
-
-This file also exports the function `getServerAuthSession` function which allows server-side code to request for
-the user's session, for example, to check if the user is allowed to access a certain page based on their role.
-
-For more information on how to use this function, check out the [T3 stack's guide on NextAuth](https://create.t3.gg/en/usage/next-auth).
-
-#### `src/server/api`
-
-Server side code is not limited to authentication. The `src/server/api` directory contains all of the server-side code,
-such as generating itineraries, sending emails, and so on.
-
-Unlike traditional backend code where RESTful API endpoints e.g. `/api/itineraries` are defined in individual files,
-and invoked with a [`fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) call,
-our server-side code is written with [tRPC](https://trpc.io/).
-
-tRPC is a framework centered around the concept of [routers](https://trpc.io/docs/server/routers) and [procedures](https://trpc.io/docs/server/procedures).
-A router is a collection of procedures, and a procedure is a function that can be called by the client with full
-type-safety and auto-completion.
-
-<Callout type="info" emoji="ℹ️">
-    **Routers should be defined in separate files in `server/api/routers` for each logical grouping of procedures.**
-    For example, procedures related to attractions and itineraries should be kept in separate router files.
-
-    After creating a router, import it and add it to the root router in `server/api/root.ts`.
-
-</Callout>
-
-### `.env`, `env.example` and `env.mjs`
-
-The `.env` file contains environment variables that are used by the website.
-
-<Callout type="warning" emoji="⚠️">
-    **The contents of `.env` are secrets.**
-    Do not disclose the value of any environment variable to anyone.
-
-    In addition, do not commit the `.env` file to Git. A rule in `.gitignore` to prevent this has already
-    been set up, but please be aware of this nonetheless.
-
-</Callout>
-
-The `env.example` file is a template for the `.env` file. It contains all of the environment variables that are used
-and is intended as a reference for developers to know what environment variables are needed when cloning the repository.
-
-The `env.mjs` file is a JavaScript module that validates the environment variables in `.env` with [Zod](https://zod.dev)
-and exports the environment variables as a JavaScript object for use elsewhere.
-
-<Callout type="info" emoji="ℹ️">
-    **Both `.env.example` and `env.mjs` should be updated whenever environment variables are added, removed, or modified
-    in `.env`.** Otherwise, validation will fail and running any `npm` command to host the website will fail.
-</Callout>
-
-### `package.json` and `package-lock.json`
-
-The `package.json` file contains the dependencies of the website, as well as the scripts used to build and/or serve
-the website.
-
-Dependencies are split into `dependencies` and `devDependencies`. The former is for dependencies that are required
-to run the website, while the latter is for dependencies that are only required for development and are not included
-in the production build.
-
-The `package-lock.json` file is a lockfile that contains the exact versions of the dependencies that are installed.
-It should be committed to ensure that all developers are using the same versions of the dependencies.
+The `docs` folder contains documentation for the website. This includes guides, tutorials, and any other d

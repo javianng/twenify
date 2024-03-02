@@ -60,7 +60,7 @@ Once you have staged the files you wish to commit, you can create the commit usi
 git commit -m "<commit-message>"
 ```
 
-We will discuss the conventions for commit messages in the page on [Conventions](/docs/conventions).
+We will discuss the conventions for commit messages in the page on [Conventions](conventions.md).
 
 ## GitHub
 
@@ -107,8 +107,7 @@ Our workflow is loosely based off of the [Gitflow Workflow](https://www.atlassia
 
 - The `main` branch is the branch that is deployed to production and visible to the public at [twenity](https://twenity.vercel.app/).
 
-- The `dev` branch is the development branch of the repository. This is the branch that is deployed to the staging environment
-  at [.vercel.app/](.vercel.app/).
+- The `dev` branch is the development branch of the repository. This is the branch that is deployed to the staging environment at `.vercel.app/`.
 
 - Feature branches are used to develop new features. These branches are branched off of most recent commit on the `dev` branch.
 
@@ -133,7 +132,7 @@ gh pr create  // you should have the GitHub CLI installed
 Follow the prompts at the interactive terminal to create the pull request.
 You will be asked to provide a title, an optional description, and finally any other metadata you wish to add before the pull request is created.
 
-For the conventions for the title and description, refer to the page on [Conventions](/docs/conventions).
+For the conventions for the title and description, refer to the page on [Conventions](conventions.md).
 
 <Callout type="error" emoji="️🚫">
     **Pushing directly to the `main` or `dev` branches is prohibited. Always use pull requests to merge changes.**
@@ -186,7 +185,7 @@ You can request a code review by selecting any of the core team members as a rev
 <Callout type="info" emoji="ℹ️">
     Before requesting a code review, you should ensure that:
 
-    - The pull request title and description follow the conventions described in the page on [Conventions](/docs/conventions).
+    - The pull request title and description follow the conventions described in the page on [Conventions](conventions.md).
     - The pull request is up-to-date with the latest changes from the `dev` branch and do not contain merge conflicts.
     - Your code compiles without errors (including TypeScript errors!) and ESLint warnings.
     - Your code has been properly formatted using Prettier.
