@@ -1,6 +1,116 @@
 <template>
-  <div className="bg-neutral-300">
-    <h1 className="text-center p-2">Home</h1>
+  <div
+    style="
+      background: linear-gradient(
+        180deg,
+        #27004d 0%,
+        #30015d 19%,
+        #7505e2 48.5%,
+        #9e4af1 69%,
+        #5b0093 100%
+      );
+    "
+    className="flex justify-center"
+  >
+    <div className="max-w-6xl">
+      <div className="min-h-[50vh] items-center flex justify-center">
+        <div className="flex flex-col gap-8">
+          <div className="items-center flex justify-center">
+            <img src="/twenifyLogo.svg" alt="logo" />
+            <img src="/twenifyName.svg" alt="twenify" />
+          </div>
+          <p className="text-white text-xl text-center">
+            Unlock your twenty-fifth hour of productivity with twenify - the all in one productivity
+            website that streamline tasks, boosts efficiency, and enhances your workday.
+          </p>
+        </div>
+      </div>
+      <div className="flex justify-center ">
+        <button
+          className="border-2 border-tBeige hover:border-tYellow transition duration-200 py-2 px-4 rounded-full"
+        >
+          <p className="text-white text-xl">↓ View Our Features</p>
+        </button>
+      </div>
+      <div className="flex flex-row min-h-[50vh] items-center">
+        <div className="border-l-8 border-tYellow">
+          <div className="px-6 max-w-[66%] flex flex-col gap-4">
+            <h1 className="text-7xl font-bold text-white">Customisable Pomodoro Timer</h1>
+            <p className="text-white text-xl pb-5">
+              a customisable timer that you can use to set your work and break sessions according to
+              your needs!
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-row min-h-[50vh] items-center">
+        <div className="border-r-8 border-tYellow flex justify-end text-end">
+          <div className="px-6 max-w-[66%] flex flex-col gap-4">
+            <h1 className="text-7xl font-bold text-white">Integrated Calender & To-Do List</h1>
+            <p className="text-white text-xl pb-5">
+              Seamlessly integrate with Google Calendar to keep track of your workloads throughout
+              the week as well as the tasks for the day!
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-row min-h-[50vh] items-center">
+        <div className="border-l-8 border-tYellow">
+          <div className="px-6 max-w-[66%] flex flex-col gap-4">
+            <h1 className="text-7xl font-bold text-white">Productivity Analytics & Leaderboard</h1>
+            <p className="text-white text-xl pb-5">
+              Track your productivity on a day to day basis, and see how you perform alongside your
+              peers. Time to get to the top of the leaderboard!
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-row min-h-[50vh] items-center">
+        <div className="border-r-8 border-tYellow flex justify-end text-end">
+          <div className="px-6 max-w-[66%] flex flex-col gap-4">
+            <h1 className="text-7xl font-bold text-white">Website Blocking Capabilities</h1>
+            <p className="text-white text-xl pb-5">
+              Block out specific websites that tend to cause you to be distracted, allowing you to
+              stay fully focussed on the task that you have at hand!
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="min-h-[50vh] flex flex-col gap-5">
+        <div className="border-l-8 border-tYellow">
+          <div className="px-6 max-w-[66%] flex flex-col gap-4">
+            <h1 className="text-7xl font-bold text-white">A Friend for the Road Ahead</h1>
+            <p className="text-white text-xl pb-5">
+              Grow your own personal virtual duck! The more study sessions that you put in, the more
+              your QuackCoins you can collect to customise your duck.
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-row w-full">
+          <img src="/bird.svg" alt="" className="max-w-[25%]" />
+          <div
+            className="flex flex-col gap-5 justify-center items-center text-white text-xl w-full"
+          >
+            <p>
+              Ready to unlock the <span className="text-tYellow"> twenty-fifth hour </span> of your
+              day?
+            </p>
+            <div className="flex flex-row gap-4">
+              <button
+                className="bg-gradient-to-b from-yellow-300 to-purple-700 shadow-md rounded-full py-2 px-5 w-32"
+              >
+                New User
+              </button>
+              <button
+                className="bg-gradient-to-b from-yellow-300 to-purple-700 shadow-md rounded-full py-2 px-5 w-32"
+              >
+                Log In
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
