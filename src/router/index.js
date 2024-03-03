@@ -3,6 +3,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import Home from '@/views/Home.vue'
 import Register from '@/views/Register.vue'
 import SignIn from '@/views/SignIn.vue'
+import BlockedSite from '@/views/BlockedSite.vue'
 import Dashboard from '@/views/Dashboard.vue'
 
 const routes = [
@@ -28,6 +29,11 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/blockedSite',
+    name: 'BlockedSite',
+    component: BlockedSite
   }
 ]
 
