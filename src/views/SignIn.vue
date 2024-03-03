@@ -50,7 +50,3 @@ const signInWithGoogle = () => {
   // Your Google sign-in logic here
 }
 </script>
-
-<style scoped>
-/* Your styles go here */
-</style>
