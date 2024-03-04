@@ -5,9 +5,9 @@
         <img src="/twenifyLogo.svg" alt="logo" className="h-24" />
         <img src="/twenifyName.svg" alt="twenify" className="h-20" />
       </div>
-      <div
-        className="absolute h-[200vh] w-[200vh] -top-[50vh] left-[80vh] bg-tBeige rounded-full z-10"
-      />
+    </div>
+    <div className="absolute w-[56%] h-full right-0">
+      <div className="absolute h-[200vh] w-[200vh] -top-[50vh] bg-tBeige rounded-full z-10" />
     </div>
     <div className="grid grid-cols-2 h-screen bg-gradient-to-b to-tPurple from-tDarkPurple">
       <div className="flex items-end justify-center">
