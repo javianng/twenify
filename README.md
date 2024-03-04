@@ -159,6 +159,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 ## Contact
 
 - Ng Zheng Han Javian - https://www.linkedin.com/in/javianngzh/
+- Ooi Jia Yu, Anders - https://www.linkedin.com/in/andersooi/
+- Sourick Paul - https://www.linkedin.com/in/sourick-paul/
+- Anushka Ashirgade - linkedin.com/in/anushka-ashirgade/
 
 Project Link: [https://github.com/javianng/twenity](https://github.com/javianng/twenity)
 

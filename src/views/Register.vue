@@ -1,13 +1,16 @@
 <template>
-  <div className="relative">
+  <div className="relative overflow-hidden">
     <div className="absolute top-6 left-6">
       <div className="flex items-end">
         <img src="/twenifyLogo.svg" alt="logo" className="h-24" />
         <img src="/twenifyName.svg" alt="twenify" className="h-20" />
       </div>
+      <div
+        className="absolute h-[200vh] w-[200vh] -top-[50vh] left-[80vh] bg-tBeige rounded-full z-10"
+      />
     </div>
-    <div className="grid grid-cols-2 h-screen">
-      <div className="bg-gradient-to-b to-tPurple from-tDarkPurple flex items-end justify-center">
+    <div className="grid grid-cols-2 h-screen bg-gradient-to-b to-tPurple from-tDarkPurple">
+      <div className="flex items-end justify-center">
         <div className="grid grid-rows-3 w-max h-3/4">
           <div className="flex flex-col gap-2">
             <h2 className="text-6xl font-semibold text-[#9E4AF1]">20,000 Hours</h2>
@@ -34,9 +37,8 @@
           </div>
         </div>
       </div>
-
-      <div className="bg-tBeige flex items-center justify-center">
-        <div className="flex flex-col items-center w-1/2">
+      <div className="flex items-center justify-center h-full ">
+        <div className="flex flex-col items-center w-1/2 z-20">
           <h1 className=" text-4xl pb-9"><span className="text-[#9E4AF1]">Sign</span> Up</h1>
           <button
             className="flex bg-white w-full py-2 shadow-sm rounded-lg items-center justify-center gap-2"
