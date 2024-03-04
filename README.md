@@ -24,28 +24,27 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/github_username/twenity">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/javianng/twenity">
+    <img src="public/twenifyLogo.svg" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">twenity</h3>
 
-  <p align="center">
-    project_description
+<p align="center">
+A revolutionary productivity platform designed to address the pressing challenges of time management and digital distraction faced by students today. By seamlessly integrating essential features like the Pomodoro Timer, Integrated Calendar, To-Do List, Website Blocking Tool, and Music Integration, Twenify empowers users to enhance motivation, maintain focus, and streamline task organization. With gamification elements such as the Productivity Leaderboard and Tamagotchi-esque Feature, Twenify ensures engagement and incentivizes productive behavior. Developed following an agile methodology and built on robust technologies like Vue.js and Firebase, Twenify delivers a user-friendly experience while offering the potential for future enhancements. Join us in transforming academic pursuits with Twenify, where productivity, focus, and success converge.
     <br />
-    <a href="https://github.com/github_username/twenity"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/javianng/twenity"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/github_username/twenity">View Demo</a>
+    <a href="https://github.com/javianng/twenity">View Demo</a>
     ·
-    <a href="https://github.com/github_username/twenity/issues">Report Bug</a>
+    <a href="https://github.com/javianng/twenity/issues">Report Bug</a>
     ·
-    <a href="https://github.com/github_username/twenity/issues">Request Feature</a>
+    <a href="https://github.com/javianng/twenity/issues">Request Feature</a>
   </p>
 </div>
 
@@ -81,13 +80,12 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `twenity`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `twenity`, `project_description`
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
 
 - [![Vue][Vue.js]][Vue-url]
+- [![TailwindCSS][TailwindCSS]][TailwindCSS-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -112,15 +110,11 @@ This is an example of how to list things you need to use the software and how to
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
    ```sh
-   git clone https://github.com/github_username/twenity.git
+   git clone https://github.com/javianng/twenity.git
    ```
 3. Install NPM packages
    ```sh
    npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API'
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -132,19 +126,6 @@ This is an example of how to list things you need to use the software and how to
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- ROADMAP -->
-
-## Roadmap
-
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-  - [ ] Nested Feature
-
-See the [open issues](https://github.com/github_username/twenity/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -177,36 +158,29 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+- Ng Zheng Han Javian - https://www.linkedin.com/in/javianngzh/
+- Ooi Jia Yu, Anders - https://www.linkedin.com/in/andersooi/
+- Sourick Paul - https://www.linkedin.com/in/sourick-paul/
+- Anushka Ashirgade - linkedin.com/in/anushka-ashirgade/
 
-Project Link: [https://github.com/github_username/twenity](https://github.com/github_username/twenity)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- ACKNOWLEDGMENTS -->
-
-## Acknowledgments
-
-- []()
-- []()
-- []()
+Project Link: [https://github.com/javianng/twenity](https://github.com/javianng/twenity)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/twenity.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/twenity/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/twenity.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/twenity/network/members
-[stars-shield]: https://img.shields.io/github/stars/github_username/twenity.svg?style=for-the-badge
-[stars-url]: https://github.com/github_username/twenity/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/twenity.svg?style=for-the-badge
-[issues-url]: https://github.com/github_username/twenity/issues
-[license-shield]: https://img.shields.io/github/license/github_username/twenity.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/twenity/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
+[contributors-shield]: https://img.shields.io/github/contributors/javianng/twenity.svg?style=for-the-badge
+[contributors-url]: https://github.com/javianng/twenity/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/javianng/twenity.svg?style=for-the-badge
+[forks-url]: https://github.com/javianng/twenity/network/members
+[stars-shield]: https://img.shields.io/github/stars/javianng/twenity.svg?style=for-the-badge
+[stars-url]: https://github.com/javianng/twenity/stargazers
+[issues-shield]: https://img.shields.io/github/issues/javianng/twenity.svg?style=for-the-badge
+[issues-url]: https://github.com/javianng/twenity/issues
+[license-shield]: https://img.shields.io/github/license/javianng/twenity.svg?style=for-the-badge
+[license-url]: https://github.com/javianng/twenity/blob/master/LICENSE.txt
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
 [Vue-url]: https://vuejs.org/
+[TailwindCSS]: https://img.shields.io/static/v1?style=for-the-badge&message=Tailwind+CSS&color=222222&logo=Tailwind+CSS&logoColor=06B6D4&label=
+[TailwindCSS-url]: https://tailwindcss.com/

@@ -17,7 +17,7 @@
         <div className="flex flex-col gap-8">
           <div className="items-center flex justify-center">
             <img src="/twenifyLogo.svg" alt="logo" />
-            <img src="/twenifyName.svg" alt="twenify" />
+            <img src="/twenifyName.svg" alt="twenify" className="pt-8" />
           </div>
           <p className="text-white text-xl text-center">
             Unlock your twenty-fifth hour of productivity with twenify - the all in one productivity
