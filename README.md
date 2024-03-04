@@ -85,6 +85,7 @@ A revolutionary productivity platform designed to address the pressing challenge
 ### Built With
 
 - [![Vue][Vue.js]][Vue-url]
+- [![TailwindCSS][TailwindCSS]][TailwindCSS-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -125,16 +126,6 @@ This is an example of how to list things you need to use the software and how to
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- ROADMAP -->
-
-## Roadmap
-
-- [ ] Feature 1
-
-See the [open issues](https://github.com/javianng/twenity/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -188,3 +179,5 @@ Project Link: [https://github.com/javianng/twenity](https://github.com/javianng/
 [license-url]: https://github.com/javianng/twenity/blob/master/LICENSE.txt
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
 [Vue-url]: https://vuejs.org/
+[TailwindCSS]: https://img.shields.io/static/v1?style=for-the-badge&message=Tailwind+CSS&color=222222&logo=Tailwind+CSS&logoColor=06B6D4&label=
+[TailwindCSS-url]: https://tailwindcss.com/
