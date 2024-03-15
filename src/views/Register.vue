@@ -55,6 +55,7 @@
             type="text"
             placeholder="What should we call you?"
             class="w-full py-2 shadow-sm rounded-lg border-0 my-2"
+            v-model="name"
           />
           <p class="w-full text-start">Email</p>
           <input
@@ -93,17 +94,44 @@ import {
   signInWithPopup
 } from 'firebase/auth'
 import { useRouter } from 'vue-router'
+import { getFirestore, doc, setDoc, collection, addDoc, Timestamp } from 'firebase/firestore'
 
 const email = ref('')
 const password = ref('')
+const name = ref('')
 const router = useRouter()
 
+const auth = getAuth()
+const db = getFirestore()
+
 const register = () => {
-  const auth = getAuth()
-  createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-    .then((data) => {
-      console.log('Successfully registered!')
-      console.log(auth.currentUser)
+  createUserWithEmailAndPassword(auth, email.value, password.value)
+    .then(async (userCredential) => {
+      const userId = userCredential.user.uid
+
+      const currentDate = Timestamp.fromDate(new Date())
+
+      await setDoc(doc(db, 'Users', userId), {
+        Email: email.value,
+        Name: name.value,
+        Coins: 0,
+        LongTime: 10,
+        ShortTime: 5,
+        PomoTime: 25,
+        PetSkins: ['Pig'],
+        PetAccessories: ['Sunglasses'],
+        ActivePetSkin: 'Pig',
+        ActivePetAccessory: 'Sunglasses',
+        PetHealth: currentDate,
+        BlockedWebsite: ['testwebsite.com']
+      })
+      const DateFocused = { Date: currentDate, FocusedMinute: 10 }
+      const Task = { TaskName: 'task name', Deleted: false }
+
+      await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
+      await addDoc(collection(db, 'Users', userId, 'Tasks'), Task)
+
+      console.log('Successfully registered, added to Firestore!')
       router.push('/dashboard')
     })
     .catch((error) => {

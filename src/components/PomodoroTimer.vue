@@ -19,7 +19,7 @@
           Break
         </button>
         <button @click="toggleSettings" class="px-4 py-2 text-white rounded-md">
-          {{ showSettings ? 'Hide Settings' : 'Show Settings' }}
+          <img src="/icons/gear-solid.svg" alt="" class="w-4" />
         </button>
       </div>
       <div
@@ -72,7 +72,7 @@ export default {
   data() {
     return {
       sessions: {
-        work: 25,
+        work: 10,
         break: 5
       },
       selectedSession: 'work',
