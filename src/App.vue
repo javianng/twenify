@@ -1,7 +1,7 @@
 <template>
-  <div className="w-full flex justify-center pt-12">
+  <div class="w-full flex justify-center pt-12">
     <div
-      className="grid grid-cols-4 h-fit w-fit gap-8 text-center bg-tBeige p-5 rounded-lg shadow-md"
+      class="grid grid-cols-4 h-fit w-fit gap-8 text-center bg-tBeige p-5 rounded-lg shadow-md"
       id="nav"
     >
       <router-link to="/"><p>Home</p></router-link>
