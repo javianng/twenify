@@ -13,11 +13,8 @@
         </div>
       </div>
     </div>
-    <div class="relative">
-      <div class="bg-neutral-800 opacity-30 h-1/2 w-full top-0 absolute" />
-      <div class="h-full flex items-center justify-center">
-        <img src="/focusBird.png" alt="twenify" class="h-full z-50 max-h-[90vh]" />
-      </div>
+    <div class="h-full flex items-center justify-center">
+      <img src="/focusBird.png" alt="twenify" class="h-full z-50 max-h-[90vh]" />
     </div>
   </div>
 </template>
