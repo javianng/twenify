@@ -1,13 +1,20 @@
 <template>
-  <div class="bg-neutral-300">
-    <h1 class="text-center p-2">Dashboard</h1>
-  </div>
+  <Layout>
+    <PomodoroTimer />
+    <section class="container mx-auto p-4">
+      <!-- Home page content goes here -->
+    </section>
+  </Layout>
 </template>
 
 <script>
-export default {}
-</script>
+import Layout from '../components/PageLayout.vue'
+import PomodoroTimer from '@/components/PomodoroTimer.vue'
 
-<style scoped>
-/* Your styles go here */
-</style>
+export default {
+  components: {
+    Layout,
+    PomodoroTimer
+  }
+}
+</script>

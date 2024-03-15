@@ -12,7 +12,12 @@
     "
     class="flex justify-center"
   >
-    <div class="max-w-6xl">
+    <div class="max-w-6xl p-8">
+      <div class="flex justify-end gap-4 text-white">
+        <router-link to="/register"><p>New User</p></router-link>
+        <p>|</p>
+        <router-link to="/sign-in"><p>Log In</p></router-link>
+      </div>
       <div class="min-h-[50vh] items-center flex justify-center">
         <div class="flex flex-col gap-8">
           <div class="items-center flex justify-center">
