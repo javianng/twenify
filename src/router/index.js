@@ -5,7 +5,6 @@ import Register from '@/views/Register.vue'
 import SignIn from '@/views/SignIn.vue'
 import BlockedSite from '@/views/BlockedSite.vue'
 import Dashboard from '@/views/Dashboard.vue'
-import PomodoroTimer from '@/views/PomodoroTimer.vue'
 
 const routes = [
   {
@@ -35,11 +34,6 @@ const routes = [
     path: '/blockedSite',
     name: 'BlockedSite',
     component: BlockedSite
-  },
-  {
-    path: '/pomodoroTimer',
-    name: 'PomodoroTimer',
-    component: PomodoroTimer
   }
 ]
 
