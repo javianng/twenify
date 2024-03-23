@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "firebase": "^10.8.1",
+    "interactjs": "^1.10.26",
     "vue": "^3.4.15",
     "vue-router": "^4.3.0"
   },

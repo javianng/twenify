@@ -29,7 +29,7 @@
           <router-link to="/sign-in" class="text-white"><p>Sign-In</p></router-link>
 
           <!-- Dropdown items go here -->
-          <a href="/">
+          <a @click="showSpotifyWidget">
             <img src="/spotify.svg" class="bg-white h-16 w-16" />
           </a>
           <a href="/">
@@ -51,6 +51,11 @@
       </div>
     </div>
 
+    <!-- Spotify Widget Overlay-->
+    <div v-if="isSpotifyWidgetVisible" class="z-50">
+      <SpotifyWidget @close="isSpotifyWidgetVisible = false"></SpotifyWidget>
+    </div>
+
     <main>
       <slot></slot>
     </main>
@@ -58,19 +63,30 @@
 </template>
 
 <script>
+import SpotifyWidget from '@/components/widgets/Spotify.vue'
+
 export default {
   name: 'PageLayout',
+  components: {
+    SpotifyWidget
+  },
   data() {
     return {
       // Dropdown visibility state
-      isDropdownVisible: false
+      isDropdownVisible: false,
+      // Spotify widget visibility state
+      isSpotifyWidgetVisible: false
     }
   },
   methods: {
     // Toggle dropdown visibility
     toggleDropdown() {
       this.isDropdownVisible = !this.isDropdownVisible
-    }
+    },
+    // Toggle Spotify widget visibility
+    showSpotifyWidget() {
+      this.isSpotifyWidgetVisible = !this.isSpotifyWidgetVisible
+    },
   }
 }
 </script>
