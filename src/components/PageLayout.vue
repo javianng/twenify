@@ -29,14 +29,31 @@
           <router-link to="/sign-in" class="text-white"><p>Sign-In</p></router-link>
 
           <!-- Dropdown items go here -->
-          <a href="/"><img src="/icons/clock-solid.svg" alt="" class="w-14" /></a>
-          <a href="/"><img src="/icons/shield-halved-solid.svg" alt="" class="w-14" /></a>
-          <a href="/"><img src="/icons/chart-simple-solid.svg" alt="" class="w-14" /></a>
-          <a href="/"><img src="/icons/spotify.svg" alt="" class="w-16" /></a>
-          <a href="/"><img src="/icons/dove-solid.svg" alt="" class="w-14" /></a>
-          <a href="/"><img src="/icons/user-solid.svg" alt="" class="w-14" /></a>
+          <a @click="showSpotifyWidget">
+            <img src="/spotify.svg" class="bg-white h-16 w-16" />
+          </a>
+          <a href="/">
+            <img src="/spotify.svg" class="bg-white h-16 w-16" />
+          </a>
+          <a href="/">
+            <img src="/spotify.svg" class="bg-white h-16 w-16" />
+          </a>
+          <a href="/">
+            <img src="/spotify.svg" class="bg-white h-16 w-16" />
+          </a>
+          <a href="/">
+            <img src="/spotify.svg" class="bg-white h-16 w-16" />
+          </a>
+          <img src="/spotify.svg" class="bg-white h-16 w-16" />
+          <img src="/spotify.svg" class="bg-white h-16 w-16" />
+          <img src="/spotify.svg" class="bg-white h-16 w-16" />
         </nav>
       </div>
+    </div>
+
+    <!-- Spotify Widget Overlay-->
+    <div v-if="isSpotifyWidgetVisible" class="z-50">
+      <SpotifyWidget @close="isSpotifyWidgetVisible = false"></SpotifyWidget>
     </div>
 
     <main>
@@ -46,18 +63,29 @@
 </template>
 
 <script>
+import SpotifyWidget from '@/components/widgets/Spotify.vue'
+
 export default {
   name: 'PageLayout',
+  components: {
+    SpotifyWidget
+  },
   data() {
     return {
       // Dropdown visibility state
-      isDropdownVisible: false
+      isDropdownVisible: false,
+      // Spotify widget visibility state
+      isSpotifyWidgetVisible: false
     }
   },
   methods: {
     // Toggle dropdown visibility
     toggleDropdown() {
       this.isDropdownVisible = !this.isDropdownVisible
+    },
+    // Toggle Spotify widget visibility
+    showSpotifyWidget() {
+      this.isSpotifyWidgetVisible = !this.isSpotifyWidgetVisible
     }
   }
 }
