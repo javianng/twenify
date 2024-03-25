@@ -20,7 +20,7 @@
     <div v-if="isDropdownVisible" class="relative">
       <div class="absolute">
         <nav
-          class="bg-neutral-800 w-24 flex mx-8 gap-3 items-center flex-col pb-4 rounded-b-lxl shadow-lg"
+          class="bg-neutral-800 w-24 flex mx-8 gap-7 items-center flex-col pb-4 rounded-b-lxl shadow-lg h-[50vh] overflow-scroll"
         >
           <!-- Temp links -->
           <router-link to="/" class="text-white"><p>Home</p></router-link>
@@ -86,7 +86,7 @@ export default {
     // Toggle Spotify widget visibility
     showSpotifyWidget() {
       this.isSpotifyWidgetVisible = !this.isSpotifyWidgetVisible
-    },
+    }
   }
 }
 </script>
