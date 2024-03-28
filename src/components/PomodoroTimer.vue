@@ -64,13 +64,16 @@
 
 <script>
 import Button from '../components/Button.vue'
+import firebaseApp from '../firebase.js'
+import { getAuth } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
+import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore'
+import db from '../firebase.js'
 
 export default {
-  components: {
-    Button
-  },
   data() {
     return {
+      useremail: '',
       sessions: {
         work: 10,
         break: 5
@@ -82,6 +85,17 @@ export default {
       showSettings: false
     }
   },
+
+  async mounted() {
+    const auth = getAuth()
+    this.useremail = auth.currentUser.email
+    await this.fetchData(this.useremail)
+  },
+
+  components: {
+    Button
+  },
+
   computed: {
     formatTime() {
       let minutes = Math.floor(this.timeLeft / 60)
@@ -89,7 +103,18 @@ export default {
       return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
     }
   },
+
   methods: {
+    async fetchData(useremail) {
+      const userRef = db.collection('Users').doc(useremail)
+      const doc = await userRef.get()
+      if (!doc.exists) {
+        console.log('No such document!')
+      } else {
+        console.log('Document data:', doc.data())
+      }
+    },
+
     toggleTimer() {
       if (!this.isRunning) {
         this.startTimer()
@@ -97,6 +122,7 @@ export default {
         this.pauseTimer()
       }
     },
+
     startTimer() {
       if (!this.isRunning) {
         this.timeLeft = this.sessions[this.selectedSession] * 60

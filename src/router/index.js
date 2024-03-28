@@ -5,6 +5,8 @@ import Register from '@/views/Register.vue'
 import SignIn from '@/views/SignIn.vue'
 import BlockedSite from '@/views/BlockedSite.vue'
 import Dashboard from '@/views/Dashboard.vue'
+import Profile from '@/views/Profile.vue'
+
 import Spotify from '@/components/widgets/Spotify.vue'
 
 const routes = [
@@ -40,7 +42,11 @@ const routes = [
     path: '/spotify',
     name: 'Spotify',
     component: Spotify
-  
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile
   }
 ]
 

@@ -13,11 +13,14 @@
     class="flex justify-center"
   >
     <div class="max-w-6xl p-8">
-      <div class="flex justify-end gap-4 text-white">
+      <div v-if="!user" class="flex justify-end gap-4 text-white">
         <router-link to="/register"><p>New User</p></router-link>
         <p>|</p>
         <router-link to="/sign-in"><p>Log In</p></router-link>
       </div>
+      <router-link v-else to="/dashboard" class="flex justify-end gap-4 text-white"
+        ><p>Dashboard</p></router-link
+      >
       <div class="min-h-[50vh] items-center flex justify-center">
         <div class="flex flex-col gap-8">
           <div class="items-center flex justify-center">
@@ -31,16 +34,17 @@
         </div>
       </div>
       <div class="flex justify-center">
-        <button
+        <a
+          href="#feature"
           class="border-2 border-tBeige hover:border-tYellow transition duration-200 py-2 px-4 rounded-full"
         >
           <p class="text-white text-xl">↓ View Our Features</p>
-        </button>
+        </a>
       </div>
       <div class="flex flex-row min-h-[50vh] items-center">
         <div class="border-l-8 border-tYellow">
           <div class="px-6 max-w-[66%] flex flex-col gap-4">
-            <h1 class="text-7xl font-bold text-white">Customisable Pomodoro Timer</h1>
+            <h1 class="text-7xl font-bold text-white" id="feature">Customisable Pomodoro Timer</h1>
             <p class="text-white text-xl pb-5">
               a customisable timer that you can use to set your work and break sessions according to
               your needs!
@@ -98,16 +102,12 @@
               Ready to unlock the <span class="text-tYellow"> twenty-fifth hour </span> of your day?
             </p>
             <div class="flex flex-row gap-4">
-              <button
-                class="bg-gradient-to-b from-yellow-300 to-purple-700 shadow-md rounded-full py-2 px-5 w-32"
-              >
-                New User
-              </button>
-              <button
-                class="bg-gradient-to-b from-yellow-300 to-purple-700 shadow-md rounded-full py-2 px-5 w-32"
-              >
-                Log In
-              </button>
+              <router-link to="/register">
+                <Button buttonText="New User" />
+              </router-link>
+              <router-link to="/sign-in">
+                <Button buttonText="Log In" />
+              </router-link>
             </div>
           </div>
         </div>
@@ -117,8 +117,29 @@
 </template>
 
 <script>
+import Button from '@/components/Button.vue'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+
 export default {
-  name: 'App',
-  components: {}
+  components: {
+    Button
+  },
+
+  name: 'Home',
+
+  data() {
+    return {
+      user: false
+    }
+  },
+
+  mounted() {
+    const auth = getAuth()
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user
+      }
+    })
+  }
 }
 </script>
