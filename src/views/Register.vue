@@ -116,6 +116,7 @@ const register = async () => {
     await setDoc(doc(db, 'Users', userId), {
       Name: name.value,
       Coins: 0,
+      Email: email.value,
       LongTime: 10,
       ShortTime: 5,
       PomoTime: 25,
@@ -129,7 +130,8 @@ const register = async () => {
 
     await setDoc(doc(db, 'Leaderboard', userId), {
       Name: name.value,
-      TotalHours: 0
+      TotalHours: 0,
+      Email: email.value
     })
 
     const DateFocused = { Date: currentDate, FocusedMinute: 10 }
@@ -160,6 +162,7 @@ const signInWithGoogle = async () => {
     await setDoc(doc(db, 'Users', userId), {
       Name: displayName,
       Coins: 0,
+      Email: user.email,
       LongTime: 10,
       ShortTime: 5,
       PomoTime: 25,
@@ -173,7 +176,8 @@ const signInWithGoogle = async () => {
 
     await setDoc(doc(db, 'Leaderboard', userId), {
       Name: displayName,
-      TotalHours: 0
+      TotalHours: 0,
+      Email: user.email
     })
 
     const DateFocused = { Date: currentDate, FocusedMinute: 10 }
