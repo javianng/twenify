@@ -174,6 +174,7 @@ export default {
             if (this.selectedSession === 'pomo') {
               this.completedPomodoros++
               this.addToDateFocusedCollection()
+              this.incrementCoin()
               updateDoc(docRef, { TotalHours: increment(this.sessions.pomo / 60) })
               if (this.completedPomodoros == 4) {
                 this.toggleSession('long')
@@ -200,6 +201,17 @@ export default {
       return addDoc(collectionRef, dateFocused)
         .then(() => {
           console.log('Duration added to DateFocused collection successfully!')
+        })
+        .catch((error) => {
+          console.error('Error adding duration to DateFocused collection: ', error)
+        })
+    },
+
+    incrementCoin() {
+      const docRef = doc(db, 'Users', this.userEmail)
+      updateDoc(docRef, { Coins: increment(this.sessions.pomo) })
+        .then(() => {
+          console.log('Coin added successfully!')
         })
         .catch((error) => {
           console.error('Error adding duration to DateFocused collection: ', error)
