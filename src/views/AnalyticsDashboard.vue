@@ -23,7 +23,7 @@
         <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
           <p class="text-start font-semibold">Total Hours spent on twenify</p>
           <p class="text-[6rem] font-bold text-tYellow flex h-full justify-center items-center">
-            {{ totalHoursSpent }}
+            {{ Math.floor(totalHoursSpent) }}
           </p>
         </div>
         <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
