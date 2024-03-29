@@ -16,7 +16,9 @@
       <div class="grid grid-cols-2 grid-rows-2 w-full gap-3">
         <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
           <p class="text-start font-semibold">Performance History</p>
-          <AnalyticsChart :data="subcollectionDateFocused"></AnalyticsChart>
+          <div class="flex justify-center h-full items-center">
+            <AnalyticsChart :data="subcollectionDateFocused"></AnalyticsChart>
+          </div>
         </div>
         <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
           <p class="text-start font-semibold">Total Hours spent on twenify</p>

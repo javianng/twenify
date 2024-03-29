@@ -41,9 +41,7 @@ export default {
       new Chart(ctx, {
         type: 'line',
         data: {
-          labels: this.data.map((item) =>
-            moment.unix(item.Date.seconds).format('YYYY-MM-DD HH:mm:ss')
-          ),
+          labels: this.data.map((item) => moment.unix(item.Date.seconds).format('MMM D, h:mm a')),
           datasets: [
             {
               label: 'Focused Minute',
@@ -53,6 +51,18 @@ export default {
               tension: 0.1
             }
           ]
+        },
+        options: {
+          responsive: true, // Add this line
+          scales: {
+            x: {
+              ticks: {
+                autoSkip: false,
+                maxRotation: 90,
+                minRotation: 90
+              }
+            }
+          }
         }
       })
     }
