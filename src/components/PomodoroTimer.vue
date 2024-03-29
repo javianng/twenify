@@ -2,6 +2,8 @@
   <div
     class="bg-opacity-30 bg-neutral-800 flex flex-col items-center justify-center py-8 mt-4 min-h-[50vh]"
   >
+    <!-- Pomodoro Toggle -->
+
     <div class="relative">
       <div class="flex gap-4">
         <button
@@ -26,39 +28,50 @@
           Long Break
         </button>
         <button @click="toggleSettings" class="px-4 py-2 text-white rounded-md">
-          <img src="/icons/gear-solid.svg" alt="" class="w-4" />
+          <img src="/icons/gear-solid.svg" alt="" class="w-4 gear-icon cursor-pointer" />
         </button>
       </div>
+
+      <!-- Setting Dashboard -->
+
       <div
         v-if="showSettings"
-        class="bg-white p-4 border rounded-md shadow-md absolute top-0 -right-[18em]"
+        class="bg-[#4F019B] p-4 rounded-lg shadow-xl absolute top-0 -right-[25em]"
       >
-        <label class="block mb-2">Work Duration (minutes):</label>
-        <input
-          type="number"
-          v-model="sessions.pomo"
-          @change="updateSession('pomo')"
-          :disabled="isRunning"
-          class="block w-full mb-4 border rounded-md p-2"
-        />
-        <label class="block mb-2">Short Break Duration (minutes):</label>
-        <input
-          type="number"
-          v-model="sessions.short"
-          @change="updateSession('short')"
-          :disabled="isRunning"
-          class="block w-full mb-4 border rounded-md p-2"
-        />
-        <label class="block mb-2">Long Break Duration (minutes):</label>
-        <input
-          type="number"
-          v-model="sessions.long"
-          @change="updateSession('long')"
-          :disabled="isRunning"
-          class="block w-full mb-4 border rounded-md p-2"
-        />
+        <div class="grid grid-cols-3 grid-rows-2 gap-2 mb-4 -mt-6">
+          <label class="text-white w-28 font-semibold flex justify-center items-end"
+            >Pomodoro</label
+          >
+          <label class="text-white w-28 font-semibold flex justify-center items-end"
+            >Short Break</label
+          >
+          <label class="text-white w-28 font-semibold flex justify-center items-end"
+            >Long Break</label
+          >
+          <input
+            type="number"
+            v-model="sessions.pomo"
+            @change="updateSession('pomo')"
+            :disabled="isRunning"
+            class="flex w-28 rounded-lg"
+          />
+          <input
+            type="number"
+            v-model="sessions.short"
+            @change="updateSession('short')"
+            :disabled="isRunning"
+            class="flex w-28 rounded-lg"
+          />
+          <input
+            type="number"
+            v-model="sessions.long"
+            @change="updateSession('long')"
+            :disabled="isRunning"
+            class="flex w-28 rounded-lg"
+          />
+        </div>
         <div class="flex justify-between">
-          <button @click="saveSettings" class="px-4 py-2 bg-blue-500 text-white rounded-md mr-2">
+          <button @click="saveSettings" class="px-4 py-2 bg-[#FFC54E] text-white rounded-md mr-2">
             Save
           </button>
           <button @click="cancelSettings" class="px-4 py-2 bg-gray-400 text-white rounded-md">
@@ -67,6 +80,9 @@
         </div>
       </div>
     </div>
+
+    <!-- Pomodoro Functional -->
+
     <div class="flex">
       <img :src="pomodoroImage" alt="" class="h-32" />
       <div class="flex flex-col -ml-28">
@@ -201,6 +217,8 @@ export default {
 
     toggleSettings() {
       this.showSettings = !this.showSettings
+      const gearIcon = document.querySelector('.gear-icon')
+      gearIcon.classList.toggle('rotate')
     },
 
     saveSettings() {
@@ -249,3 +267,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.rotate {
+  transform: rotate(90deg); /* Adjust the degree of rotation as needed */
+}
+</style>
