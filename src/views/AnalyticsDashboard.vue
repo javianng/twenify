@@ -5,6 +5,7 @@
         <h1 class="text-[#9E4AF1] text-6xl font-bold">Performance Analytics</h1>
         <p class="text-white">Keep track of how productive you have been through the weeks</p>
       </div>
+
       <div class="items-center flex flex-col justify-end">
         <h1 class="text-[#9E4AF1] text-6xl font-bold">Leaderboard</h1>
         <p class="text-white">based on total productive hours on twenify this week</p>
@@ -13,10 +14,27 @@
       <!-- Analytics -->
 
       <div class="grid grid-cols-2 grid-rows-2 w-full gap-3">
-        <div class="bg-white rounded-lg h-[30vh]">1</div>
-        <div class="bg-white rounded-lg h-[30vh]">2</div>
-        <div class="bg-white rounded-lg h-[30vh]">3</div>
-        <div class="bg-white rounded-lg h-[30vh]">4</div>
+        <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
+          <p class="text-start font-semibold">Performance History</p>
+          <div class="flex justify-center h-full items-center">
+            <AnalyticsChart :data="subcollectionDateFocused"></AnalyticsChart>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
+          <p class="text-start font-semibold">Total Hours spent on twenify</p>
+          <p class="text-[6rem] font-bold text-tYellow flex h-full justify-center items-center">
+            {{ Math.floor(totalHoursSpent) }}
+          </p>
+        </div>
+        <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
+          <p class="text-start font-semibold">Longest Pomodoro Streak in hours</p>
+        </div>
+        <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
+          <p class="text-start font-semibold">Global Ranking</p>
+          <p class="text-[6rem] font-bold text-[#9E4AF1] flex h-full justify-center items-center">
+            {{ userPosition + 1 }}st
+          </p>
+        </div>
       </div>
 
       <!-- Leaderboard -->
@@ -26,7 +44,10 @@
           <div
             v-for="(data, index) in leaderboardData"
             :key="index"
-            class="bg-[#5B00B3] text-white p-3 w-full rounded-md"
+            :class="{
+              'bg-[#5B00B3] text-tYellow p-3 w-full rounded-md': data.Email === useremail,
+              'bg-[#5B00B3] text-white p-3 w-full rounded-md': data.Email !== useremail
+            }"
           >
             <div class="flex px-3">
               <div class="flex w-[20%] text-start font-bold">{{ index + 1 }}</div>
@@ -49,8 +70,9 @@
 <script>
 import firebaseApp from '../firebase.js'
 import Layout from '../components/PageLayout.vue'
+import AnalyticsChart from '../components/AnalyticsChart.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { collection, getDocs, getFirestore } from 'firebase/firestore'
+import { collection, getDocs, getFirestore, query, doc, getDoc } from 'firebase/firestore'
 
 const db = getFirestore(firebaseApp)
 
@@ -58,13 +80,19 @@ export default {
   name: 'AnalyticsDashboard',
 
   components: {
-    Layout
+    Layout,
+    AnalyticsChart
   },
 
   data() {
     return {
       user: false,
-      leaderboardData: null
+      userData: null,
+      useremail: null,
+      userPosition: -1,
+      totalHoursSpent: -1,
+      leaderboardData: null,
+      subcollectionDateFocused: null
     }
   },
 
@@ -73,15 +101,48 @@ export default {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         this.user = user
-        await this.fetchData()
+        this.useremail = auth.currentUser.email
+        await this.fetchLeaderboard()
+        await this.fetchTotalHours()
+        await this.fetchDateFocused(this.useremail)
       }
     })
   },
 
   methods: {
-    async fetchData() {
-      const querySnapshot = await getDocs(collection(db, 'Leaderboard'))
-      this.leaderboardData = querySnapshot.docs.map((doc) => doc.data())
+    async fetchLeaderboard() {
+      const querySnapshot = await getDocs(query(collection(db, 'Leaderboard')))
+      const leaderboardData = querySnapshot.docs.map((doc) => doc.data())
+      leaderboardData.sort((a, b) => b.TotalHours - a.TotalHours)
+      const userPosition = leaderboardData.findIndex((data) => data.Email === this.useremail)
+      this.leaderboardData = leaderboardData
+      this.userPosition = userPosition
+    },
+
+    async fetchTotalHours() {
+      const docRef = doc(db, 'Total Hours', this.useremail)
+      const docSnap = await getDoc(docRef)
+      if (docSnap.exists()) {
+        this.totalHoursSpent = docSnap.data().TotalHours
+        console.log(this.totalHoursSpent)
+      } else {
+        console.log('User not found')
+      }
+    },
+
+    async fetchDateFocused(useremail) {
+      try {
+        const userDocRef = doc(db, 'Users', useremail)
+        const subcollectionRef = collection(userDocRef, 'DateFocused')
+        const subcollectionSnapshot = await getDocs(subcollectionRef)
+        this.subcollectionDateFocused = subcollectionSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        }))
+        console.log(this.subcollectionDateFocused)
+      } catch (error) {
+        console.error('Error fetching user:', error)
+      }
     }
   }
 }
