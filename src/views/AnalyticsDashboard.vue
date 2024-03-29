@@ -16,6 +16,7 @@
       <div class="grid grid-cols-2 grid-rows-2 w-full gap-3">
         <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
           <p class="text-start font-semibold">Performance History</p>
+          <AnalyticsChart :data="subcollectionDateFocused"></AnalyticsChart>
         </div>
         <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
           <p class="text-start font-semibold">Total Hours spent on twenify</p>
@@ -67,6 +68,7 @@
 <script>
 import firebaseApp from '../firebase.js'
 import Layout from '../components/PageLayout.vue'
+import AnalyticsChart from '../components/AnalyticsChart.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { collection, getDocs, getFirestore, query, doc, getDoc } from 'firebase/firestore'
 
@@ -76,16 +78,19 @@ export default {
   name: 'AnalyticsDashboard',
 
   components: {
-    Layout
+    Layout,
+    AnalyticsChart
   },
 
   data() {
     return {
       user: false,
+      userData: null,
       useremail: null,
       userPosition: -1,
       totalHoursSpent: -1,
-      leaderboardData: null
+      leaderboardData: null,
+      subcollectionDateFocused: null
     }
   },
 
@@ -97,6 +102,7 @@ export default {
         this.useremail = auth.currentUser.email
         await this.fetchLeaderboard()
         await this.fetchTotalHours()
+        await this.fetchDateFocused(this.useremail)
       }
     })
   },
@@ -119,6 +125,21 @@ export default {
         console.log(this.totalHoursSpent)
       } else {
         console.log('User not found')
+      }
+    },
+
+    async fetchDateFocused(useremail) {
+      try {
+        const userDocRef = doc(db, 'Users', useremail)
+        const subcollectionRef = collection(userDocRef, 'DateFocused')
+        const subcollectionSnapshot = await getDocs(subcollectionRef)
+        this.subcollectionDateFocused = subcollectionSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        }))
+        console.log(this.subcollectionDateFocused)
+      } catch (error) {
+        console.error('Error fetching user:', error)
       }
     }
   }
