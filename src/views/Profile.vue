@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gradient-to-b to-tPurple from-tDarkPurple h-full min-h-screen flex flex-col">
+  <Background :style="backgroundStyle">
     <div class="flex px-8 h-24">
       <div class="flex items-center">
         <div class="flex items-end">
@@ -20,45 +20,71 @@
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center gap-4">
+          <p class="font-bold text-white w-20">Username</p>
           <input
             type="text"
             v-model="newUsername"
-            :placeholder="user.displayName"
+            :placeholder="usernamePlaceholder"
             class="rounded-lg p-2"
           />
-          <button @click="changeUsername">
+          <button @click="changeUsername" title="Change username">
             <img src="/icons/pencil.svg" alt="" class="h-6 w-6" />
           </button>
         </div>
         <div class="flex items-center gap-4">
+          <p class="font-bold text-white w-20">Password</p>
           <input
             type="password"
             v-model="newPassword"
             placeholder="New Password"
             class="rounded-lg p-2"
           />
-          <button @click="changePassword">
+          <button @click="changePassword" title="Change password">
             <img src="/icons/pencil.svg" alt="" class="h-6 w-6" />
           </button>
+        </div>
+        <div class="flex items-center gap-4 justify-start pt-5">
+          <p class="font-bold text-white w-20">Themes</p>
+          <div class="grid grid-flow-col gap-3">
+            <button
+              @click="changeBackgroundStyle('style1')"
+              class="bg-[#3C0777] w-8 h-8 border-4 border-white rounded-full"
+            ></button>
+            <button
+              @click="changeBackgroundStyle('style2')"
+              class="bg-[#48C6A1] w-8 h-8 border-4 border-white rounded-full"
+            ></button>
+            <button
+              @click="changeBackgroundStyle('style3')"
+              class="bg-[#F26745] w-8 h-8 border-4 border-white rounded-full"
+            ></button>
+          </div>
         </div>
       </div>
       <LogOutButton />
     </div>
-  </div>
+  </Background>
 </template>
 
 <script>
 import firebaseApp from '../firebase.js'
+import Background from '@/components/Background.vue'
 import LogOutButton from '@/components/LogOutButton.vue'
+import { doc, getFirestore, updateDoc, getDoc } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged, updatePassword } from 'firebase/auth'
-import { doc, getFirestore } from 'firebase/firestore'
 
 const db = getFirestore(firebaseApp)
 
 export default {
   name: 'Profile',
   components: {
-    LogOutButton
+    LogOutButton,
+    Background
+  },
+  computed: {
+    usernamePlaceholder() {
+      return this.userData && this.userData.Name ? this.userData.Name : 'New Username'
+    }
   },
   data() {
     return {
@@ -66,7 +92,8 @@ export default {
       useremail: null,
       userData: null,
       newPassword: '',
-      newUsername: ''
+      newUsername: '',
+      backgroundStyle: localStorage.getItem('backgroundStyle') || 'default'
     }
   },
   async mounted() {
@@ -81,6 +108,25 @@ export default {
   },
 
   methods: {
+    changeBackgroundStyle(style) {
+      this.backgroundStyle = style
+      localStorage.setItem('backgroundStyle', style)
+    },
+    async fetchData(useremail) {
+      try {
+        const docRef = doc(db, 'Users', useremail)
+        const docSnap = await getDoc(docRef)
+        if (docSnap.exists()) {
+          this.userData = docSnap.data()
+          console.log(this.userData)
+        } else {
+          console.log('User not found')
+        }
+      } catch (error) {
+        console.error('Error fetching user:', error)
+      }
+    },
+
     async changePassword() {
       try {
         await updatePassword(this.user, this.newPassword)
@@ -92,8 +138,12 @@ export default {
     },
 
     async changeUsername() {
-      const docRef = doc(db, 'Users', this.userEmail)
-      updateDoc(docRef, {
+      const docRef = doc(db, 'Users', this.useremail)
+      const leadRef = doc(db, 'Leaderboard', this.useremail)
+      await updateDoc(docRef, {
+        Name: this.newUsername
+      })
+      await updateDoc(leadRef, {
         Name: this.newUsername
       })
       console.log('Document successfully updated!')

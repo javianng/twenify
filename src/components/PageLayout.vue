@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gradient-to-b to-tPurple from-tDarkPurple h-full min-h-screen flex flex-col">
+  <Background :style="backgroundStyle">
     <div class="flex justify-between px-8 h-fit">
       <!-- Logo Container with click event to toggle dropdown -->
       <div
@@ -45,17 +45,19 @@
     <main>
       <slot />
     </main>
-  </div>
+  </Background>
 </template>
 
 <script>
+import Background from './Background.vue'
 import SpotifyWidget from '@/components/widgets/Spotify.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 export default {
   name: 'PageLayout',
   components: {
-    SpotifyWidget
+    SpotifyWidget,
+    Background
   },
   mounted() {
     const auth = getAuth()
@@ -67,6 +69,7 @@ export default {
   },
   data() {
     return {
+      backgroundStyle: localStorage.getItem('backgroundStyle') || 'default',
       // Dropdown visibility state
       isDropdownVisible: false,
       // Spotify widget visibility state
