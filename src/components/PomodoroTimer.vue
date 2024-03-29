@@ -5,21 +5,21 @@
     <div class="relative">
       <div class="flex gap-4">
         <button
-          @click="toggleSession('pomo')"
+          @click="manualToggleSession('pomo')"
           :disabled="isRunning || selectedSession === 'pomo'"
           class="px-4 py-2 text-white"
         >
-          Work Session
+          Pomodoro Duration
         </button>
         <button
-          @click="toggleSession('short')"
+          @click="manualToggleSession('short')"
           :disabled="isRunning || selectedSession === 'short'"
           class="px-4 py-2 text-white"
         >
           Short Break
         </button>
         <button
-          @click="toggleSession('long')"
+          @click="manualToggleSession('long')"
           :disabled="isRunning || selectedSession === 'long'"
           class="px-4 py-2 text-white"
         >
@@ -68,8 +68,8 @@
       </div>
     </div>
     <div class="flex">
-      <img src="/fourFeet.png" alt="" class="h-32" />
-      <div class="flex flex-col">
+      <img :src="pomodoroImage" alt="" class="h-32" />
+      <div class="flex flex-col -ml-28">
         <div class="text-7xl font-bold mb-4 text-white">{{ formatTime }}</div>
         <Button @click="toggleTimer" :buttonText="isRunning ? 'Stop' : 'Start'"></Button>
       </div>
@@ -80,7 +80,7 @@
 <script>
 import firebaseApp from '../firebase.js'
 import Button from '../components/Button.vue'
-import { doc, getFirestore, updateDoc } from 'firebase/firestore'
+import { doc, getFirestore, updateDoc, addDoc, collection } from 'firebase/firestore'
 
 const db = getFirestore(firebaseApp)
 
@@ -107,7 +107,8 @@ export default {
       timeLeft: this.userData.PomoTime * 60,
       isRunning: false,
       intervalId: null,
-      showSettings: false
+      showSettings: false,
+      completedPomodoros: 0
     }
   },
 
@@ -120,6 +121,19 @@ export default {
       let minutes = Math.floor(this.timeLeft / 60)
       let seconds = this.timeLeft % 60
       return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+    },
+    pomodoroImage() {
+      if (this.completedPomodoros === 1) {
+        return '/duckfeet/1feet.png'
+      } else if (this.completedPomodoros === 2) {
+        return '/duckfeet/2feet.png'
+      } else if (this.completedPomodoros === 3) {
+        return '/duckfeet/3feet.png'
+      } else if (this.completedPomodoros === 4) {
+        return '/duckfeet/allfeet.png'
+      } else {
+        return '/duckfeet/nofeet.png'
+      }
     }
   },
 
@@ -139,23 +153,56 @@ export default {
           this.timeLeft--
           if (this.timeLeft <= 0) {
             clearInterval(this.intervalId)
+            this.isRunning = false
+            if (this.selectedSession === 'pomo') {
+              this.completedPomodoros++
+              this.addToDateFocusedCollection()
+              if (this.completedPomodoros == 4) {
+                this.toggleSession('long')
+              } else {
+                this.toggleSession('short')
+              }
+            } else {
+              this.toggleSession('pomo')
+              if (this.completedPomodoros == 4) {
+                this.completedPomodoros = 0
+              }
+            }
           }
         }, 1000)
         this.isRunning = true
       }
     },
+
+    addToDateFocusedCollection() {
+      const currentDate = new Date()
+      const duration = this.sessions[this.selectedSession]
+      const dateFocused = { Date: currentDate, FocusedMinute: duration }
+      const collectionRef = collection(db, 'Users', this.userEmail, 'DateFocused')
+      return addDoc(collectionRef, dateFocused)
+        .then(() => {
+          console.log('Duration added to DateFocused collection successfully!')
+        })
+        .catch((error) => {
+          console.error('Error adding duration to DateFocused collection: ', error)
+        })
+    },
+
     pauseTimer() {
       clearInterval(this.intervalId)
       this.isRunning = false
     },
+
     updateSession(sessionType) {
       if (this.sessions[sessionType] <= 0 || isNaN(this.sessions[sessionType])) {
         this.sessions[sessionType] = 1
       }
     },
+
     toggleSettings() {
       this.showSettings = !this.showSettings
     },
+
     saveSettings() {
       const docRef = doc(db, 'Users', this.userEmail)
       return updateDoc(docRef, {
@@ -171,9 +218,11 @@ export default {
           console.error('Error updating document: ', error)
         })
     },
+
     cancelSettings() {
       this.showSettings = false
     },
+
     toggleSession(sessionType) {
       if (this.selectedSession === sessionType && this.isRunning) {
         this.timeLeft = this.sessions[sessionType] * 60
@@ -182,6 +231,19 @@ export default {
         this.selectedSession = sessionType
         this.timeLeft = this.sessions[sessionType] * 60
         this.isRunning = false
+      }
+    },
+
+    manualToggleSession(sessionType) {
+      if (this.selectedSession === sessionType && this.isRunning) {
+        this.timeLeft = this.sessions[sessionType] * 60
+        this.isRunning = false
+        this.completedPomodoros = 0
+      } else {
+        this.selectedSession = sessionType
+        this.timeLeft = this.sessions[sessionType] * 60
+        this.isRunning = false
+        this.completedPomodoros = 0
       }
     }
   }
