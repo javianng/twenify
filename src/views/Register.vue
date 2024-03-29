@@ -2,10 +2,7 @@
   <div class="relative overflow-hidden">
     <div class="absolute top-6 left-6">
       <router-link to="/">
-        <div class="flex items-end">
-          <img src="/twenifyLogo.svg" alt="logo" class="h-24" />
-          <img src="/twenifyName.svg" alt="twenify" class="h-20" />
-        </div>
+        <img src="/twenifyLogoName.png" alt="logo" class="h-24" />
       </router-link>
     </div>
     <div class="absolute w-[56%] h-full right-0">
@@ -132,7 +129,7 @@ const register = async () => {
 
     await setDoc(doc(db, 'Leaderboard', userId), {
       Name: name.value,
-      FocusStreak: 0
+      TotalHours: 0
     })
 
     const DateFocused = { Date: currentDate, FocusedMinute: 10 }
@@ -176,7 +173,7 @@ const signInWithGoogle = async () => {
 
     await setDoc(doc(db, 'Leaderboard', userId), {
       Name: displayName,
-      FocusStreak: 0
+      TotalHours: 0
     })
 
     const DateFocused = { Date: currentDate, FocusedMinute: 10 }

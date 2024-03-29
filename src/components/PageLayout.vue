@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gradient-to-b to-tPurple from-tDarkPurple h-full min-h-screen flex flex-col">
+  <Background :style="backgroundStyle">
     <div class="flex justify-between px-8 h-fit">
       <!-- Logo Container with click event to toggle dropdown -->
       <div
@@ -10,10 +10,7 @@
       </div>
       <div class="flex items-center">
         <router-link to="/">
-          <div class="flex items-end">
-            <img src="/twenifyLogo.svg" alt="logo" class="h-16" />
-            <img src="/twenifyName.svg" alt="twenify" class="h-14" />
-          </div>
+          <img src="/twenifyLogoName.png" alt="logo" class="h-16" />
         </router-link>
       </div>
     </div>
@@ -26,7 +23,9 @@
         >
           <a><img src="/icons/clock-solid.svg" class="h-14 w-14" /></a>
           <a><img src="/icons/shield-halved-solid.svg" class="h-14 w-14" /></a>
-          <a><img src="/icons/chart-simple-solid.svg" class="h-14 w-14" /></a>
+          <router-link to="/analyticsDashboard">
+            <img src="/icons/chart-simple-solid.svg" class="h-14 w-14" />
+          </router-link>
           <a @click="showSpotifyWidget">
             <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer"
           /></a>
@@ -46,17 +45,19 @@
     <main>
       <slot />
     </main>
-  </div>
+  </Background>
 </template>
 
 <script>
+import Background from './Background.vue'
 import SpotifyWidget from '@/components/widgets/Spotify.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 export default {
   name: 'PageLayout',
   components: {
-    SpotifyWidget
+    SpotifyWidget,
+    Background
   },
   mounted() {
     const auth = getAuth()
@@ -68,6 +69,7 @@ export default {
   },
   data() {
     return {
+      backgroundStyle: localStorage.getItem('backgroundStyle') || 'default',
       // Dropdown visibility state
       isDropdownVisible: false,
       // Spotify widget visibility state
