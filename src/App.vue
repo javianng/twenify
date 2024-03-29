@@ -22,4 +22,8 @@ onMounted(() => {
 })
 </script>
 
-<style></style>
+<style>
+* {
+  scroll-behavior: smooth;
+}
+</style>

@@ -6,13 +6,15 @@
         @click="toggleDropdown"
         class="bg-neutral-800 h-24 w-24 flex items-center justify-center cursor-pointer"
       >
-        <img src="/twenifyLogo.svg" alt="logo" class="h-16" />
+        <img src="/twenifyLogo.svg" alt="logo" class="h-16 items-center" />
       </div>
       <div class="flex items-center">
-        <div class="flex items-end">
-          <img src="/twenifyLogo.svg" alt="logo" class="h-16" />
-          <img src="/twenifyName.svg" alt="twenify" class="h-14" />
-        </div>
+        <router-link to="/">
+          <div class="flex items-end">
+            <img src="/twenifyLogo.svg" alt="logo" class="h-16" />
+            <img src="/twenifyName.svg" alt="twenify" class="h-14" />
+          </div>
+        </router-link>
       </div>
     </div>
 
@@ -20,33 +22,18 @@
     <div v-if="isDropdownVisible" class="relative">
       <div class="absolute">
         <nav
-          class="bg-neutral-800 w-24 flex mx-8 gap-3 items-center flex-col pb-4 rounded-b-lxl shadow-lg"
+          class="bg-neutral-800 w-24 flex mx-8 gap-7 items-center flex-col pb-4 rounded-b-lxl shadow-lg h-[50vh] overflow-scroll justify-center"
         >
-          <!-- Temp links -->
-          <router-link to="/" class="text-white"><p>Home</p></router-link>
-          <router-link to="/dashboard" class="text-white"><p>Dashboard</p></router-link>
-          <router-link to="/register" class="text-white"><p>Register</p></router-link>
-          <router-link to="/sign-in" class="text-white"><p>Sign-In</p></router-link>
-
-          <!-- Dropdown items go here -->
+          <a><img src="/icons/clock-solid.svg" class="h-14 w-14" /></a>
+          <a><img src="/icons/shield-halved-solid.svg" class="h-14 w-14" /></a>
+          <a><img src="/icons/chart-simple-solid.svg" class="h-14 w-14" /></a>
           <a @click="showSpotifyWidget">
-            <img src="/spotify.svg" class="bg-white h-16 w-16" />
-          </a>
-          <a href="/">
-            <img src="/spotify.svg" class="bg-white h-16 w-16" />
-          </a>
-          <a href="/">
-            <img src="/spotify.svg" class="bg-white h-16 w-16" />
-          </a>
-          <a href="/">
-            <img src="/spotify.svg" class="bg-white h-16 w-16" />
-          </a>
-          <a href="/">
-            <img src="/spotify.svg" class="bg-white h-16 w-16" />
-          </a>
-          <img src="/spotify.svg" class="bg-white h-16 w-16" />
-          <img src="/spotify.svg" class="bg-white h-16 w-16" />
-          <img src="/spotify.svg" class="bg-white h-16 w-16" />
+            <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer"
+          /></a>
+          <a><img src="/icons/dove-solid.svg" class="h-14 w-14" /></a>
+          <router-link to="/profile">
+            <img src="/icons/user-solid.svg" class="h-14 w-14" />
+          </router-link>
         </nav>
       </div>
     </div>
@@ -57,25 +44,35 @@
     </div>
 
     <main>
-      <slot></slot>
+      <slot />
     </main>
   </div>
 </template>
 
 <script>
 import SpotifyWidget from '@/components/widgets/Spotify.vue'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 export default {
   name: 'PageLayout',
   components: {
     SpotifyWidget
   },
+  mounted() {
+    const auth = getAuth()
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user
+      }
+    })
+  },
   data() {
     return {
       // Dropdown visibility state
       isDropdownVisible: false,
       // Spotify widget visibility state
-      isSpotifyWidgetVisible: false
+      isSpotifyWidgetVisible: false,
+      user: false
     }
   },
   methods: {
@@ -86,7 +83,7 @@ export default {
     // Toggle Spotify widget visibility
     showSpotifyWidget() {
       this.isSpotifyWidgetVisible = !this.isSpotifyWidgetVisible
-    },
+    }
   }
 }
 </script>

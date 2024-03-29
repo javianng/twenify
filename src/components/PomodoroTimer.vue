@@ -5,21 +5,28 @@
     <div class="relative">
       <div class="flex gap-4">
         <button
-          @click="toggleSession('work')"
-          :disabled="isRunning || selectedSession === 'work'"
+          @click="toggleSession('pomo')"
+          :disabled="isRunning || selectedSession === 'pomo'"
           class="px-4 py-2 text-white"
         >
           Work Session
         </button>
         <button
-          @click="toggleSession('break')"
-          :disabled="isRunning || selectedSession === 'break'"
+          @click="toggleSession('short')"
+          :disabled="isRunning || selectedSession === 'short'"
           class="px-4 py-2 text-white"
         >
-          Break
+          Short Break
+        </button>
+        <button
+          @click="toggleSession('long')"
+          :disabled="isRunning || selectedSession === 'long'"
+          class="px-4 py-2 text-white"
+        >
+          Long Break
         </button>
         <button @click="toggleSettings" class="px-4 py-2 text-white rounded-md">
-          {{ showSettings ? 'Hide Settings' : 'Show Settings' }}
+          <img src="/icons/gear-solid.svg" alt="" class="w-4" />
         </button>
       </div>
       <div
@@ -29,16 +36,24 @@
         <label class="block mb-2">Work Duration (minutes):</label>
         <input
           type="number"
-          v-model="sessions.work"
-          @change="updateSession('work')"
+          v-model="sessions.pomo"
+          @change="updateSession('pomo')"
           :disabled="isRunning"
           class="block w-full mb-4 border rounded-md p-2"
         />
-        <label class="block mb-2">Break Duration (minutes):</label>
+        <label class="block mb-2">Short Break Duration (minutes):</label>
         <input
           type="number"
-          v-model="sessions.break"
-          @change="updateSession('break')"
+          v-model="sessions.short"
+          @change="updateSession('short')"
+          :disabled="isRunning"
+          class="block w-full mb-4 border rounded-md p-2"
+        />
+        <label class="block mb-2">Long Break Duration (minutes):</label>
+        <input
+          type="number"
+          v-model="sessions.long"
+          @change="updateSession('long')"
           :disabled="isRunning"
           class="block w-full mb-4 border rounded-md p-2"
         />
@@ -63,25 +78,43 @@
 </template>
 
 <script>
+import firebaseApp from '../firebase.js'
 import Button from '../components/Button.vue'
+import { doc, getFirestore, updateDoc } from 'firebase/firestore'
+
+const db = getFirestore(firebaseApp)
 
 export default {
-  components: {
-    Button
+  props: {
+    userData: {
+      type: Object,
+      required: true
+    },
+    userEmail: {
+      type: String,
+      required: true
+    }
   },
+
   data() {
     return {
       sessions: {
-        work: 25,
-        break: 5
+        pomo: this.userData.PomoTime,
+        short: this.userData.ShortTime,
+        long: this.userData.LongTime
       },
-      selectedSession: 'work',
-      timeLeft: 25 * 60,
+      selectedSession: 'pomo',
+      timeLeft: this.userData.PomoTime * 60,
       isRunning: false,
       intervalId: null,
       showSettings: false
     }
   },
+
+  components: {
+    Button
+  },
+
   computed: {
     formatTime() {
       let minutes = Math.floor(this.timeLeft / 60)
@@ -89,6 +122,7 @@ export default {
       return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
     }
   },
+
   methods: {
     toggleTimer() {
       if (!this.isRunning) {
@@ -97,6 +131,7 @@ export default {
         this.pauseTimer()
       }
     },
+
     startTimer() {
       if (!this.isRunning) {
         this.timeLeft = this.sessions[this.selectedSession] * 60
@@ -122,7 +157,19 @@ export default {
       this.showSettings = !this.showSettings
     },
     saveSettings() {
-      this.showSettings = false
+      const docRef = doc(db, 'Users', this.userEmail)
+      return updateDoc(docRef, {
+        PomoTime: this.sessions.pomo,
+        ShortTime: this.sessions.short,
+        LongTime: this.sessions.long
+      })
+        .then(() => {
+          console.log('Document successfully updated!')
+          this.showSettings = false
+        })
+        .catch((error) => {
+          console.error('Error updating document: ', error)
+        })
     },
     cancelSettings() {
       this.showSettings = false
