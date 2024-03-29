@@ -3,8 +3,9 @@
     <div class="flex px-8 h-24">
       <div class="flex items-center">
         <div class="flex items-end">
-          <img src="/twenifyLogo.svg" alt="logo" class="h-16" />
-          <img src="/twenifyName.svg" alt="twenify" class="h-14" />
+          <router-link to="/">
+            <img src="/twenifyLogoName.png" alt="logo" class="h-16" />
+          </router-link>
         </div>
       </div>
     </div>

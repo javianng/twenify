@@ -1,10 +1,9 @@
 <template>
   <div class="relative overflow-hidden">
     <div class="absolute top-6 left-6">
-      <div class="flex items-end">
-        <img src="/twenifyLogo.svg" alt="logo" class="h-24" />
-        <img src="/twenifyName.svg" alt="twenify" class="h-20" />
-      </div>
+      <router-link to="/">
+        <img src="/twenifyLogoName.png" alt="logo" class="h-24" />
+      </router-link>
     </div>
     <div class="absolute w-[56%] h-full right-0">
       <div class="absolute h-[200vh] w-[200vh] -top-[50vh] bg-tBeige rounded-full z-10" />

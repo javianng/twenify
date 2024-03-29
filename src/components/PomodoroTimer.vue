@@ -96,7 +96,7 @@
 <script>
 import firebaseApp from '../firebase.js'
 import Button from '../components/Button.vue'
-import { doc, getFirestore, updateDoc, addDoc, collection } from 'firebase/firestore'
+import { doc, getFirestore, updateDoc, addDoc, collection, increment } from 'firebase/firestore'
 
 const db = getFirestore(firebaseApp)
 
@@ -163,6 +163,7 @@ export default {
     },
 
     startTimer() {
+      const docRef = doc(db, 'Leaderboard', this.userEmail)
       if (!this.isRunning) {
         this.timeLeft = this.sessions[this.selectedSession] * 60
         this.intervalId = setInterval(() => {
@@ -173,6 +174,7 @@ export default {
             if (this.selectedSession === 'pomo') {
               this.completedPomodoros++
               this.addToDateFocusedCollection()
+              updateDoc(docRef, { TotalHours: increment(this.sessions.pomo / 60) })
               if (this.completedPomodoros == 4) {
                 this.toggleSession('long')
               } else {
