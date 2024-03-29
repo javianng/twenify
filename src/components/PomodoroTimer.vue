@@ -2,6 +2,20 @@
   <div
     class="bg-opacity-30 bg-neutral-800 flex flex-col items-center justify-center py-8 mt-4 min-h-[50vh]"
   >
+    <!-- Coin Message Box -->
+
+    <div
+      v-if="coinMessage"
+      class="absolute bg-neutral-800 top-[10rem] right-0 rounded-l-full py-4 pl-9 pr-8"
+    >
+      <div class="flex items-center justify-center gap-2">
+        <img src="/icons/coins.svg" alt="" class="w-4 h-4" />
+        <p class="text-white font-semibold">
+          Congratulations! You earned {{ coinMessage }} QuackCoins
+        </p>
+      </div>
+    </div>
+
     <!-- Pomodoro Toggle -->
 
     <div class="relative">
@@ -123,6 +137,7 @@ export default {
       timeLeft: this.userData.PomoTime * 60,
       isRunning: false,
       intervalId: null,
+      coinMessage: null,
       showSettings: false,
       completedPomodoros: 0
     }
@@ -248,9 +263,16 @@ export default {
       updateDoc(docRef, { Coins: increment(this.sessions.pomo) })
         .then(() => {
           console.log('Coin added successfully!')
+          this.coinMessage = `You earned ${this.sessions.pomo} coin(s)!` // Set message
+
+          // Clear the message after 3 seconds
+          setTimeout(() => {
+            this.coinMessage = null
+          }, 3000)
         })
         .catch((error) => {
           console.error('Error adding Coins: ', error)
+          this.coinMessage = null // Clear message on error
         })
     },
 
