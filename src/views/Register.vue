@@ -120,10 +120,8 @@ const register = async () => {
       LongTime: 10,
       ShortTime: 5,
       PomoTime: 25,
-      PetSkins: ['Pig'],
-      PetAccessories: ['Sunglasses'],
-      ActivePetSkin: 'Pig',
-      ActivePetAccessory: 'Sunglasses',
+      PetAccessories: ['Duck'],
+      ActivePetAccessory: 'Duck',
       PetHealth: currentDate,
       BlockedWebsite: ['testwebsite.com']
     })
@@ -166,10 +164,8 @@ const signInWithGoogle = async () => {
       LongTime: 10,
       ShortTime: 5,
       PomoTime: 25,
-      PetSkins: ['Pig'],
-      PetAccessories: ['Sunglasses'],
-      ActivePetSkin: 'Pig',
-      ActivePetAccessory: 'Sunglasses',
+      PetAccessories: ['Duck'],
+      ActivePetAccessory: 'Duck',
       PetHealth: currentDate,
       BlockedWebsite: ['testwebsite.com']
     })

@@ -26,7 +26,7 @@
         <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
           <p class="text-start font-semibold">Global Ranking</p>
           <p class="text-[6rem] font-bold text-[#9E4AF1] flex h-full justify-center items-center">
-            {{ userPosition }}st
+            {{ userPosition + 1 }}st
           </p>
         </div>
       </div>
