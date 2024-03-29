@@ -23,7 +23,9 @@
         >
           <a><img src="/icons/clock-solid.svg" class="h-14 w-14" /></a>
           <a><img src="/icons/shield-halved-solid.svg" class="h-14 w-14" /></a>
-          <a><img src="/icons/chart-simple-solid.svg" class="h-14 w-14" /></a>
+          <router-link to="/analyticsDashboard">
+            <img src="/icons/chart-simple-solid.svg" class="h-14 w-14" />
+          </router-link>
           <a @click="showSpotifyWidget">
             <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer"
           /></a>
