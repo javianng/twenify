@@ -138,6 +138,7 @@ export default {
       let seconds = this.timeLeft % 60
       return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
     },
+
     pomodoroImage() {
       if (this.completedPomodoros === 1) {
         return '/duckfeet/1feet.png'
@@ -154,16 +155,7 @@ export default {
   },
 
   methods: {
-    toggleTimer() {
-      if (!this.isRunning) {
-        this.startTimer()
-      } else {
-        this.pauseTimer()
-      }
-    },
-
     startTimer() {
-      const docRef = doc(db, 'Leaderboard', this.userEmail)
       if (!this.isRunning) {
         this.timeLeft = this.sessions[this.selectedSession] * 60
         this.intervalId = setInterval(() => {
@@ -173,9 +165,10 @@ export default {
             this.isRunning = false
             if (this.selectedSession === 'pomo') {
               this.completedPomodoros++
-              this.addToDateFocusedCollection()
               this.incrementCoin()
-              updateDoc(docRef, { TotalHours: increment(this.sessions.pomo / 60) })
+              this.incrementTotalHours()
+              this.incrementLeaderboard()
+              this.addToDateFocusedCollection()
               if (this.completedPomodoros == 4) {
                 this.toggleSession('long')
               } else {
@@ -191,6 +184,49 @@ export default {
         }, 1000)
         this.isRunning = true
       }
+    },
+
+    pauseTimer() {
+      clearInterval(this.intervalId)
+      this.isRunning = false
+    },
+
+    toggleTimer() {
+      if (!this.isRunning) {
+        this.startTimer()
+      } else {
+        this.pauseTimer()
+      }
+    },
+
+    updateSession(sessionType) {
+      if (this.sessions[sessionType] <= 0 || isNaN(this.sessions[sessionType])) {
+        this.sessions[sessionType] = 1
+      }
+    },
+
+    // database functions
+
+    incrementLeaderboard() {
+      const docRef = doc(db, 'Leaderboard', this.userEmail)
+      updateDoc(docRef, { TotalHours: increment(this.sessions.pomo / 60) })
+        .then(() => {
+          console.log('Leaderboard incremented successfully!')
+        })
+        .catch((error) => {
+          console.error('Error adding Coins: ', error)
+        })
+    },
+
+    incrementTotalHours() {
+      const docRef = doc(db, 'Total Hours', this.userEmail)
+      updateDoc(docRef, { TotalHours: increment(this.sessions.pomo / 60) })
+        .then(() => {
+          console.log('Total Hours incremented successfully!')
+        })
+        .catch((error) => {
+          console.error('Error adding Coins: ', error)
+        })
     },
 
     addToDateFocusedCollection() {
@@ -214,20 +250,11 @@ export default {
           console.log('Coin added successfully!')
         })
         .catch((error) => {
-          console.error('Error adding duration to DateFocused collection: ', error)
+          console.error('Error adding Coins: ', error)
         })
     },
 
-    pauseTimer() {
-      clearInterval(this.intervalId)
-      this.isRunning = false
-    },
-
-    updateSession(sessionType) {
-      if (this.sessions[sessionType] <= 0 || isNaN(this.sessions[sessionType])) {
-        this.sessions[sessionType] = 1
-      }
-    },
+    // Setting
 
     toggleSettings() {
       this.showSettings = !this.showSettings
@@ -257,25 +284,25 @@ export default {
 
     toggleSession(sessionType) {
       if (this.selectedSession === sessionType && this.isRunning) {
-        this.timeLeft = this.sessions[sessionType] * 60
         this.isRunning = false
+        this.timeLeft = this.sessions[sessionType] * 60
       } else {
+        this.isRunning = false
         this.selectedSession = sessionType
         this.timeLeft = this.sessions[sessionType] * 60
-        this.isRunning = false
       }
     },
 
     manualToggleSession(sessionType) {
       if (this.selectedSession === sessionType && this.isRunning) {
-        this.timeLeft = this.sessions[sessionType] * 60
         this.isRunning = false
         this.completedPomodoros = 0
+        this.timeLeft = this.sessions[sessionType] * 60
       } else {
+        this.isRunning = false
+        this.completedPomodoros = 0
         this.selectedSession = sessionType
         this.timeLeft = this.sessions[sessionType] * 60
-        this.isRunning = false
-        this.completedPomodoros = 0
       }
     }
   }

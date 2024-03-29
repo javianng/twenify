@@ -132,11 +132,16 @@ const register = async () => {
       Email: email.value
     })
 
-    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
-    const Task = { TaskName: 'task name', Deleted: false }
+    await setDoc(doc(db, 'Total Hours', userId), {
+      TotalHours: 0,
+      Email: email.value
+    })
 
-    await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
+    const Task = { TaskName: 'task name', Deleted: false }
+    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
+
     await addDoc(collection(db, 'Users', userId, 'Tasks'), Task)
+    await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
 
     console.log('Successfully registered, added to Firestore!')
     router.push('/dashboard')
@@ -176,11 +181,16 @@ const signInWithGoogle = async () => {
       Email: user.email
     })
 
-    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
-    const Task = { TaskName: 'task name', Deleted: false }
+    await setDoc(doc(db, 'Total Hours', userId), {
+      TotalHours: 0,
+      Email: user.email
+    })
 
-    await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
+    const Task = { TaskName: 'task name', Deleted: false }
+    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
+
     await addDoc(collection(db, 'Users', userId, 'Tasks'), Task)
+    await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
 
     console.log('Successfully registered, added to Firestore!')
     router.push('/dashboard')

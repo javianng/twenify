@@ -19,6 +19,9 @@
         </div>
         <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
           <p class="text-start font-semibold">Total Hours spent on twenify</p>
+          <p class="text-[6rem] font-bold text-tYellow flex h-full justify-center items-center">
+            {{ totalHoursSpent }}
+          </p>
         </div>
         <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
           <p class="text-start font-semibold">Longest Pomodoro Streak in hours</p>
@@ -65,7 +68,7 @@
 import firebaseApp from '../firebase.js'
 import Layout from '../components/PageLayout.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
+import { collection, getDocs, getFirestore, query, doc, getDoc } from 'firebase/firestore'
 
 const db = getFirestore(firebaseApp)
 
@@ -80,8 +83,9 @@ export default {
     return {
       user: false,
       useremail: null,
-      leaderboardData: null,
-      userPosition: -1
+      userPosition: -1,
+      totalHoursSpent: -1,
+      leaderboardData: null
     }
   },
 
@@ -91,29 +95,30 @@ export default {
       if (user) {
         this.user = user
         this.useremail = auth.currentUser.email
-        await this.fetchData()
+        await this.fetchLeaderboard()
+        await this.fetchTotalHours()
       }
     })
   },
 
   methods: {
-    async fetchData() {
-      try {
-        const querySnapshot = await getDocs(query(collection(db, 'Leaderboard')))
-        const leaderboardData = querySnapshot.docs.map((doc) => doc.data())
-        leaderboardData.sort((a, b) => b.TotalHours - a.TotalHours)
+    async fetchLeaderboard() {
+      const querySnapshot = await getDocs(query(collection(db, 'Leaderboard')))
+      const leaderboardData = querySnapshot.docs.map((doc) => doc.data())
+      leaderboardData.sort((a, b) => b.TotalHours - a.TotalHours)
+      const userPosition = leaderboardData.findIndex((data) => data.Email === this.useremail)
+      this.leaderboardData = leaderboardData
+      this.userPosition = userPosition
+    },
 
-        // Find user's position
-        const userPosition = leaderboardData.findIndex((data) => data.Email === this.useremail)
-
-        console.log(userPosition)
-
-        // Set leaderboardData and userPosition
-        this.leaderboardData = leaderboardData
-        this.userPosition = userPosition
-      } catch (error) {
-        console.error('Error fetching leaderboard data:', error)
-        // Handle error, show error message, etc.
+    async fetchTotalHours() {
+      const docRef = doc(db, 'Total Hours', this.useremail)
+      const docSnap = await getDoc(docRef)
+      if (docSnap.exists()) {
+        this.totalHoursSpent = docSnap.data().TotalHours
+        console.log(this.totalHoursSpent)
+      } else {
+        console.log('User not found')
       }
     }
   }
