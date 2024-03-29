@@ -333,6 +333,7 @@ export default {
 
 <style>
 .rotate {
-  transform: rotate(90deg); /* Adjust the degree of rotation as needed */
+  transform: rotate(90deg);
+  transition: transform 0.3s ease-in-out;
 }
 </style>
