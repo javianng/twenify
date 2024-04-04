@@ -122,6 +122,7 @@ const register = async () => {
       PomoTime: 25,
       PetAccessories: ['Duck'],
       ActivePetAccessory: 'Duck',
+      PetName: 'Henry',
       PetHealth: currentDate,
       BlockedWebsite: ['testwebsite.com']
     })
@@ -159,7 +160,7 @@ const signInWithGoogle = async () => {
     const userCredential = await signInWithPopup(auth, provider)
     const user = userCredential.user
     const userId = user.email
-    const { displayName, email } = user
+    const { displayName } = user
     const currentDate = Timestamp.fromDate(new Date())
 
     await setDoc(doc(db, 'Users', userId), {
@@ -171,6 +172,7 @@ const signInWithGoogle = async () => {
       PomoTime: 25,
       PetAccessories: ['Duck'],
       ActivePetAccessory: 'Duck',
+      PetName: 'Henry',
       PetHealth: currentDate,
       BlockedWebsite: ['testwebsite.com']
     })
