@@ -20,7 +20,7 @@
       <div v-if="isDropdownVisible" class="relative">
         <div class="absolute">
           <nav
-            class="bg-neutral-800 w-24 flex mx-8 gap-7 items-center flex-col pb-4 rounded-b-lxl shadow-lg h-[50vh] overflow-scroll justify-center"
+            class="bg-neutral-800 w-24 flex mx-8 gap-7 items-center flex-col pb-4 rounded-b-lxl shadow-lg h-[50vh] overflow-scroll justify-start"
           >
             <router-link to="/dashboard">
               <img src="/icons/clock-solid.svg" class="h-14 w-14" />

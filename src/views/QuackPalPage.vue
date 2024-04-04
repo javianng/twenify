@@ -62,15 +62,13 @@
 
       <div class="flex flex-col items-center h-full justify-center gap-5 w-full">
         <p class="text-4xl text-white font-semibold">Henry</p>
-        <div class="rounded-full aspect-1 bg-[#D69663] w-96 h-96 flex items-center justify-center">
-          <img src="/bird.svg" alt="" class="w-[70%]" />
-        </div>
-        <div class="flex items-center gap-2 w-full justify-center">
-          <img src="/icons/heart-solid.svg" class="h-9 w-9" alt="" />
-          <div class="w-96 h-9 bg-white rounded-lg relative">
-            <div class="absolute h-9 w-40 bg-green-400 rounded-lg" />
+        <div class="w-96 h-96 relative">
+          <img src="/shopAvatarBackdrop.png" alt="" class="absolute" />
+          <div class="absolute bottom-[5.7rem] right-28">
+            <img src="/bird.svg" alt="" class="h-40" />
           </div>
         </div>
+        <Healthbar :futureDate="futureDate" />
       </div>
 
       <div class="w-44 flex justify-end">
@@ -163,12 +161,20 @@
 
 <script>
 import PageLayout from '@/components/PageLayout.vue'
+import Healthbar from '@/components/Healthbar.vue'
 
 export default {
   name: 'QuackPalPage',
 
   components: {
-    PageLayout
+    PageLayout,
+    Healthbar
+  },
+
+  data() {
+    return {
+      futureDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 4) // 7 days from now
+    }
   }
 }
 </script>
