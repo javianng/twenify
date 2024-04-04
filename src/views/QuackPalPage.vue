@@ -4,7 +4,7 @@
       <div class="w-44 flex flex-col gap-4 h-full">
         <div class="bg-[#FEF8EB] p-3 rounded-xl flex items-center justify-center gap-3">
           <img src="/icons/coins.svg" alt="" class="h-9 w-9" />
-          <p class="text-2xl font-semibold text-tPurple">1700</p>
+          <p class="text-2xl font-semibold text-tPurple">{{ coins.toFixed(0) }}</p>
         </div>
         <div
           v-if="storeFoodDetail"
@@ -74,13 +74,12 @@ export default {
 
   data() {
     return {
-      futureDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 4), // 7 days from now
-      userData: null,
       useremail: null,
       storeAccesssoriesDetail: null,
       storeFoodDetail: null,
       petName: null,
-      petHealth: null
+      petHealth: null,
+      coins: 0
     }
   },
 
@@ -103,10 +102,9 @@ export default {
         const docRef = doc(db, 'Users', useremail)
         const docSnap = await getDoc(docRef)
         if (docSnap.exists()) {
-          this.userData = docSnap.data()
-          this.petName = this.userData.PetName
-          this.petHealth = this.userData.PetHealth.toDate()
-          console.log(this.userData)
+          this.petName = docSnap.data().PetName
+          this.petHealth = docSnap.data().PetHealth.toDate()
+          this.coins = docSnap.data().Coins
         } else {
           console.log('User not found')
         }
