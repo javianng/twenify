@@ -87,10 +87,9 @@ export default {
   data() {
     return {
       user: false,
-      userData: null,
       useremail: null,
-      userPosition: -1,
-      totalHoursSpent: -1,
+      userPosition: null,
+      totalHoursSpent: null,
       leaderboardData: null,
       subcollectionDateFocused: null
     }
