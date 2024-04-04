@@ -23,21 +23,24 @@
         <button
           @click="manualToggleSession('pomo')"
           :disabled="isRunning || selectedSession === 'pomo'"
-          class="px-4 py-2 text-white"
+          :class="{ underline: selectedSession === 'pomo' }"
+          class="px-4 py-2 text-white underline-offset-4"
         >
-          Pomodoro Duration
+          Pomodoro
         </button>
         <button
           @click="manualToggleSession('short')"
           :disabled="isRunning || selectedSession === 'short'"
-          class="px-4 py-2 text-white"
+          :class="{ underline: selectedSession === 'short' }"
+          class="px-4 py-2 text-white underline-offset-4"
         >
           Short Break
         </button>
         <button
           @click="manualToggleSession('long')"
           :disabled="isRunning || selectedSession === 'long'"
-          class="px-4 py-2 text-white"
+          :class="{ underline: selectedSession === 'long' }"
+          class="px-4 py-2 text-white underline-offset-4"
         >
           Long Break
         </button>
