@@ -1,53 +1,58 @@
 <template>
-  <Background :style="backgroundStyle">
-    <div class="flex justify-between px-8 h-fit">
-      <!-- Logo Container with click event to toggle dropdown -->
-      <div
-        @click="toggleDropdown"
-        class="bg-neutral-800 h-24 w-24 flex items-center justify-center cursor-pointer"
-      >
-        <img src="/twenifyLogo.svg" alt="logo" class="h-16 items-center" />
-      </div>
-      <div class="flex items-center">
-        <router-link to="/">
-          <img src="/twenifyLogoName.png" alt="logo" class="h-16" />
-        </router-link>
-      </div>
-    </div>
-
-    <!-- Dropdown Content -->
-    <div v-if="isDropdownVisible" class="relative">
-      <div class="absolute">
-        <nav
-          class="bg-neutral-800 w-24 flex mx-8 gap-7 items-center flex-col pb-4 rounded-b-lxl shadow-lg h-[50vh] overflow-scroll justify-center"
+  <div class="h-screen">
+    <Background :style="backgroundStyle">
+      <div class="flex justify-between px-8 h-fit">
+        <!-- Logo Container with click event to toggle dropdown -->
+        <div
+          @click="toggleDropdown"
+          class="bg-neutral-800 h-24 w-24 flex items-center justify-center cursor-pointer"
         >
-          <router-link to="/dashboard">
-            <img src="/icons/clock-solid.svg" class="h-14 w-14" />
+          <img src="/twenifyLogo.svg" alt="logo" class="h-16 items-center" />
+        </div>
+        <div class="flex items-center">
+          <router-link to="/">
+            <img src="/twenifyLogoName.png" alt="logo" class="h-16" />
           </router-link>
-          <a><img src="/icons/shield-halved-solid.svg" class="h-14 w-14" /></a>
-          <router-link to="/analyticsDashboard">
-            <img src="/icons/chart-simple-solid.svg" class="h-14 w-14" />
-          </router-link>
-          <a @click="showSpotifyWidget">
-            <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer"
-          /></a>
-          <a><img src="/icons/dove-solid.svg" class="h-14 w-14" /></a>
-          <router-link to="/profile">
-            <img src="/icons/user-solid.svg" class="h-14 w-14" />
-          </router-link>
-        </nav>
+        </div>
       </div>
-    </div>
 
-    <!-- Spotify Widget Overlay-->
-    <div v-if="isSpotifyWidgetVisible" class="z-50">
-      <SpotifyWidget @close="isSpotifyWidgetVisible = false"></SpotifyWidget>
-    </div>
+      <!-- Dropdown Content -->
+      <div v-if="isDropdownVisible" class="relative">
+        <div class="absolute">
+          <nav
+            class="bg-neutral-800 w-24 flex mx-8 gap-7 items-center flex-col pb-4 rounded-b-lxl shadow-lg h-[50vh] overflow-scroll justify-center"
+          >
+            <router-link to="/dashboard">
+              <img src="/icons/clock-solid.svg" class="h-14 w-14" />
+            </router-link>
+            <a><img src="/icons/shield-halved-solid.svg" class="h-14 w-14" /></a>
+            <router-link to="/analyticsDashboard">
+              <img src="/icons/chart-simple-solid.svg" class="h-14 w-14" />
+            </router-link>
+            <a @click="showSpotifyWidget">
+              <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer"
+            /></a>
+            <a><img src="/icons/dove-solid.svg" class="h-14 w-14" /></a>
+            <router-link to="/profile">
+              <img src="/icons/user-solid.svg" class="h-14 w-14" />
+            </router-link>
+            <router-link to="/quackPalPage">
+              <img src="/icons/store.svg" class="h-14 w-14" />
+            </router-link>
+          </nav>
+        </div>
+      </div>
 
-    <main>
-      <slot />
-    </main>
-  </Background>
+      <!-- Spotify Widget Overlay-->
+      <div v-if="isSpotifyWidgetVisible" class="z-50">
+        <SpotifyWidget @close="isSpotifyWidgetVisible = false"></SpotifyWidget>
+      </div>
+
+      <main>
+        <slot />
+      </main>
+    </Background>
+  </div>
 </template>
 
 <script>
@@ -91,3 +96,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+main {
+  height: calc(100vh - 6rem);
+}
+</style>

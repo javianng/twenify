@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <PageLayout>
     <div class="grid grid-cols-2 gap-10 p-8 text-center">
       <div class="items-center flex flex-col justify-end">
         <h1 class="text-[#9E4AF1] text-6xl font-bold">Performance Analytics</h1>
@@ -64,12 +64,12 @@
         </div>
       </div>
     </div>
-  </Layout>
+  </PageLayout>
 </template>
 
 <script>
 import firebaseApp from '../firebase.js'
-import Layout from '../components/PageLayout.vue'
+import PageLayout from '@/components/PageLayout.vue'
 import AnalyticsChart from '../components/AnalyticsChart.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { collection, getDocs, getFirestore, query, doc, getDoc } from 'firebase/firestore'
@@ -80,7 +80,7 @@ export default {
   name: 'AnalyticsDashboard',
 
   components: {
-    Layout,
+    PageLayout,
     AnalyticsChart
   },
 
