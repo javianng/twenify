@@ -6,152 +6,48 @@
           <img src="/icons/coins.svg" alt="" class="h-9 w-9" />
           <p class="text-2xl font-semibold text-tPurple">1700</p>
         </div>
-        <div class="bg-white p-4 rounded-lg flex flex-col gap-7 overflow-scroll h-fit">
-          <!-- Item -->
-          <div
-            class="w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg"
-          >
-            <p>Seeds</p>
-            <div class="overflow-hidden flex justify-center">
-              <img src="/test.png" alt="" />
+        <div
+          v-if="storeFoodDetail"
+          class="bg-white p-4 rounded-lg flex flex-col gap-7 overflow-auto h-fit"
+        >
+          <div v-for="(data, index) in storeFoodDetail" :key="index">
+            <div
+              class="w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg"
+            >
+              <p>{{ data.Name }}</p>
+              <div class="overflow-hidden flex justify-center">
+                <img :src="data.href" alt="" />
+              </div>
+              <p>{{ data.Price }} Coins</p>
             </div>
-            <p>50 Coins</p>
-          </div>
-          <!-- Item -->
-          <div
-            class="w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg"
-          >
-            <p>Seeds</p>
-            <div class="overflow-hidden flex justify-center">
-              <img src="/test.png" alt="" />
-            </div>
-            <p>50 Coins</p>
-          </div>
-          <!-- Item -->
-          <div
-            class="w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg"
-          >
-            <p>Seeds</p>
-            <div class="overflow-hidden flex justify-center">
-              <img src="/test.png" alt="" />
-            </div>
-            <p>50 Coins</p>
-          </div>
-          <!-- Item -->
-          <div
-            class="w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg"
-          >
-            <p>Seeds</p>
-            <div class="overflow-hidden flex justify-center">
-              <img src="/test.png" alt="" />
-            </div>
-            <p>50 Coins</p>
-          </div>
-          <!-- Item -->
-          <div
-            class="w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg"
-          >
-            <p>Seeds</p>
-            <div class="overflow-hidden flex justify-center">
-              <img src="/test.png" alt="" />
-            </div>
-            <p>50 Coins</p>
           </div>
         </div>
       </div>
 
       <div class="flex flex-col items-center h-full justify-center gap-5 w-full">
-        <p class="text-4xl text-white font-semibold">Henry</p>
+        <p class="text-4xl text-white font-semibold">{{ petName }}</p>
         <div class="w-96 h-96 relative">
           <img src="/shopAvatarBackdrop.png" alt="" class="absolute" />
           <div class="absolute bottom-[5.7rem] right-28">
             <img src="/bird.svg" alt="" class="h-40" />
           </div>
         </div>
-        <Healthbar :futureDate="futureDate" />
+        <Healthbar :futureDate="petHealth" />
       </div>
 
       <div class="w-44 flex justify-end">
-        <div class="w-40 flex flex-col gap-4 overflow-scroll h-full">
-          <!-- Item -->
-          <div class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg">
-            <p>Seeds</p>
-            <div class="overflow-hidden flex justify-center">
-              <img src="/test.png" alt="" />
+        <div v-if="storeAccesssoriesDetail" class="w-40 flex flex-col gap-4 overflow-scroll h-full">
+          <div v-for="(data, index) in storeAccesssoriesDetail" :key="index">
+            <!-- Item -->
+            <div
+              class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg"
+            >
+              <p>{{ data.Name }}</p>
+              <div class="overflow-hidden flex justify-center">
+                <img :src="data.href" alt="" />
+              </div>
+              <p>{{ data.Price }} Coins</p>
             </div>
-            <p>50 Coins</p>
-          </div>
-          <!-- Item -->
-          <div class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg">
-            <p>Seeds</p>
-            <div class="overflow-hidden flex justify-center">
-              <img src="/test.png" alt="" />
-            </div>
-            <p>50 Coins</p>
-          </div>
-          <!-- Item -->
-          <div class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg">
-            <p>Seeds</p>
-            <div class="overflow-hidden flex justify-center">
-              <img src="/test.png" alt="" />
-            </div>
-            <p>50 Coins</p>
-          </div>
-          <!-- Item -->
-          <div class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg">
-            <p>Seeds</p>
-            <div class="overflow-hidden flex justify-center">
-              <img src="/test.png" alt="" />
-            </div>
-            <p>50 Coins</p>
-          </div>
-          <!-- Item -->
-          <div class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg">
-            <p>Seeds</p>
-            <div class="overflow-hidden flex justify-center">
-              <img src="/test.png" alt="" />
-            </div>
-            <p>50 Coins</p>
-          </div>
-          <!-- Item -->
-          <div class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg">
-            <p>Seeds</p>
-            <div class="overflow-hidden flex justify-center">
-              <img src="/test.png" alt="" />
-            </div>
-            <p>50 Coins</p>
-          </div>
-          <!-- Item -->
-          <div class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg">
-            <p>Seeds</p>
-            <div class="overflow-hidden flex justify-center">
-              <img src="/test.png" alt="" />
-            </div>
-            <p>50 Coins</p>
-          </div>
-          <!-- Item -->
-          <div class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg">
-            <p>Seeds</p>
-            <div class="overflow-hidden flex justify-center">
-              <img src="/test.png" alt="" />
-            </div>
-            <p>50 Coins</p>
-          </div>
-          <!-- Item -->
-          <div class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg">
-            <p>Seeds</p>
-            <div class="overflow-hidden flex justify-center">
-              <img src="/test.png" alt="" />
-            </div>
-            <p>50 Coins</p>
-          </div>
-          <!-- Item -->
-          <div class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg">
-            <p>Seeds</p>
-            <div class="overflow-hidden flex justify-center">
-              <img src="/test.png" alt="" />
-            </div>
-            <p>50 Coins</p>
           </div>
         </div>
       </div>
@@ -160,8 +56,13 @@
 </template>
 
 <script>
+import firebaseApp from '../firebase.js'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { doc, getDoc, getDocs, getFirestore, query, collection } from 'firebase/firestore'
 import PageLayout from '@/components/PageLayout.vue'
 import Healthbar from '@/components/Healthbar.vue'
+
+const db = getFirestore(firebaseApp)
 
 export default {
   name: 'QuackPalPage',
@@ -173,10 +74,58 @@ export default {
 
   data() {
     return {
-      futureDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 4) // 7 days from now
+      futureDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 4), // 7 days from now
+      userData: null,
+      useremail: null,
+      storeAccesssoriesDetail: null,
+      storeFoodDetail: null,
+      petName: null,
+      petHealth: null
+    }
+  },
+
+  async mounted() {
+    const auth = getAuth()
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        this.user = user
+        this.useremail = auth.currentUser.email
+        await this.fetchData(this.useremail)
+        await this.fetchFood()
+        await this.fetchAccessories()
+      }
+    })
+  },
+
+  methods: {
+    async fetchData(useremail) {
+      try {
+        const docRef = doc(db, 'Users', useremail)
+        const docSnap = await getDoc(docRef)
+        if (docSnap.exists()) {
+          this.userData = docSnap.data()
+          this.petName = this.userData.PetName
+          this.petHealth = this.userData.PetHealth.toDate()
+          console.log(this.userData)
+        } else {
+          console.log('User not found')
+        }
+      } catch (error) {
+        console.error('Error fetching user:', error)
+      }
+    },
+
+    async fetchFood() {
+      const querySnapshot = await getDocs(query(collection(db, 'Food')))
+      const foodData = querySnapshot.docs.map((doc) => doc.data())
+      this.storeFoodDetail = foodData
+    },
+
+    async fetchAccessories() {
+      const querySnapshot = await getDocs(query(collection(db, 'Accessories')))
+      const accessoriesData = querySnapshot.docs.map((doc) => doc.data())
+      this.storeAccesssoriesDetail = accessoriesData
     }
   }
 }
 </script>
-
-<style scoped></style>
