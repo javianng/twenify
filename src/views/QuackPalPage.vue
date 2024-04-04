@@ -62,12 +62,12 @@
 
       <div class="flex flex-col items-center h-full justify-center gap-5 w-full">
         <p class="text-4xl text-white font-semibold">Henry</p>
-        <div class="rounded-full aspect-1 bg-[#D69663]">
-          <img src="/bird.svg" alt="" class="scale-75" />
+        <div class="rounded-full aspect-1 bg-[#D69663] w-96 h-96 flex items-center justify-center">
+          <img src="/bird.svg" alt="" class="w-[70%]" />
         </div>
         <div class="flex items-center gap-2 w-full justify-center">
           <img src="/icons/heart-solid.svg" class="h-9 w-9" alt="" />
-          <div class="w-[60%] h-9 bg-white rounded-lg relative">
+          <div class="w-96 h-9 bg-white rounded-lg relative">
             <div class="absolute h-9 w-40 bg-green-400 rounded-lg" />
           </div>
         </div>
