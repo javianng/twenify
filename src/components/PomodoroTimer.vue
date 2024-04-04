@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-opacity-30 bg-neutral-800 flex flex-col items-center justify-center py-8 mt-4 min-h-[50vh]"
+    class="bg-opacity-30 bg-neutral-800 flex flex-col items-center justify-center py-8 min-h-[50vh]"
   >
     <!-- Coin Message Box -->
 
