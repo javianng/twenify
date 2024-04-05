@@ -58,7 +58,16 @@
 <script>
 import firebaseApp from '../firebase.js'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { doc, getDoc, getDocs, getFirestore, query, collection } from 'firebase/firestore'
+import {
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  query,
+  collection,
+  updateDoc,
+  arrayUnion
+} from 'firebase/firestore'
 import PageLayout from '@/components/PageLayout.vue'
 import Healthbar from '@/components/Healthbar.vue'
 
@@ -114,15 +123,40 @@ export default {
     },
 
     async fetchFood() {
+      ;```
+      retrieve all food items from Food collection
+      ```
       const querySnapshot = await getDocs(query(collection(db, 'Food')))
       const foodData = querySnapshot.docs.map((doc) => doc.data())
       this.storeFoodDetail = foodData
     },
 
     async fetchAccessories() {
+      ;```
+      retrieve all accessories from Accessories collection
+      ```
       const querySnapshot = await getDocs(query(collection(db, 'Accessories')))
       const accessoriesData = querySnapshot.docs.map((doc) => doc.data())
       this.storeAccesssoriesDetail = accessoriesData
+    },
+
+    async buyItem(item, type) {
+      if (this.coins < item.Price) {
+        console.log('Not enough coins')
+        return
+      }
+      this.coins -= item.Price
+
+      try {
+        const userRef = doc(db, 'Users', this.useremail)
+        await updateDoc(userRef, {
+          Coins: this.coins,
+          [type]: arrayUnion(item)
+        })
+        console.log('Purchase successful')
+      } catch (error) {
+        console.error('Error updating document:', error)
+      }
     }
   }
 }
