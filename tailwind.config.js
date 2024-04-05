@@ -11,6 +11,7 @@ export default {
       colors: {
         tDarkPurple: '#27004D',
         tPurple: '#5603A8',
+        tLightPurple: '#9E4AF1',
         tBeige: '#FFF8EA',
         tYellow: '#FFC665'
       }
