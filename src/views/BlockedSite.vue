@@ -4,7 +4,7 @@
   >
     <div class="flex justify-between px-8 h-fit">
       <div class="bg-neutral-800 h-24 w-24 flex items-center justify-center">
-        <img src="/twenifyLogo.svg" alt="logo" class="h-16" />
+        <img src="/twenifyLogo.png" alt="logo" class="h-16" />
       </div>
       <div class="flex items-center">
         <div class="flex items-end">

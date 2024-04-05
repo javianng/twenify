@@ -116,27 +116,33 @@ const register = async () => {
     await setDoc(doc(db, 'Users', userId), {
       Name: name.value,
       Coins: 0,
+      Email: email.value,
       LongTime: 10,
       ShortTime: 5,
       PomoTime: 25,
-      PetSkins: ['Pig'],
-      PetAccessories: ['Sunglasses'],
-      ActivePetSkin: 'Pig',
-      ActivePetAccessory: 'Sunglasses',
+      PetAccessories: ['Duck'],
+      ActivePetAccessory: 'Duck',
+      PetName: 'Henry',
       PetHealth: currentDate,
       BlockedWebsite: ['testwebsite.com']
     })
 
     await setDoc(doc(db, 'Leaderboard', userId), {
       Name: name.value,
-      TotalHours: 0
+      TotalHours: 0,
+      Email: email.value
     })
 
-    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
-    const Task = { TaskName: 'task name', Deleted: false }
+    await setDoc(doc(db, 'Total Hours', userId), {
+      TotalHours: 0,
+      Email: email.value
+    })
 
-    await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
+    const Task = { TaskName: 'task name', Deleted: false }
+    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
+
     await addDoc(collection(db, 'Users', userId, 'Tasks'), Task)
+    await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
 
     console.log('Successfully registered, added to Firestore!')
     router.push('/dashboard')
@@ -154,33 +160,39 @@ const signInWithGoogle = async () => {
     const userCredential = await signInWithPopup(auth, provider)
     const user = userCredential.user
     const userId = user.email
-    const { displayName, email } = user
+    const { displayName } = user
     const currentDate = Timestamp.fromDate(new Date())
 
     await setDoc(doc(db, 'Users', userId), {
       Name: displayName,
       Coins: 0,
+      Email: user.email,
       LongTime: 10,
       ShortTime: 5,
       PomoTime: 25,
-      PetSkins: ['Pig'],
-      PetAccessories: ['Sunglasses'],
-      ActivePetSkin: 'Pig',
-      ActivePetAccessory: 'Sunglasses',
+      PetAccessories: ['Duck'],
+      ActivePetAccessory: 'Duck',
+      PetName: 'Henry',
       PetHealth: currentDate,
       BlockedWebsite: ['testwebsite.com']
     })
 
     await setDoc(doc(db, 'Leaderboard', userId), {
       Name: displayName,
-      TotalHours: 0
+      TotalHours: 0,
+      Email: user.email
     })
 
-    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
-    const Task = { TaskName: 'task name', Deleted: false }
+    await setDoc(doc(db, 'Total Hours', userId), {
+      TotalHours: 0,
+      Email: user.email
+    })
 
-    await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
+    const Task = { TaskName: 'task name', Deleted: false }
+    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
+
     await addDoc(collection(db, 'Users', userId, 'Tasks'), Task)
+    await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
 
     console.log('Successfully registered, added to Firestore!')
     router.push('/dashboard')

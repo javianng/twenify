@@ -1,14 +1,5 @@
 <template>
-  <Background :style="backgroundStyle">
-    <div class="flex px-8 h-24">
-      <div class="flex items-center">
-        <div class="flex items-end">
-          <router-link to="/">
-            <img src="/twenifyLogoName.png" alt="logo" class="h-16" />
-          </router-link>
-        </div>
-      </div>
-    </div>
+  <PageLayout>
     <div class="flex flex-col items-center gap-8 pt-12" v-if="user">
       <h1 class="text-center text-5xl font-medium text-white">User Setting</h1>
       <div class="flex flex-col items-center">
@@ -63,12 +54,12 @@
       </div>
       <LogOutButton />
     </div>
-  </Background>
+  </PageLayout>
 </template>
 
 <script>
 import firebaseApp from '../firebase.js'
-import Background from '@/components/Background.vue'
+import PageLayout from '@/components/PageLayout.vue'
 import LogOutButton from '@/components/LogOutButton.vue'
 import { doc, getFirestore, updateDoc, getDoc } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged, updatePassword } from 'firebase/auth'
@@ -79,7 +70,7 @@ export default {
   name: 'Profile',
   components: {
     LogOutButton,
-    Background
+    PageLayout
   },
   computed: {
     usernamePlaceholder() {
