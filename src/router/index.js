@@ -8,7 +8,7 @@ import Dashboard from '@/views/Dashboard.vue'
 import Profile from '@/views/Profile.vue'
 import AnalyticsDashboard from '@/views/AnalyticsDashboard.vue'
 import QuackPalPage from '@/views/QuackPalPage.vue'
-
+import QuackPalWidget from '@/views/QuackPalWidget.vue'
 import Spotify from '@/components/widgets/Spotify.vue'
 
 const routes = [
@@ -54,6 +54,11 @@ const routes = [
     path: '/quackPalPage',
     name: 'QuackPalPage',
     component: QuackPalPage
+  },
+  {
+    path: '/quackPalWidget',
+    name: 'QuackPalWidget',
+    component: QuackPalWidget
   },
   {
     path: '/analyticsDashboard',
