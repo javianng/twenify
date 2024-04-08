@@ -35,6 +35,10 @@
           <router-link to="/profile">
             <img src="/icons/user-solid.svg" class="h-14 w-14" />
           </router-link>
+          
+          <router-link to="/friendsPage">
+            <img src="/icons/friends-soild.svg" class="h-14 w-14" />
+          </router-link>
         </nav>
       </div>
     </div>
