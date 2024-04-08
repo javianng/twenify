@@ -123,18 +123,12 @@ export default {
     },
 
     async fetchFood() {
-      ;```
-      retrieve all food items from Food collection
-      ```
       const querySnapshot = await getDocs(query(collection(db, 'Food')))
       const foodData = querySnapshot.docs.map((doc) => doc.data())
       this.storeFoodDetail = foodData
     },
 
     async fetchAccessories() {
-      ;```
-      retrieve all accessories from Accessories collection
-      ```
       const querySnapshot = await getDocs(query(collection(db, 'Accessories')))
       const accessoriesData = querySnapshot.docs.map((doc) => doc.data())
       this.storeAccesssoriesDetail = accessoriesData
