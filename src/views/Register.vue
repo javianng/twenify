@@ -138,6 +138,14 @@ const register = async () => {
       Email: email.value
     })
 
+    await setDoc(doc(db, 'Friends', userId), {
+      Email: email.value,
+      Friends:[],
+      IncomingRequests:[],
+      PendingAcceptance: [],
+      NewFriends:[],
+    })
+
     const Task = { TaskName: 'task name', Deleted: false }
     const DateFocused = { Date: currentDate, FocusedMinute: 10 }
 

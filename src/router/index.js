@@ -7,6 +7,7 @@ import BlockedSite from '@/views/BlockedSite.vue'
 import Dashboard from '@/views/Dashboard.vue'
 import Profile from '@/views/Profile.vue'
 import AnalyticsDashboard from '@/views/AnalyticsDashboard.vue'
+import FriendsPage from '@/views/FriendsPage.vue'
 import QuackPalPage from '@/views/QuackPalPage.vue'
 
 import Spotify from '@/components/widgets/Spotify.vue'
@@ -59,6 +60,11 @@ const routes = [
     path: '/analyticsDashboard',
     name: 'AnalyticsDashboard',
     component: AnalyticsDashboard
+  },
+  {
+    path: '/friendsPage',
+    name: 'FriendsPage',
+    component: FriendsPage
   }
 ]
 
