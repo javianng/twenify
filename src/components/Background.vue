@@ -1,5 +1,5 @@
 <template>
-  <div :class="backgroundClass" class="h-full min-h-screen flex flex-col">
+  <div :class="backgroundClass" class="h-screen flex flex-col">
     <main>
       <slot />
     </main>

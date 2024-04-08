@@ -24,7 +24,7 @@
       <div class="min-h-[50vh] items-center flex justify-center">
         <div class="flex flex-col gap-8">
           <div class="items-center flex justify-center">
-            <img src="/twenifyLogoName.png" alt="logo" />
+            <img src="/twenifyLogoName.png" alt="logo" class="max-w-4xl" />
           </div>
           <p class="text-white text-xl text-center">
             Unlock your twenty-fifth hour of productivity with twenify - the all in one productivity
@@ -32,7 +32,7 @@
           </p>
         </div>
       </div>
-      <div class="flex justify-center">
+      <div class="flex justify-center py-8">
         <a
           href="#feature"
           class="border-2 border-tBeige hover:border-tYellow transition duration-200 py-2 px-4 rounded-full"
