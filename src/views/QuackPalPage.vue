@@ -29,7 +29,7 @@
         <div class="w-96 h-96 relative">
           <img src="/shopAvatarBackdrop.png" alt="" class="absolute" />
           <div class="absolute bottom-[5.7rem] right-28">
-            <img src="/bird.svg" alt="" class="h-40" />
+            <img src="/bird.svg" alt="" class="h-40 animate-bounce" />
           </div>
         </div>
         <Healthbar :futureDate="petHealth" />
