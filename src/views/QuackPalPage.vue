@@ -2,10 +2,45 @@
   <PageLayout>
     <div class="flex flex-row justify-between px-8 p-4 h-full w-screen">
       <div class="w-44 flex flex-col gap-4 h-full">
+        <!-- Alert -->
+        <div class="absolute top-[10rem] right-0 rounded-l-full">
+          <div class="flex items-end flex-col gap-4">
+            <div
+              v-for="(message, index) in successMessages"
+              :key="'success-' + index"
+              class="flex bg-neutral-800 rounded-l-full py-4 pl-9 pr-8"
+            >
+              <div class="flex items-center justify-center gap-2">
+                <img src="/icons/square-check-solid.svg" alt="" class="w-4 h-4" />
+                <p class="text-white font-semibold">
+                  {{ message }}
+                </p>
+              </div>
+            </div>
+            <div
+              v-for="(message, index) in failureMessages"
+              :key="'failure-' + index"
+              class="flex bg-neutral-800 rounded-l-full py-4 pl-9 pr-8"
+            >
+              <div class="flex items-center justify-center gap-2">
+                <img src="/icons/square-xmark-solid.svg" alt="" class="w-4 h-4" />
+                <p class="text-white font-semibold">
+                  {{ message }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coin Display -->
+
         <div class="bg-[#FEF8EB] p-3 rounded-xl flex items-center justify-center gap-3">
           <img src="/icons/coins.svg" alt="" class="h-9 w-9" />
           <p class="text-2xl font-semibold text-tPurple">{{ coins.toFixed(0) }}</p>
         </div>
+
+        <!-- Store Food -->
+
         <div
           v-if="storeFoodDetail"
           class="bg-white p-4 rounded-lg flex flex-col gap-7 overflow-auto h-fit"
@@ -26,6 +61,8 @@
         </div>
       </div>
 
+      <!-- Pet -->
+
       <div class="flex flex-col items-center h-full justify-center gap-5 w-full">
         <p class="text-4xl text-white font-semibold">{{ petName }}</p>
         <div class="w-96 h-96 relative">
@@ -36,6 +73,8 @@
         </div>
         <Healthbar :futureDate="petHealth" />
       </div>
+
+      <!-- Store Equipments -->
 
       <div class="w-44 flex justify-end">
         <div v-if="subcollectionEquipment" class="w-40 flex flex-col gap-4 overflow-scroll h-full">
@@ -91,7 +130,9 @@ export default {
       useremail: null,
       petHealth: null,
       storeFoodDetail: null,
-      subcollectionEquipment: null
+      subcollectionEquipment: null,
+      successMessages: [],
+      failureMessages: []
     }
   },
 
@@ -109,26 +150,19 @@ export default {
 
   methods: {
     async fetchUserDataAndAccessories(useremail) {
-      try {
-        const docRef = doc(db, 'Users', useremail)
-        const docSnap = await getDoc(docRef)
-        if (docSnap.exists()) {
-          this.coins = docSnap.data().Coins
-          this.petName = docSnap.data().PetName
-          this.petHealth = docSnap.data().PetHealth.toDate()
+      const docRef = doc(db, 'Users', useremail)
+      const docSnap = await getDoc(docRef)
+      if (docSnap.exists()) {
+        this.coins = docSnap.data().Coins
+        this.petName = docSnap.data().PetName
+        this.petHealth = docSnap.data().PetHealth.toDate()
 
-          const subcollectionRef = collection(docRef, 'Equipment')
-          const subcollectionSnapshot = await getDocs(subcollectionRef)
-          this.subcollectionEquipment = subcollectionSnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data()
-          }))
-          console.log(this.subcollectionEquipment)
-        } else {
-          console.log('User not found')
-        }
-      } catch (error) {
-        console.error('Error fetching user:', error)
+        const subcollectionRef = collection(docRef, 'Equipment')
+        const subcollectionSnapshot = await getDocs(subcollectionRef)
+        this.subcollectionEquipment = subcollectionSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        }))
       }
     },
 
@@ -140,14 +174,12 @@ export default {
 
     async buyEquipment(item) {
       if (this.coins < item.Price) {
-        console.log('Not enough coins')
-        return
+        this.failureMessages.push(`You dont have enough coins!`)
       } else if (item.Price == 0) {
         const docRef = doc(db, 'Users', this.useremail)
         await updateDoc(docRef, { ActivePetAccessory: item.Name })
         await this.fetchUserDataAndAccessories(this.useremail)
-        console.log('equiped')
-        return
+        this.successMessages.push(`You equipped ${item.Name}!`)
       } else {
         const docRef = doc(db, 'Users', this.useremail)
         const equipmentRef = collection(docRef, 'Equipment')
@@ -155,15 +187,18 @@ export default {
         const itemDoc = querySnapshot.docs.find((doc) => doc.data().Name === item.Name)
         await updateDoc(docRef, { Coins: increment(-item.Price) }) // decrease user's coin
         await updateDoc(itemDoc.ref, { Price: 0 }) // set price as 0
+        await updateDoc(docRef, { ActivePetAccessory: item.Name })
         await this.fetchUserDataAndAccessories(this.useremail)
-        console.log('Bought')
+        this.successMessages.push(`You bought ${item.Name}!`)
       }
+      setTimeout(() => {
+        this.clearMessages()
+      }, 3000)
     },
 
     async buyFood(item) {
       if (this.coins < item.Price) {
-        console.log('Not enough coins')
-        return
+        this.failureMessages.push(`You dont have enough coins!`)
       } else {
         const docRef = doc(db, 'Users', this.useremail)
         const userData = await getDoc(docRef)
@@ -176,7 +211,19 @@ export default {
         await updateDoc(docRef, { Coins: increment(-item.Price) })
 
         await this.fetchUserDataAndAccessories(this.useremail)
-        console.log('Bought')
+        this.successMessages.push(`You bought ${item.Name}!`)
+      }
+      setTimeout(() => {
+        this.clearMessages()
+      }, 3000)
+    },
+
+    clearMessages() {
+      if (this.successMessages.length > 0) {
+        this.successMessages.shift()
+      }
+      if (this.failureMessages.length > 0) {
+        this.failureMessages.shift()
       }
     }
   }
