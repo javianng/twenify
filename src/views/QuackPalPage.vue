@@ -43,7 +43,7 @@
 
         <div
           v-if="storeFoodDetail"
-          class="bg-white p-4 rounded-lg flex flex-col gap-7 overflow-auto h-fit"
+          class="bg-white p-4 rounded-lg flex flex-col gap-7 overflow-auto h-fit duration-200 hover:bg-tLightPurple"
         >
           <div v-for="(data, index) in storeFoodDetail" :key="index">
             <button @click="buyFood(data)">
@@ -66,7 +66,22 @@
       <div class="flex flex-col items-center h-full justify-center gap-5 w-full">
         <p class="text-4xl text-white font-semibold">{{ petName }}</p>
         <div class="w-96 h-96 relative">
-          <img src="/shopAvatarBackdrop.png" alt="" class="absolute" />
+          <img
+            src="/shop/cloud.png"
+            alt=""
+            class="h-8 absolute top-12 z-50 left-20 animate-cloud"
+          />
+          <img
+            src="/shop/musicNote1.png"
+            alt=""
+            class="h-12 absolute top-16 z-50 right-20 music-note"
+          />
+          <img
+            src="/shop/musicNote2.png"
+            alt=""
+            class="h-12 absolute top-36 z-50 left-12 music-note"
+          />
+          <img src="/shop/backdrop.png" alt="" class="absolute" />
           <div class="absolute bottom-[5.7rem] right-28">
             <img src="/bird.svg" alt="" class="h-40 animate-bounce" />
           </div>
@@ -79,16 +94,21 @@
       <div class="w-44 flex justify-end">
         <div v-if="subcollectionEquipment" class="w-40 flex flex-col gap-4 overflow-scroll h-full">
           <div v-for="(data, index) in subcollectionEquipment" :key="index">
-            <button @click="buyEquipment(data)">
-              <div
-                class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg"
-              >
-                <p>{{ data.Name }}</p>
-                <div class="overflow-hidden flex justify-center">
-                  <img :src="data.href" alt="" />
-                </div>
-                <p>{{ data.Price }} Coins</p>
+            <button
+              @click="buyEquipment(data)"
+              class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg group hover:bg-tLightPurple duration-200 hover:text-white"
+            >
+              <p>{{ data.Name }}</p>
+              <div class="overflow-hidden flex justify-center">
+                <img :src="data.href" alt="" />
               </div>
+              <p v-if="data.Price != 0">{{ data.Price }} Coins</p>
+              <button
+                v-if="data.Price == 0"
+                class="bg-tYellow rounded-lg w-full text-white fond-semibold group-hover:bg-tPurple duration-200"
+              >
+                Wear
+              </button>
             </button>
           </div>
         </div>
@@ -229,3 +249,37 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+@keyframes moveCloud {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(2rem);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-cloud {
+  animation: moveCloud 5s linear infinite; /* Adjust duration as needed */
+}
+
+@keyframes rotateNote {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(20deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.music-note {
+  animation: rotateNote 2s ease-in-out infinite alternate;
+}
+</style>
