@@ -12,7 +12,7 @@
       <div class="flex items-end justify-center max-w-[85%]">
         <div class="grid grid-rows-3 w-max h-3/4">
           <div class="flex flex-col gap-2">
-            <h2 class="text-6xl font-semibold text-[#9E4AF1]">20,000 Hours</h2>
+            <h2 class="text-6xl font-semibold text-tLightPurple">20,000 Hours</h2>
             <p class="text-2xl font-medium text-white">
               of total productive work enabled by
               <span class="text-tYellow">twenify</span>
@@ -20,7 +20,7 @@
             </p>
           </div>
           <div class="flex flex-col gap-2">
-            <h2 class="text-6xl font-semibold text-[#9E4AF1]">57 Active Users</h2>
+            <h2 class="text-6xl font-semibold text-tLightPurple">57 Active Users</h2>
             <p class="text-2xl font-medium text-white">
               trust <span class="text-tYellow">twenify</span> in making their day to day productive
               hours distraction-free
@@ -28,9 +28,9 @@
           </div>
           <div class="flex flex-col gap-4">
             <h3 class="text-4xl font-medium text-white">
-              “Twenify has helped me <span class="text-[#9E4AF1]">steer away</span>
-              <span class="text-[#9E4AF1]">from distractions</span>, allowing me to focus on my work
-              every single day!”
+              “Twenify has helped me <span class="text-tLightPurple">steer away</span>
+              <span class="text-tLightPurple">from distractions</span>, allowing me to focus on my
+              work every single day!”
             </h3>
             <p class="text-2xl text-white">- Anders Ooi, Student at NUS</p>
           </div>
@@ -38,7 +38,7 @@
       </div>
       <div class="flex items-center justify-center h-full">
         <div class="flex flex-col items-center w-1/2 z-20">
-          <h1 class="text-4xl pb-9"><span class="text-[#9E4AF1]">Sign</span> Up</h1>
+          <h1 class="text-4xl pb-9"><span class="text-tLightPurple">Sign</span> Up</h1>
           <button
             class="flex bg-white w-full py-2 shadow-sm rounded-lg items-center justify-center gap-2"
             @click="signInWithGoogle"
@@ -77,7 +77,7 @@
           <p>
             Already have an account?
             <router-link to="/sign-in">
-              <span class="text-[#9E4AF1]"> Log in </span>
+              <span class="text-tLightPurple"> Log in </span>
             </router-link>
           </p>
         </div>
@@ -120,12 +120,42 @@ const register = async () => {
       LongTime: 10,
       ShortTime: 5,
       PomoTime: 25,
-      PetAccessories: ['Duck'],
       ActivePetAccessory: 'Duck',
       PetName: 'Henry',
       PetHealth: currentDate,
       BlockedWebsite: ['testwebsite.com']
     })
+
+    const Task = { TaskName: 'task name', Deleted: false }
+    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
+    const equipments = [
+      {
+        Name: 'Crown',
+        Price: 500,
+        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/crown.png?alt=media&token=4fd82452-eff0-4cde-93f8-348f947defd3'
+      },
+      {
+        Name: 'Duck',
+        Price: 0,
+        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/no.png?alt=media&token=34a83578-8180-4ccd-908a-fb5f975120c8'
+      },
+      {
+        Name: 'Horns',
+        Price: 500,
+        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/horns.png?alt=media&token=95bbe082-dae2-47b5-9222-206446cb0aff'
+      },
+      {
+        Name: 'Partyhat',
+        Price: 500,
+        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/partyhat.png?alt=media&token=e2cb2112-7691-402a-9240-c0199f55ac2c'
+      }
+    ]
+
+    for (const equipment of equipments) {
+      await setDoc(doc(db, 'Users', userId, 'Equipment', equipment.Name), equipment)
+    }
+    await addDoc(collection(db, 'Users', userId, 'Tasks'), Task)
+    await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
 
     await setDoc(doc(db, 'Leaderboard', userId), {
       Name: name.value,
@@ -140,17 +170,11 @@ const register = async () => {
 
     await setDoc(doc(db, 'Friends', userId), {
       Email: email.value,
-      Friends:[],
-      IncomingRequests:[],
+      Friends: [],
+      IncomingRequests: [],
       PendingAcceptance: [],
-      NewFriends:[],
+      NewFriends: []
     })
-
-    const Task = { TaskName: 'task name', Deleted: false }
-    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
-
-    await addDoc(collection(db, 'Users', userId, 'Tasks'), Task)
-    await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
 
     console.log('Successfully registered, added to Firestore!')
     router.push('/dashboard')
@@ -178,12 +202,42 @@ const signInWithGoogle = async () => {
       LongTime: 10,
       ShortTime: 5,
       PomoTime: 25,
-      PetAccessories: ['Duck'],
       ActivePetAccessory: 'Duck',
       PetName: 'Henry',
       PetHealth: currentDate,
       BlockedWebsite: ['testwebsite.com']
     })
+
+    const Task = { TaskName: 'task name', Deleted: false }
+    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
+    const equipments = [
+      {
+        Name: 'Crown',
+        Price: 500,
+        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/crown.png?alt=media&token=4fd82452-eff0-4cde-93f8-348f947defd3'
+      },
+      {
+        Name: 'Duck',
+        Price: 0,
+        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/no.png?alt=media&token=34a83578-8180-4ccd-908a-fb5f975120c8'
+      },
+      {
+        Name: 'Horns',
+        Price: 500,
+        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/horns.png?alt=media&token=95bbe082-dae2-47b5-9222-206446cb0aff'
+      },
+      {
+        Name: 'Partyhat',
+        Price: 500,
+        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/partyhat.png?alt=media&token=e2cb2112-7691-402a-9240-c0199f55ac2c'
+      }
+    ]
+
+    await addDoc(collection(db, 'Users', userId, 'Tasks'), Task)
+    await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
+    for (const equipment of equipments) {
+      await setDoc(doc(db, 'Users', userId, 'Equipment', equipment.Name), equipment)
+    }
 
     await setDoc(doc(db, 'Leaderboard', userId), {
       Name: displayName,
@@ -196,11 +250,13 @@ const signInWithGoogle = async () => {
       Email: user.email
     })
 
-    const Task = { TaskName: 'task name', Deleted: false }
-    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
-
-    await addDoc(collection(db, 'Users', userId, 'Tasks'), Task)
-    await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
+    await setDoc(doc(db, 'Friends', userId), {
+      Email: email.value,
+      Friends: [],
+      IncomingRequests: [],
+      PendingAcceptance: [],
+      NewFriends: []
+    })
 
     console.log('Successfully registered, added to Firestore!')
     router.push('/dashboard')

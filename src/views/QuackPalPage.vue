@@ -34,7 +34,7 @@
 
         <!-- Coin Display -->
 
-        <div class="bg-[#FEF8EB] p-3 rounded-xl flex items-center justify-center gap-3">
+        <div class="bg-yellow-50 p-3 rounded-xl flex items-center justify-center gap-3">
           <img src="/icons/coins.svg" alt="" class="h-9 w-9" />
           <p class="text-2xl font-semibold text-tPurple">{{ coins.toFixed(0) }}</p>
         </div>
@@ -82,8 +82,12 @@
             class="h-12 absolute top-36 z-50 left-12 music-note"
           />
           <img src="/shop/backdrop.png" alt="" class="absolute" />
-          <div class="absolute bottom-[5.7rem] right-28">
-            <img src="/bird.svg" alt="" class="h-40 animate-bounce" />
+
+          <div class="flex h-full w-full justify-between flex-col">
+            <div class="h-full z-50 flex items-end justify-center">
+              <img :src="petImageLink" alt="" class="z-50 animate-bounce" />
+            </div>
+            <div class="h-[28%]" />
           </div>
         </div>
         <Healthbar :futureDate="petHealth" />
@@ -151,6 +155,8 @@ export default {
       petHealth: null,
       storeFoodDetail: null,
       subcollectionEquipment: null,
+      petImageName: null,
+      petImageLink: null,
       successMessages: [],
       failureMessages: []
     }
@@ -176,6 +182,7 @@ export default {
         this.coins = docSnap.data().Coins
         this.petName = docSnap.data().PetName
         this.petHealth = docSnap.data().PetHealth.toDate()
+        this.petImageName = docSnap.data().ActivePetAccessory
 
         const subcollectionRef = collection(docRef, 'Equipment')
         const subcollectionSnapshot = await getDocs(subcollectionRef)
@@ -183,6 +190,11 @@ export default {
           id: doc.id,
           ...doc.data()
         }))
+      }
+      const accessoriesDocRef = doc(db, 'Pet Accessories', this.petImageName)
+      const accessoriesDocSnap = await getDoc(accessoriesDocRef)
+      if (accessoriesDocSnap.exists()) {
+        this.petImageLink = accessoriesDocSnap.data().Duck1
       }
     },
 
