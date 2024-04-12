@@ -53,7 +53,7 @@
 
       <div
         v-if="showSettings"
-        class="bg-[#4F019B] p-4 rounded-lg shadow-xl absolute top-0 -right-[25em]"
+        class="bg-tPurple p-4 rounded-lg shadow-xl absolute top-0 -right-[25em]"
       >
         <div class="grid grid-cols-3 grid-rows-2 gap-2 mb-4 -mt-6">
           <label class="text-white w-28 font-semibold flex justify-center items-end"
@@ -88,7 +88,7 @@
           />
         </div>
         <div class="flex justify-between">
-          <button @click="saveSettings" class="px-4 py-2 bg-[#FFC54E] text-white rounded-md mr-2">
+          <button @click="saveSettings" class="px-4 py-2 bg-tYellow text-white rounded-md mr-2">
             Save
           </button>
           <button @click="cancelSettings" class="px-4 py-2 bg-gray-400 text-white rounded-md">

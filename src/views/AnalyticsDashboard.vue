@@ -2,12 +2,12 @@
   <PageLayout>
     <div class="grid grid-cols-2 gap-10 p-8 text-center">
       <div class="items-center flex flex-col justify-end">
-        <h1 class="text-[#9E4AF1] text-6xl font-bold">Performance Analytics</h1>
+        <h1 class="text-tLightPurple text-6xl font-bold">Performance Analytics</h1>
         <p class="text-white">Keep track of how productive you have been through the weeks</p>
       </div>
 
       <div class="items-center flex flex-col justify-end">
-        <h1 class="text-[#9E4AF1] text-6xl font-bold">Leaderboard</h1>
+        <h1 class="text-tLightPurple text-6xl font-bold">Leaderboard</h1>
         <p class="text-white">based on total productive hours on twenify this week</p>
       </div>
 
@@ -31,7 +31,9 @@
         </div>
         <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
           <p class="text-start font-semibold">Global Ranking</p>
-          <p class="text-[6rem] font-bold text-[#9E4AF1] flex h-full justify-center items-center">
+          <p
+            class="text-[6rem] font-bold text-tLightPurple flex h-full justify-center items-center"
+          >
             {{ userPosition + 1 }}st
           </p>
         </div>
@@ -45,8 +47,8 @@
             v-for="(data, index) in leaderboardData"
             :key="index"
             :class="{
-              'bg-[#5B00B3] text-tYellow p-3 w-full rounded-md': data.Email === useremail,
-              'bg-[#5B00B3] text-white p-3 w-full rounded-md': data.Email !== useremail
+              'bg-tPurple text-tYellow p-3 w-full rounded-md': data.Email === useremail,
+              'bg-tPurple text-white p-3 w-full rounded-md': data.Email !== useremail
             }"
           >
             <div class="flex px-3">

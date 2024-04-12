@@ -4,7 +4,7 @@
       <h1 class="text-center text-5xl font-medium text-white">User Setting</h1>
       <div class="flex flex-col items-center">
         <div
-          class="w-[20vh] bg-[#5B00B3] rounded-full border-8 border-tYellow overflow-hidden p-8 my-3"
+          class="w-[20vh] bg-tLightPurple rounded-full border-8 border-tYellow overflow-hidden p-8 my-3"
         >
           <img src="/bird.svg" alt="" />
         </div>

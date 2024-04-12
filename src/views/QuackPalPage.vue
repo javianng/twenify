@@ -34,7 +34,7 @@
 
         <!-- Coin Display -->
 
-        <div class="bg-[#FEF8EB] p-3 rounded-xl flex items-center justify-center gap-3">
+        <div class="bg-yellow-50 p-3 rounded-xl flex items-center justify-center gap-3">
           <img src="/icons/coins.svg" alt="" class="h-9 w-9" />
           <p class="text-2xl font-semibold text-tPurple">{{ coins.toFixed(0) }}</p>
         </div>
