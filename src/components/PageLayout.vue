@@ -19,7 +19,7 @@
       <div class="absolute">
         <nav
           id="navbar"
-          class="bg-neutral-800 w-24 relative mx-8 shadow-lg rounded-b-xl h-fit pb-4 overflow-scroll"
+          class="bg-neutral-800 w-24 relative mx-8 shadow-lg rounded-b-xl h-fit pb-4 overflow-scroll items-center justify-start flex flex-col gap-4"
         >
           <router-link to="/dashboard">
             <img src="/icons/clock-solid.svg" class="h-14 w-14" />
@@ -35,13 +35,13 @@
           <router-link to="/profile">
             <img src="/icons/user-solid.svg" class="h-14 w-14" />
           </router-link>
-          
+
           <router-link to="/friendsPage">
             <img src="/icons/friends-soild.svg" class="h-14 w-14" />
           </router-link>
-          
+
           <router-link to="/quackPalPage">
-             <img src="/icons/store.svg" class="h-14 w-14" />
+            <img src="/icons/store.svg" class="h-14 w-14" />
           </router-link>
         </nav>
       </div>
