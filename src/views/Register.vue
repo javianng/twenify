@@ -121,7 +121,7 @@ const register = async () => {
       ShortTime: 5,
       PomoTime: 25,
       ActivePetAccessory: 'Duck',
-      PetName: 'Henry',
+      PetName: `Javian's Pet`,
       PetHealth: currentDate,
       BlockedWebsite: ['testwebsite.com']
     })
@@ -177,7 +177,7 @@ const register = async () => {
     })
 
     console.log('Successfully registered, added to Firestore!')
-    router.push('/dashboard')
+    router.push('/register2')
   } catch (error) {
     console.error(error.code)
     alert(error.message)
@@ -203,7 +203,7 @@ const signInWithGoogle = async () => {
       ShortTime: 5,
       PomoTime: 25,
       ActivePetAccessory: 'Duck',
-      PetName: 'Henry',
+      PetName: `Javian's Pet`,
       PetHealth: currentDate,
       BlockedWebsite: ['testwebsite.com']
     })
@@ -259,7 +259,7 @@ const signInWithGoogle = async () => {
     })
 
     console.log('Successfully registered, added to Firestore!')
-    router.push('/dashboard')
+    router.push('/register2')
   } catch (error) {
     console.error(error.code)
     alert(error.message)
