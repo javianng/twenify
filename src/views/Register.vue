@@ -120,12 +120,42 @@ const register = async () => {
       LongTime: 10,
       ShortTime: 5,
       PomoTime: 25,
-      PetAccessories: ['Duck'],
       ActivePetAccessory: 'Duck',
       PetName: 'Henry',
       PetHealth: currentDate,
       BlockedWebsite: ['testwebsite.com']
     })
+
+    const Task = { TaskName: 'task name', Deleted: false }
+    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
+    const equipments = [
+      {
+        Name: 'Crown',
+        Price: 500,
+        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/crown.png?alt=media&token=4fd82452-eff0-4cde-93f8-348f947defd3'
+      },
+      {
+        Name: 'Duck',
+        Price: 0,
+        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/no.png?alt=media&token=34a83578-8180-4ccd-908a-fb5f975120c8'
+      },
+      {
+        Name: 'Horns',
+        Price: 500,
+        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/horns.png?alt=media&token=95bbe082-dae2-47b5-9222-206446cb0aff'
+      },
+      {
+        Name: 'Partyhat',
+        Price: 500,
+        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/partyhat.png?alt=media&token=e2cb2112-7691-402a-9240-c0199f55ac2c'
+      }
+    ]
+
+    for (const equipment of equipments) {
+      await setDoc(doc(db, 'Users', userId, 'Equipment', equipment.Name), equipment)
+    }
+    await addDoc(collection(db, 'Users', userId, 'Tasks'), Task)
+    await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
 
     await setDoc(doc(db, 'Leaderboard', userId), {
       Name: name.value,
@@ -145,12 +175,6 @@ const register = async () => {
       PendingAcceptance: [],
       NewFriends: []
     })
-
-    const Task = { TaskName: 'task name', Deleted: false }
-    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
-
-    await addDoc(collection(db, 'Users', userId, 'Tasks'), Task)
-    await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
 
     console.log('Successfully registered, added to Firestore!')
     router.push('/dashboard')
@@ -178,12 +202,42 @@ const signInWithGoogle = async () => {
       LongTime: 10,
       ShortTime: 5,
       PomoTime: 25,
-      PetAccessories: ['Duck'],
       ActivePetAccessory: 'Duck',
       PetName: 'Henry',
       PetHealth: currentDate,
       BlockedWebsite: ['testwebsite.com']
     })
+
+    const Task = { TaskName: 'task name', Deleted: false }
+    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
+    const equipments = [
+      {
+        Name: 'Crown',
+        Price: 500,
+        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/crown.png?alt=media&token=4fd82452-eff0-4cde-93f8-348f947defd3'
+      },
+      {
+        Name: 'Duck',
+        Price: 0,
+        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/no.png?alt=media&token=34a83578-8180-4ccd-908a-fb5f975120c8'
+      },
+      {
+        Name: 'Horns',
+        Price: 500,
+        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/horns.png?alt=media&token=95bbe082-dae2-47b5-9222-206446cb0aff'
+      },
+      {
+        Name: 'Partyhat',
+        Price: 500,
+        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/partyhat.png?alt=media&token=e2cb2112-7691-402a-9240-c0199f55ac2c'
+      }
+    ]
+
+    await addDoc(collection(db, 'Users', userId, 'Tasks'), Task)
+    await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
+    for (const equipment of equipments) {
+      await setDoc(doc(db, 'Users', userId, 'Equipment', equipment.Name), equipment)
+    }
 
     await setDoc(doc(db, 'Leaderboard', userId), {
       Name: displayName,
@@ -196,11 +250,13 @@ const signInWithGoogle = async () => {
       Email: user.email
     })
 
-    const Task = { TaskName: 'task name', Deleted: false }
-    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
-
-    await addDoc(collection(db, 'Users', userId, 'Tasks'), Task)
-    await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
+    await setDoc(doc(db, 'Friends', userId), {
+      Email: email.value,
+      Friends: [],
+      IncomingRequests: [],
+      PendingAcceptance: [],
+      NewFriends: []
+    })
 
     console.log('Successfully registered, added to Firestore!')
     router.push('/dashboard')
