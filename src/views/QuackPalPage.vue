@@ -36,18 +36,20 @@
       </div>
 
       <div class="w-44 flex justify-end">
-        <div v-if="storeAccesssoriesDetail" class="w-40 flex flex-col gap-4 overflow-scroll h-full">
-          <div v-for="(data, index) in storeAccesssoriesDetail" :key="index">
+        <div v-if="subcollectionEquipment" class="w-40 flex flex-col gap-4 overflow-scroll h-full">
+          <div v-for="(data, index) in subcollectionEquipment" :key="index">
             <!-- Item -->
-            <div
-              class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg"
-            >
-              <p>{{ data.Name }}</p>
-              <div class="overflow-hidden flex justify-center">
-                <img :src="data.href" alt="" />
+            <button @click="buyEquipment(data)">
+              <div
+                class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg"
+              >
+                <p>{{ data.Name }}</p>
+                <div class="overflow-hidden flex justify-center">
+                  <img :src="data.href" alt="" />
+                </div>
+                <p>{{ data.Price }} Coins</p>
               </div>
-              <p>{{ data.Price }} Coins</p>
-            </div>
+            </button>
           </div>
         </div>
       </div>
@@ -66,7 +68,7 @@ import {
   query,
   collection,
   updateDoc,
-  arrayUnion
+  increment
 } from 'firebase/firestore'
 import PageLayout from '@/components/PageLayout.vue'
 import Healthbar from '@/components/Healthbar.vue'
@@ -83,12 +85,12 @@ export default {
 
   data() {
     return {
-      useremail: null,
-      storeAccesssoriesDetail: null,
-      storeFoodDetail: null,
+      coins: 0,
       petName: null,
+      useremail: null,
       petHealth: null,
-      coins: 0
+      storeFoodDetail: null,
+      subcollectionEquipment: null
     }
   },
 
@@ -98,22 +100,29 @@ export default {
       if (user) {
         this.user = user
         this.useremail = auth.currentUser.email
-        await this.fetchData(this.useremail)
         await this.fetchFood()
-        await this.fetchAccessories()
+        await this.fetchUserDataAndAccessories(this.useremail)
       }
     })
   },
 
   methods: {
-    async fetchData(useremail) {
+    async fetchUserDataAndAccessories(useremail) {
       try {
         const docRef = doc(db, 'Users', useremail)
         const docSnap = await getDoc(docRef)
         if (docSnap.exists()) {
+          this.coins = docSnap.data().Coins
           this.petName = docSnap.data().PetName
           this.petHealth = docSnap.data().PetHealth.toDate()
-          this.coins = docSnap.data().Coins
+
+          const subcollectionRef = collection(docRef, 'Equipment')
+          const subcollectionSnapshot = await getDocs(subcollectionRef)
+          this.subcollectionEquipment = subcollectionSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+          }))
+          console.log(this.subcollectionEquipment)
         } else {
           console.log('User not found')
         }
@@ -128,28 +137,23 @@ export default {
       this.storeFoodDetail = foodData
     },
 
-    async fetchAccessories() {
-      const querySnapshot = await getDocs(query(collection(db, 'Accessories')))
-      const accessoriesData = querySnapshot.docs.map((doc) => doc.data())
-      this.storeAccesssoriesDetail = accessoriesData
-    },
-
-    async buyItem(item, type) {
+    async buyEquipment(item) {
       if (this.coins < item.Price) {
         console.log('Not enough coins')
         return
-      }
-      this.coins -= item.Price
+      } else if (item.Price == 0) {
+        // set item as default equiped
+      } else {
+        const docRef = doc(db, 'Users', this.useremail)
+        const equipmentRef = collection(docRef, 'Equipment')
+        const querySnapshot = await getDocs(equipmentRef)
+        const itemDoc = querySnapshot.docs.find((doc) => doc.data().Name === item.Name)
 
-      try {
-        const userRef = doc(db, 'Users', this.useremail)
-        await updateDoc(userRef, {
-          Coins: this.coins,
-          [type]: arrayUnion(item)
-        })
-        console.log('Purchase successful')
-      } catch (error) {
-        console.error('Error updating document:', error)
+        await updateDoc(docRef, { Coins: increment(-item.Price) }) // decrease user's coin
+        await updateDoc(itemDoc.ref, { Price: 0 }) // set price as 0
+        console.log('Bought')
+
+        await this.fetchUserDataAndAccessories(this.useremail) // refresh details
       }
     }
   }
