@@ -11,15 +11,17 @@
           class="bg-white p-4 rounded-lg flex flex-col gap-7 overflow-auto h-fit"
         >
           <div v-for="(data, index) in storeFoodDetail" :key="index">
-            <div
-              class="w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg"
-            >
-              <p>{{ data.Name }}</p>
-              <div class="overflow-hidden flex justify-center">
-                <img :src="data.href" alt="" />
+            <button @click="buyFood(data)">
+              <div
+                class="w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg"
+              >
+                <p>{{ data.Name }}</p>
+                <div class="overflow-hidden flex justify-center">
+                  <img :src="data.href" alt="" />
+                </div>
+                <p>{{ data.Price }} Coins</p>
               </div>
-              <p>{{ data.Price }} Coins</p>
-            </div>
+            </button>
           </div>
         </div>
       </div>
@@ -38,7 +40,6 @@
       <div class="w-44 flex justify-end">
         <div v-if="subcollectionEquipment" class="w-40 flex flex-col gap-4 overflow-scroll h-full">
           <div v-for="(data, index) in subcollectionEquipment" :key="index">
-            <!-- Item -->
             <button @click="buyEquipment(data)">
               <div
                 class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg"
@@ -142,18 +143,40 @@ export default {
         console.log('Not enough coins')
         return
       } else if (item.Price == 0) {
-        // set item as default equiped
+        const docRef = doc(db, 'Users', this.useremail)
+        await updateDoc(docRef, { ActivePetAccessory: item.Name })
+        await this.fetchUserDataAndAccessories(this.useremail)
+        console.log('equiped')
+        return
       } else {
         const docRef = doc(db, 'Users', this.useremail)
         const equipmentRef = collection(docRef, 'Equipment')
         const querySnapshot = await getDocs(equipmentRef)
         const itemDoc = querySnapshot.docs.find((doc) => doc.data().Name === item.Name)
-
         await updateDoc(docRef, { Coins: increment(-item.Price) }) // decrease user's coin
         await updateDoc(itemDoc.ref, { Price: 0 }) // set price as 0
+        await this.fetchUserDataAndAccessories(this.useremail)
         console.log('Bought')
+      }
+    },
 
-        await this.fetchUserDataAndAccessories(this.useremail) // refresh details
+    async buyFood(item) {
+      if (this.coins < item.Price) {
+        console.log('Not enough coins')
+        return
+      } else {
+        const docRef = doc(db, 'Users', this.useremail)
+        const userData = await getDoc(docRef)
+
+        const currentPetHealth = new Date(userData.data().PetHealth.toDate())
+        const newPetHealth = new Date(currentPetHealth)
+        newPetHealth.setDate(newPetHealth.getDate() + item.HealthPoints)
+
+        await updateDoc(docRef, { PetHealth: newPetHealth })
+        await updateDoc(docRef, { Coins: increment(-item.Price) })
+
+        await this.fetchUserDataAndAccessories(this.useremail)
+        console.log('Bought')
       }
     }
   }
