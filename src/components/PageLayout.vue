@@ -15,7 +15,7 @@
     </div>
 
     <!-- Dropdown Content -->
-    <div v-if="isDropdownVisible" class="relative">
+    <div v-if="isDropdownVisible" class="relative z-10">
       <div class="absolute">
         <nav
           id="navbar"
