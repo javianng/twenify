@@ -19,29 +19,62 @@
       <div class="absolute">
         <nav
           id="navbar"
-          class="bg-neutral-800 w-24 relative mx-8 shadow-lg rounded-b-xl h-fit pb-4 overflow-scroll items-center justify-start flex flex-col gap-4"
+          class="bg-neutral-800 w-24 hover:w-52 group relative mx-8 shadow-lg rounded-b-xl h-fit pb-4 overflow-scroll items-center justify-start flex flex-col gap-4"
         >
-          <router-link to="/dashboard">
+          <router-link to="/dashboard" class="flex items-center gap-6 group/edit">
             <img src="/icons/clock-solid.svg" class="h-14 w-14" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              Pomodoro
+            </p>
           </router-link>
-          <a><img src="/icons/shield-halved-solid.svg" class="h-14 w-14" /></a>
-          <router-link to="/analyticsDashboard">
+
+          <a class="flex items-center gap-6">
+            <img src="/icons/shield-halved-solid.svg" class="h-14 w-14" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              Blocker
+            </p>
+          </a>
+
+          <router-link to="/analyticsDashboard" class="flex items-center gap-6">
             <img src="/icons/chart-simple-solid.svg" class="h-14 w-14" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              Analytics
+            </p>
           </router-link>
-          <a @click="showSpotifyWidget">
-            <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer"
-          /></a>
-          <a><img src="/icons/dove-solid.svg" class="h-14 w-14" /></a>
-          <router-link to="/profile">
+
+          <a @click="showSpotifyWidget" class="flex items-center gap-6">
+            <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              Spotify
+            </p>
+          </a>
+
+          <a class="flex items-center gap-6">
+            <img src="/icons/dove-solid.svg" class="h-14 w-14" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              Pet!
+            </p>
+          </a>
+
+          <router-link to="/profile" class="flex items-center gap-6">
             <img src="/icons/user-solid.svg" class="h-14 w-14" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              User Profile
+            </p>
           </router-link>
 
-          <router-link to="/friendsPage">
+          <router-link to="/friendsPage" class="flex items-center gap-6">
             <img src="/icons/friends-soild.svg" class="h-14 w-14" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              Friends
+            </p>
           </router-link>
 
-          <router-link to="/quackPalPage">
+          <router-link to="/quackPalPage" class="flex items-center gap-6">
             <img src="/icons/store.svg" class="h-14 w-14" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              Store
+            </p>
           </router-link>
         </nav>
       </div>
