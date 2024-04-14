@@ -116,6 +116,7 @@ import Button from '../components/Button.vue'
 import { doc, getFirestore, updateDoc, addDoc, collection, increment } from 'firebase/firestore'
 
 const db = getFirestore(firebaseApp)
+const TIMER_STORAGE_KEY = 'pomodoro_timer_data'
 
 export default {
   props: {
@@ -131,18 +132,23 @@ export default {
 
   data() {
     return {
-      sessions: {
+      // Other data properties...
+      // Load data from local storage or use default values if not available
+      sessions: JSON.parse(localStorage.getItem(TIMER_STORAGE_KEY)) || {
         pomo: this.userData.PomoTime,
         short: this.userData.ShortTime,
         long: this.userData.LongTime
       },
       selectedSession: 'pomo',
-      timeLeft: this.userData.PomoTime * 60,
-      isRunning: false,
+      timeLeft:
+        JSON.parse(localStorage.getItem(TIMER_STORAGE_KEY))?.timeLeft ||
+        this.userData.PomoTime * 60,
+      isRunning: JSON.parse(localStorage.getItem(TIMER_STORAGE_KEY))?.isRunning || false,
       intervalId: null,
       coinMessage: null,
       showSettings: false,
-      completedPomodoros: 0
+      completedPomodoros:
+        JSON.parse(localStorage.getItem(TIMER_STORAGE_KEY))?.completedPomodoros || 0
     }
   },
 
@@ -181,9 +187,9 @@ export default {
           if (this.timeLeft <= 0) {
             clearInterval(this.intervalId)
             this.isRunning = false
-            var audio = new Audio('/quack.mp3')
-            audio.play()
             if (this.selectedSession === 'pomo') {
+              var audio = new Audio('/quack.mp3')
+              audio.play()
               this.completedPomodoros++
               this.incrementCoin()
               this.incrementTotalHours()
@@ -201,6 +207,7 @@ export default {
               }
             }
           }
+          this.saveTimerStateToLocalStorage()
         }, 1000)
         this.isRunning = true
       }
@@ -209,6 +216,20 @@ export default {
     pauseTimer() {
       clearInterval(this.intervalId)
       this.isRunning = false
+      this.saveTimerStateToLocalStorage()
+    },
+
+    saveTimerStateToLocalStorage() {
+      localStorage.setItem(
+        TIMER_STORAGE_KEY,
+        JSON.stringify({
+          sessions: this.sessions,
+          selectedSession: this.selectedSession,
+          timeLeft: this.timeLeft,
+          isRunning: this.isRunning,
+          completedPomodoros: this.completedPomodoros
+        })
+      )
     },
 
     toggleTimer() {
@@ -331,6 +352,19 @@ export default {
         this.selectedSession = sessionType
         this.timeLeft = this.sessions[sessionType] * 60
       }
+    }
+  },
+
+  created() {
+    // When the component is created, check if there's any stored data in the local storage
+    const storedData = JSON.parse(localStorage.getItem(TIMER_STORAGE_KEY))
+    if (storedData) {
+      // If there's stored data, load it and set the component's state accordingly
+      this.sessions = storedData.sessions
+      this.selectedSession = storedData.selectedSession
+      this.timeLeft = storedData.timeLeft
+      this.isRunning = storedData.isRunning
+      this.completedPomodoros = storedData.completedPomodoros
     }
   }
 }
