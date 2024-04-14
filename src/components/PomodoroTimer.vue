@@ -100,9 +100,9 @@
 
     <!-- Pomodoro Functional -->
 
-    <div class="flex">
+    <div class="grid grid-cols-2">
       <img :src="pomodoroImage" alt="" class="h-32" />
-      <div class="flex flex-col -ml-28">
+      <div class="flex flex-col -ml-28 items-center">
         <div class="text-7xl font-bold mb-4 text-white">{{ formatTime }}</div>
         <Button @click="toggleTimer" :buttonText="isRunning ? 'Stop' : 'Start'"></Button>
       </div>
