@@ -181,6 +181,8 @@ export default {
           if (this.timeLeft <= 0) {
             clearInterval(this.intervalId)
             this.isRunning = false
+            var audio = new Audio('/quack.mp3')
+            audio.play()
             if (this.selectedSession === 'pomo') {
               this.completedPomodoros++
               this.incrementCoin()
