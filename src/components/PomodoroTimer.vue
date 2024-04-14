@@ -22,24 +22,24 @@
       <div class="flex gap-4">
         <button
           @click="manualToggleSession('pomo')"
-          :disabled="isRunning || selectedSession === 'pomo'"
-          :class="{ underline: selectedSession === 'pomo' }"
+          :disabled="isRunning || sessionNumber % 2 == 0"
+          :class="{ underline: sessionNumber % 2 == 0 }"
           class="px-4 py-2 text-white underline-offset-4"
         >
           Pomodoro
         </button>
         <button
           @click="manualToggleSession('short')"
-          :disabled="isRunning || selectedSession === 'short'"
-          :class="{ underline: selectedSession === 'short' }"
+          :disabled="isRunning || (sessionNumber % 2 == 1 && sessionNumber != 7)"
+          :class="{ underline: sessionNumber % 2 == 1 && sessionNumber != 7 }"
           class="px-4 py-2 text-white underline-offset-4"
         >
           Short Break
         </button>
         <button
           @click="manualToggleSession('long')"
-          :disabled="isRunning || selectedSession === 'long'"
-          :class="{ underline: selectedSession === 'long' }"
+          :disabled="isRunning || sessionNumber != 7"
+          :class="{ underline: sessionNumber != 7 }"
           class="px-4 py-2 text-white underline-offset-4"
         >
           Long Break
@@ -116,7 +116,6 @@ import Button from '../components/Button.vue'
 import { doc, getFirestore, updateDoc, addDoc, collection, increment } from 'firebase/firestore'
 
 const db = getFirestore(firebaseApp)
-const TIMER_STORAGE_KEY = 'pomodoro_timer_data'
 
 export default {
   props: {
@@ -132,23 +131,20 @@ export default {
 
   data() {
     return {
-      // Other data properties...
-      // Load data from local storage or use default values if not available
-      sessions: JSON.parse(localStorage.getItem(TIMER_STORAGE_KEY)) || {
-        pomo: this.userData.PomoTime,
-        short: this.userData.ShortTime,
-        long: this.userData.LongTime
+      sessions: {
+        long: parseInt(this.userData.LongTime),
+        pomo: parseInt(this.userData.PomoTime),
+        short: parseInt(this.userData.ShortTime)
       },
-      selectedSession: 'pomo',
-      timeLeft:
-        JSON.parse(localStorage.getItem(TIMER_STORAGE_KEY))?.timeLeft ||
-        this.userData.PomoTime * 60,
-      isRunning: JSON.parse(localStorage.getItem(TIMER_STORAGE_KEY))?.isRunning || false,
+      isRunning: false,
       intervalId: null,
       coinMessage: null,
       showSettings: false,
-      completedPomodoros:
-        JSON.parse(localStorage.getItem(TIMER_STORAGE_KEY))?.completedPomodoros || 0
+      sessionNumber:
+        localStorage.getItem('sessionNumber') || localStorage.setItem('sessionNumber', 0),
+      timeLeft:
+        localStorage.getItem('timeLeft') ||
+        localStorage.setItem('timeLeft', this.userData.PomoTime * 60)
     }
   },
 
@@ -164,13 +160,13 @@ export default {
     },
 
     pomodoroImage() {
-      if (this.completedPomodoros === 1) {
+      if (this.sessionNumber === 1) {
         return '/duckfeet/1feet.png'
-      } else if (this.completedPomodoros === 2) {
+      } else if (this.sessionNumber === 2) {
         return '/duckfeet/2feet.png'
-      } else if (this.completedPomodoros === 3) {
+      } else if (this.sessionNumber === 3) {
         return '/duckfeet/3feet.png'
-      } else if (this.completedPomodoros === 4) {
+      } else if (this.sessionNumber === 4) {
         return '/duckfeet/allfeet.png'
       } else {
         return '/duckfeet/nofeet.png'
@@ -178,58 +174,48 @@ export default {
     }
   },
 
+  mounted() {
+    this.isRunning = false
+  },
+
   methods: {
     startTimer() {
-      if (!this.isRunning) {
-        this.timeLeft = this.sessions[this.selectedSession] * 60
-        this.intervalId = setInterval(() => {
-          this.timeLeft--
-          if (this.timeLeft <= 0) {
-            clearInterval(this.intervalId)
+      this.isRunning = true
+      this.intervalId = setInterval(() => {
+        if (this.timeLeft > 0) {
+          let timeLeft = localStorage.getItem('timeLeft')
+          timeLeft--
+          localStorage.setItem('timeLeft', timeLeft)
+        } else {
+          this.isRunning = false
+          clearInterval(this.intervalId)
+
+          if (this.sessionNumber % 2 == 1) {
             this.isRunning = false
-            if (this.selectedSession === 'pomo') {
-              var audio = new Audio('/quack.mp3')
-              audio.play()
-              this.completedPomodoros++
-              this.incrementCoin()
-              this.incrementTotalHours()
-              this.incrementLeaderboard()
-              this.addToDateFocusedCollection()
-              if (this.completedPomodoros == 4) {
-                this.toggleSession('long')
-              } else {
-                this.toggleSession('short')
-              }
+            localStorage.setItem('timeLeft', this.sessions['pomo'] * 60)
+          } else {
+            this.incrementCoin()
+            this.incrementTotalHours()
+            this.incrementLeaderboard()
+            this.addToDateFocusedCollection()
+            let sessionNumber = localStorage.getItem('sessionNumber')
+            sessionNumber++
+            localStorage.setItem('sessionNumber', sessionNumber)
+            if (this.sessionNumber === 6) {
+              this.isRunning = false
+              localStorage.setItem('timeLeft', this.sessions['long'] * 60)
             } else {
-              this.toggleSession('pomo')
-              if (this.completedPomodoros == 4) {
-                this.completedPomodoros = 0
-              }
+              this.isRunning = false
+              localStorage.setItem('timeLeft', this.sessions['short'] * 60)
             }
           }
-          this.saveTimerStateToLocalStorage()
-        }, 1000)
-        this.isRunning = true
-      }
+        }
+      })
     },
 
     pauseTimer() {
       clearInterval(this.intervalId)
       this.isRunning = false
-      this.saveTimerStateToLocalStorage()
-    },
-
-    saveTimerStateToLocalStorage() {
-      localStorage.setItem(
-        TIMER_STORAGE_KEY,
-        JSON.stringify({
-          sessions: this.sessions,
-          selectedSession: this.selectedSession,
-          timeLeft: this.timeLeft,
-          isRunning: this.isRunning,
-          completedPomodoros: this.completedPomodoros
-        })
-      )
     },
 
     toggleTimer() {
@@ -237,12 +223,6 @@ export default {
         this.startTimer()
       } else {
         this.pauseTimer()
-      }
-    },
-
-    updateSession(sessionType) {
-      if (this.sessions[sessionType] <= 0 || isNaN(this.sessions[sessionType])) {
-        this.sessions[sessionType] = 1
       }
     },
 
@@ -272,7 +252,7 @@ export default {
 
     addToDateFocusedCollection() {
       const currentDate = new Date()
-      const duration = this.sessions[this.selectedSession]
+      const duration = this.sessions[this.sessions.pomo]
       const dateFocused = { Date: currentDate, FocusedMinute: duration }
       const collectionRef = collection(db, 'Users', this.userEmail, 'DateFocused')
       return addDoc(collectionRef, dateFocused)
@@ -320,7 +300,6 @@ export default {
         .then(() => {
           console.log('Document successfully updated!')
           this.showSettings = false
-          this.timeLeft = this.sessions[this.selectedSession] * 60
         })
         .catch((error) => {
           console.error('Error updating document: ', error)
@@ -331,41 +310,19 @@ export default {
       this.showSettings = false
     },
 
-    toggleSession(sessionType) {
-      if (this.selectedSession === sessionType && this.isRunning) {
-        this.isRunning = false
-        this.timeLeft = this.sessions[sessionType] * 60
-      } else {
-        this.isRunning = false
-        this.selectedSession = sessionType
-        this.timeLeft = this.sessions[sessionType] * 60
-      }
-    },
-
     manualToggleSession(sessionType) {
-      if (this.selectedSession === sessionType && this.isRunning) {
-        this.isRunning = false
-        this.completedPomodoros = 0
-        this.timeLeft = this.sessions[sessionType] * 60
-      } else {
-        this.isRunning = false
-        this.completedPomodoros = 0
+      this.isRunning = false
+      if (this.sessionNumber % 2 == 0 && sessionType == 'pomo') {
+        localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
+      } else if (sessionType == 'short') {
+        this.sessionNumber = -1
         this.selectedSession = sessionType
-        this.timeLeft = this.sessions[sessionType] * 60
+        localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
+      } else if (sessionType == 'long') {
+        this.sessionNumber = 6
+        this.selectedSession = sessionType
+        localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
       }
-    }
-  },
-
-  created() {
-    // When the component is created, check if there's any stored data in the local storage
-    const storedData = JSON.parse(localStorage.getItem(TIMER_STORAGE_KEY))
-    if (storedData) {
-      // If there's stored data, load it and set the component's state accordingly
-      this.sessions = storedData.sessions
-      this.selectedSession = storedData.selectedSession
-      this.timeLeft = storedData.timeLeft
-      this.isRunning = storedData.isRunning
-      this.completedPomodoros = storedData.completedPomodoros
     }
   }
 }
