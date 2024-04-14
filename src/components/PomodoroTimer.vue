@@ -320,6 +320,7 @@ export default {
         .then(() => {
           console.log('Document successfully updated!')
           this.showSettings = false
+          this.timeLeft = this.sessions[this.selectedSession] * 60
         })
         .catch((error) => {
           console.error('Error updating document: ', error)
