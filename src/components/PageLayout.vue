@@ -3,9 +3,13 @@
     <div class="flex justify-between px-8 h-24">
       <div
         @click="toggleDropdown"
-        class="bg-neutral-800 h-24 w-24 flex items-center justify-center cursor-pointer"
+        class="bg-neutral-800 h-24 w-24 flex items-center justify-center group cursor-pointer"
       >
-        <img src="/twenifyLogo.png" alt="logo" class="h-16 w-16 items-center" />
+        <img
+          src="/twenifyLogo.png"
+          alt="logo"
+          class="h-16 w-16 items-center group-hover:scale-105 duration-150"
+        />
       </div>
       <div class="flex items-center">
         <router-link to="/">
@@ -19,58 +23,73 @@
       <div class="absolute">
         <nav
           id="navbar"
-          class="bg-neutral-800 w-24 hover:w-52 group relative mx-8 shadow-lg rounded-b-xl h-fit pb-4 overflow-scroll items-center justify-start flex flex-col gap-4"
+          class="bg-neutral-800 w-24 hover:w-52 group relative mx-8 shadow-lg rounded-b-xl h-fit pb-4 overflow-scroll items-center justify-start flex flex-col gap-4 pt-4"
         >
-          <router-link to="/dashboard" class="flex items-center gap-6 group/edit">
+          <router-link
+            to="/dashboard"
+            class="flex items-center gap-6 group/edit hover:scale-105 duration-150"
+          >
             <img src="/icons/clock-solid.svg" class="h-14 w-14" />
             <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
               Pomodoro
             </p>
           </router-link>
 
-          <a class="flex items-center gap-6">
+          <a class="flex items-center gap-6 hover:scale-105 duration-150">
             <img src="/icons/shield-halved-solid.svg" class="h-14 w-14" />
             <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
               Blocker
             </p>
           </a>
 
-          <router-link to="/analyticsDashboard" class="flex items-center gap-6">
+          <router-link
+            to="/analyticsDashboard"
+            class="flex items-center gap-6 hover:scale-105 duration-150"
+          >
             <img src="/icons/chart-simple-solid.svg" class="h-14 w-14" />
             <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
               Analytics
             </p>
           </router-link>
 
-          <a @click="showSpotifyWidget" class="flex items-center gap-6">
+          <a
+            @click="showSpotifyWidget"
+            class="flex items-center gap-6 hover:scale-105 duration-150"
+          >
             <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer" />
             <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
               Spotify
             </p>
           </a>
 
-          <a class="flex items-center gap-6">
+          <a class="flex items-center gap-6 hover:scale-105 duration-150">
             <img src="/icons/dove-solid.svg" class="h-14 w-14" />
             <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
               Pet!
             </p>
           </a>
 
-          <router-link to="/profile" class="flex items-center gap-6">
+          <router-link to="/profile" class="flex items-center gap-6 hover:scale-105 duration-150">
             <img src="/icons/user-solid.svg" class="h-14 w-14" />
             <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
               User Profile
             </p>
           </router-link>
 
-          <router-link to="/friendsPage" class="flex items-center gap-6">
+          <router-link
+            to="/friendsPage"
+            class="flex items-center gap-6 hover:scale-105 duration-150"
+          >
             <img src="/icons/friends-soild.svg" class="h-14 w-14" />
             <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
               Friends
             </p>
           </router-link>
 
-          <router-link to="/quackPalPage" class="flex items-center gap-6">
+          <router-link
+            to="/quackPalPage"
+            class="flex items-center gap-6 hover:scale-105 duration-150"
+          >
             <img src="/icons/store.svg" class="h-14 w-14" />
             <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
               Store
