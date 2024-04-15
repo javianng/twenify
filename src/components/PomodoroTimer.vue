@@ -3,7 +3,6 @@
     class="bg-opacity-30 bg-neutral-800 flex flex-col items-center justify-center py-8 min-h-[50vh]"
   >
     <!-- Coin Message Box -->
-
     <div
       v-if="coinMessage"
       class="absolute bg-neutral-800 top-[10rem] right-0 rounded-l-full py-4 pl-9 pr-8"
@@ -17,12 +16,11 @@
     </div>
 
     <!-- Pomodoro Toggle -->
-
     <div class="relative">
       <div class="flex gap-4">
         <button
           @click="manualToggleSession('pomo')"
-          :class="{ underline: this.sessionNumber % 2 == 0 }"
+          :class="{ underline: sessionNumber % 2 === 0 }"
           class="px-4 py-2 text-white underline-offset-4"
         >
           Pomodoro
@@ -36,7 +34,7 @@
         </button>
         <button
           @click="manualToggleSession('long')"
-          :class="{ underline: sessionNumber == 7 }"
+          :class="{ underline: sessionNumber === 7 }"
           class="px-4 py-2 text-white underline-offset-4"
         >
           Long Break
@@ -47,7 +45,6 @@
       </div>
 
       <!-- Setting Dashboard -->
-
       <div
         v-if="showSettings"
         class="bg-tPurple p-4 rounded-lg shadow-xl absolute top-0 -right-[25em]"
@@ -96,7 +93,6 @@
     </div>
 
     <!-- Pomodoro Functional -->
-
     <div class="grid grid-cols-2">
       <img :src="pomodoroImage" alt="" class="h-32" />
       <div class="flex flex-col -ml-28 items-center">
@@ -137,11 +133,8 @@ export default {
       intervalId: null,
       coinMessage: null,
       showSettings: false,
-      sessionNumber:
-        localStorage.getItem('sessionNumber') || localStorage.setItem('sessionNumber', 0),
-      timeLeft:
-        parseFloat(localStorage.getItem('timeLeft')) ||
-        localStorage.setItem('timeLeft', this.userData.PomoTime * 60)
+      sessionNumber: parseInt(localStorage.getItem('sessionNumber') || 0),
+      timeLeft: parseFloat(localStorage.getItem('timeLeft') || this.userData.PomoTime * 60)
     }
   },
 
@@ -157,14 +150,14 @@ export default {
     },
 
     pomodoroImage() {
-      if (this.sessionNumber === 1) {
-        return '/duckfeet/1feet.png'
-      } else if (this.sessionNumber === 2) {
-        return '/duckfeet/2feet.png'
-      } else if (this.sessionNumber === 3) {
-        return '/duckfeet/3feet.png'
-      } else if (this.sessionNumber === 4) {
+      if (this.sessionNumber > 6) {
         return '/duckfeet/allfeet.png'
+      } else if (this.sessionNumber > 4) {
+        return '/duckfeet/3feet.png'
+      } else if (this.sessionNumber > 2) {
+        return '/duckfeet/2feet.png'
+      } else if (this.sessionNumber > 0) {
+        return '/duckfeet/1feet.png'
       } else {
         return '/duckfeet/nofeet.png'
       }
@@ -176,54 +169,42 @@ export default {
   },
 
   methods: {
-    // 0 - pomo
-    // 1 - short
-    // 2 - pomo
-    // 3 - short
-    // 4 - pomo
-    // 5 - short
-    // 6 - pomo
-    // 7 - long
-
     startTimer() {
       this.isRunning = true
       this.intervalId = setInterval(() => {
         if (this.timeLeft > 0) {
-          // if there is still time
-          let timeLeft = localStorage.getItem('timeLeft')
-          timeLeft--
-          localStorage.setItem('timeLeft', timeLeft)
+          this.timeLeft--
+          localStorage.setItem('timeLeft', this.timeLeft)
         } else {
-          // if time ran out
           this.isRunning = false
           clearInterval(this.intervalId)
-          if (this.sessionNumber % 2 == 1) {
+
+          if (this.sessionNumber % 2 === 1) {
             // if it was break
             this.isRunning = false
-            localStorage.setItem('timeLeft', this.sessions['pomo'] * 60)
-            if (this.sessionNumber == 7) {
-              // if it was long break
-              localStorage.setItem('sessionNumber', 0)
+            this.timeLeft = this.sessions['pomo'] * 60
+            localStorage.setItem('timeLeft', this.timeLeft)
+            if (this.sessionNumber === 7) {
+              this.sessionNumber = 0
             } else {
-              // if it was short break
               this.sessionNumber++
-              localStorage.setItem('sessionNumber', this.sessionNumber)
             }
+            localStorage.setItem('sessionNumber', this.sessionNumber)
           } else {
-            //if it was pomo
+            // if it was pomo
             this.incrementCoin()
             this.incrementTotalHours()
-            this.incrementLeaderboard()
             this.addToDateFocusedCollection()
             this.sessionNumber++
             localStorage.setItem('sessionNumber', this.sessionNumber)
             if (this.sessionNumber === 6) {
-              // if it was the last pomo, move to long break
               this.isRunning = false
-              localStorage.setItem('timeLeft', this.sessions['long'] * 60)
+              this.timeLeft = this.sessions['long'] * 60
+              localStorage.setItem('timeLeft', this.timeLeft)
             } else {
               this.isRunning = false
-              localStorage.setItem('timeLeft', this.sessions['short'] * 60)
+              this.timeLeft = this.sessions['short'] * 60
+              localStorage.setItem('timeLeft', this.timeLeft)
             }
           }
         }
@@ -245,21 +226,23 @@ export default {
 
     manualToggleSession(sessionType) {
       this.isRunning = false
-      if (sessionType == 'pomo') {
-        if (!this.sessionNumber % 2 == 0) {
-          localStorage.setItem('sessionNumber', 0)
-        }
+      if (sessionType === 'pomo') {
+        localStorage.setItem('sessionNumber', 0)
+        this.sessionNumber = 0
         localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
-      } else if (sessionType == 'short') {
-        localStorage.setItem('sessionNumber', -1)
+        this.timeLeft = this.sessions['pomo'] * 60
+      } else if (sessionType === 'short') {
+        localStorage.setItem('sessionNumber', 1)
+        this.sessionNumber = 1
         localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
-      } else if (sessionType == 'long') {
-        localStorage.setItem('sessionNumber', 6)
+        this.timeLeft = this.sessions['short'] * 60
+      } else if (sessionType === 'long') {
+        localStorage.setItem('sessionNumber', 7)
+        this.sessionNumber = 7
         localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
+        this.timeLeft = this.sessions['long'] * 60
       }
     },
-
-    // database functions
 
     incrementLeaderboard() {
       const docRef = doc(db, 'Leaderboard', this.userEmail)
@@ -268,7 +251,7 @@ export default {
           console.log('Leaderboard incremented successfully!')
         })
         .catch((error) => {
-          console.error('Error adding Coins: ', error)
+          console.error('Error updating Leaderboard: ', error)
         })
     },
 
@@ -279,13 +262,13 @@ export default {
           console.log('Total Hours incremented successfully!')
         })
         .catch((error) => {
-          console.error('Error adding Coins: ', error)
+          console.error('Error updating Total Hours: ', error)
         })
     },
 
     addToDateFocusedCollection() {
       const currentDate = new Date()
-      const duration = this.sessions[this.sessions.pomo]
+      const duration = this.sessions['pomo']
       const dateFocused = { Date: currentDate, FocusedMinute: duration }
       const collectionRef = collection(db, 'Users', this.userEmail, 'DateFocused')
       return addDoc(collectionRef, dateFocused)
@@ -302,20 +285,17 @@ export default {
       updateDoc(docRef, { Coins: increment(this.sessions.pomo) })
         .then(() => {
           console.log('Coin added successfully!')
-          this.coinMessage = `You earned ${this.sessions.pomo} coin(s)!` // Set message
+          this.coinMessage = `You earned ${this.sessions.pomo} coin(s)!`
 
-          // Clear the message after 3 seconds
           setTimeout(() => {
             this.coinMessage = null
           }, 3000)
         })
         .catch((error) => {
           console.error('Error adding Coins: ', error)
-          this.coinMessage = null // Clear message on error
+          this.coinMessage = null
         })
     },
-
-    // Setting
 
     toggleSettings() {
       this.showSettings = !this.showSettings
