@@ -66,7 +66,7 @@
       <!-- Pet -->
 
       <div class="flex flex-col items-center h-full justify-center gap-5 w-full">
-        <p class="text-4xl text-white font-semibold duration-150 hover:scale-105">
+        <p class="text-4xl text-white font-semibold duration-150 hover:scale-110">
           {{ petName }}
         </p>
         <div class="w-96 h-96 relative duration-150 hover:scale-105">
@@ -94,7 +94,9 @@
             <div class="h-[28%]" />
           </div>
         </div>
-        <Healthbar :futureDate="petHealth" />
+        <div class="hover:scale-105 duration-150">
+          <Healthbar :futureDate="petHealth" />
+        </div>
       </div>
 
       <!-- Store Equipments -->
