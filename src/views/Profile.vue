@@ -102,7 +102,9 @@ export default {
     changeBackgroundStyle(style) {
       this.backgroundStyle = style
       localStorage.setItem('backgroundStyle', style)
+      location.reload()
     },
+
     async fetchData(useremail) {
       try {
         const docRef = doc(db, 'Users', useremail)
