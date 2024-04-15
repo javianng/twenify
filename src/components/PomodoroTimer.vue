@@ -91,6 +91,18 @@
             Cancel
           </button>
         </div>
+        <div class="pt-2 flex flex-row gap-3">
+          <label class="text-white w-28 font-semibold text-nowrap">Audio Level</label>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            v-model="volume"
+            @input="updateVolume"
+            class="flex w-full"
+          />
+        </div>
       </div>
     </div>
 
@@ -136,7 +148,8 @@ export default {
       coinMessage: null,
       showSettings: false,
       sessionNumber: parseInt(localStorage.getItem('sessionNumber') || 0),
-      timeLeft: parseFloat(localStorage.getItem('timeLeft') || this.userData.PomoTime * 60)
+      timeLeft: parseFloat(localStorage.getItem('timeLeft') || this.userData.PomoTime * 60),
+      volume: parseFloat(localStorage.getItem('volume'))
     }
   },
 
@@ -168,9 +181,21 @@ export default {
 
   mounted() {
     this.isRunning = false
+    localStorage.getItem('volume') ?? localStorage.setItem('volume', 1.0)
   },
 
   methods: {
+    updateVolume() {
+      this.$emit('volume-change', this.volume)
+      localStorage.setItem('volume', this.volume)
+    },
+
+    playAudio(volume) {
+      const audio = new Audio('./quack.mp3')
+      audio.volume = volume
+      audio.play()
+    },
+
     startTimer() {
       this.isRunning = true
       this.intervalId = setInterval(() => {
@@ -194,7 +219,7 @@ export default {
             localStorage.setItem('sessionNumber', this.sessionNumber)
           } else {
             // if it was pomo
-            new Audio('./quack.mp3').play()
+            this.playAudio(this.audioVolume)
             this.incrementCoin()
             this.incrementTotalHours()
             this.addToDateFocusedCollection()
