@@ -194,6 +194,7 @@ export default {
             localStorage.setItem('sessionNumber', this.sessionNumber)
           } else {
             // if it was pomo
+            new Audio('./quack.mp3').play()
             this.incrementCoin()
             this.incrementTotalHours()
             this.addToDateFocusedCollection()
