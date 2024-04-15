@@ -22,24 +22,21 @@
       <div class="flex gap-4">
         <button
           @click="manualToggleSession('pomo')"
-          :disabled="isRunning || sessionNumber % 2 == 0"
-          :class="{ underline: sessionNumber % 2 == 0 }"
+          :class="{ underline: this.sessionNumber % 2 == 0 }"
           class="px-4 py-2 text-white underline-offset-4"
         >
           Pomodoro
         </button>
         <button
           @click="manualToggleSession('short')"
-          :disabled="isRunning || (sessionNumber % 2 == 1 && sessionNumber != 7)"
-          :class="{ underline: sessionNumber % 2 == 1 && sessionNumber != 7 }"
+          :class="{ underline: sessionNumber % 2 === 1 && sessionNumber !== 7 }"
           class="px-4 py-2 text-white underline-offset-4"
         >
           Short Break
         </button>
         <button
           @click="manualToggleSession('long')"
-          :disabled="isRunning || sessionNumber != 7"
-          :class="{ underline: sessionNumber != 7 }"
+          :class="{ underline: sessionNumber == 7 }"
           class="px-4 py-2 text-white underline-offset-4"
         >
           Long Break
@@ -143,7 +140,7 @@ export default {
       sessionNumber:
         localStorage.getItem('sessionNumber') || localStorage.setItem('sessionNumber', 0),
       timeLeft:
-        localStorage.getItem('timeLeft') ||
+        parseFloat(localStorage.getItem('timeLeft')) ||
         localStorage.setItem('timeLeft', this.userData.PomoTime * 60)
     }
   },
@@ -179,29 +176,49 @@ export default {
   },
 
   methods: {
+    // 0 - pomo
+    // 1 - short
+    // 2 - pomo
+    // 3 - short
+    // 4 - pomo
+    // 5 - short
+    // 6 - pomo
+    // 7 - long
+
     startTimer() {
       this.isRunning = true
       this.intervalId = setInterval(() => {
         if (this.timeLeft > 0) {
+          // if there is still time
           let timeLeft = localStorage.getItem('timeLeft')
           timeLeft--
           localStorage.setItem('timeLeft', timeLeft)
         } else {
+          // if time ran out
           this.isRunning = false
           clearInterval(this.intervalId)
-
           if (this.sessionNumber % 2 == 1) {
+            // if it was break
             this.isRunning = false
             localStorage.setItem('timeLeft', this.sessions['pomo'] * 60)
+            if (this.sessionNumber == 7) {
+              // if it was long break
+              localStorage.setItem('sessionNumber', 0)
+            } else {
+              // if it was short break
+              this.sessionNumber++
+              localStorage.setItem('sessionNumber', this.sessionNumber)
+            }
           } else {
+            //if it was pomo
             this.incrementCoin()
             this.incrementTotalHours()
             this.incrementLeaderboard()
             this.addToDateFocusedCollection()
-            let sessionNumber = localStorage.getItem('sessionNumber')
-            sessionNumber++
-            localStorage.setItem('sessionNumber', sessionNumber)
+            this.sessionNumber++
+            localStorage.setItem('sessionNumber', this.sessionNumber)
             if (this.sessionNumber === 6) {
+              // if it was the last pomo, move to long break
               this.isRunning = false
               localStorage.setItem('timeLeft', this.sessions['long'] * 60)
             } else {
@@ -210,7 +227,7 @@ export default {
             }
           }
         }
-      })
+      }, 1000)
     },
 
     pauseTimer() {
@@ -223,6 +240,22 @@ export default {
         this.startTimer()
       } else {
         this.pauseTimer()
+      }
+    },
+
+    manualToggleSession(sessionType) {
+      this.isRunning = false
+      if (sessionType == 'pomo') {
+        if (!this.sessionNumber % 2 == 0) {
+          localStorage.setItem('sessionNumber', 0)
+        }
+        localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
+      } else if (sessionType == 'short') {
+        localStorage.setItem('sessionNumber', -1)
+        localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
+      } else if (sessionType == 'long') {
+        localStorage.setItem('sessionNumber', 6)
+        localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
       }
     },
 
@@ -296,33 +329,13 @@ export default {
         PomoTime: this.sessions.pomo,
         ShortTime: this.sessions.short,
         LongTime: this.sessions.long
+      }).then(() => {
+        this.showSettings = false
       })
-        .then(() => {
-          console.log('Document successfully updated!')
-          this.showSettings = false
-        })
-        .catch((error) => {
-          console.error('Error updating document: ', error)
-        })
     },
 
     cancelSettings() {
       this.showSettings = false
-    },
-
-    manualToggleSession(sessionType) {
-      this.isRunning = false
-      if (this.sessionNumber % 2 == 0 && sessionType == 'pomo') {
-        localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
-      } else if (sessionType == 'short') {
-        this.sessionNumber = -1
-        this.selectedSession = sessionType
-        localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
-      } else if (sessionType == 'long') {
-        this.sessionNumber = 6
-        this.selectedSession = sessionType
-        localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
-      }
     }
   }
 }
