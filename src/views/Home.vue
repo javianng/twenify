@@ -14,9 +14,13 @@
   >
     <div class="max-w-6xl p-8">
       <div v-if="!user" class="flex justify-end gap-4 text-white">
-        <router-link to="/register"><p>New User</p></router-link>
+        <router-link to="/register"
+          ><p class="hover:text-tYellow duration-150">New User</p></router-link
+        >
         <p>|</p>
-        <router-link to="/sign-in"><p>Log In</p></router-link>
+        <router-link to="/sign-in"
+          ><p class="hover:text-tYellow duration-150">Log In</p></router-link
+        >
       </div>
       <router-link v-else to="/dashboard" class="flex justify-end gap-4 text-white"
         ><p>Dashboard</p></router-link

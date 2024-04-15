@@ -10,7 +10,7 @@
     </div>
     <div class="grid grid-cols-2 h-screen bg-gradient-to-b to-tPurple from-tDarkPurple pl-6">
       <div class="flex items-end justify-start">
-        <div class="grid grid-rows-3 w-max h-3/4">
+        <div class="grid grid-rows-3 w-max h-2/3">
           <div class="flex flex-col gap-2">
             <h2 class="text-6xl font-semibold text-tLightPurple">Welcome Back!</h2>
             <p class="text-2xl font-medium text-white">Are you ready to soar to new heights?</p>
