@@ -311,6 +311,10 @@ export default {
         LongTime: this.sessions.long
       }).then(() => {
         this.showSettings = false
+        this.sessionNumber = 0
+        this.timeLeft = this.sessions.pomo * 60
+        localStorage.setItem('sessionNumber', this.sessionNumber)
+        localStorage.setItem('timeLeft', this.timeLeft)
       })
     },
 
