@@ -27,7 +27,9 @@
         </button>
         <button
           @click="manualToggleSession('short')"
-          :class="{ underline: sessionNumber % 2 === 1 && sessionNumber !== 7 }"
+          :class="{
+            underline: (sessionNumber % 2 === 1 && sessionNumber !== 7) || sessionNumber === -1
+          }"
           class="px-4 py-2 text-white underline-offset-4"
         >
           Short Break
@@ -227,13 +229,16 @@ export default {
     manualToggleSession(sessionType) {
       this.isRunning = false
       if (sessionType === 'pomo') {
-        localStorage.setItem('sessionNumber', 0)
-        this.sessionNumber = 0
+        if (this.sessionNumber % 2 != 0) {
+          // if not already a pomodoro state, reset pomo timer
+          localStorage.setItem('sessionNumber', 0)
+          this.sessionNumber = 0
+        }
         localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
         this.timeLeft = this.sessions['pomo'] * 60
       } else if (sessionType === 'short') {
-        localStorage.setItem('sessionNumber', 1)
-        this.sessionNumber = 1
+        localStorage.setItem('sessionNumber', -1)
+        this.sessionNumber = -1
         localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
         this.timeLeft = this.sessions['short'] * 60
       } else if (sessionType === 'long') {
