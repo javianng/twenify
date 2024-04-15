@@ -74,7 +74,16 @@ import firebaseApp from '../firebase.js'
 import PageLayout from '@/components/PageLayout.vue'
 import AnalyticsChart from '../components/AnalyticsChart.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { collection, getDocs, getFirestore, query, doc, getDoc } from 'firebase/firestore'
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  query,
+  doc,
+  getDoc,
+  orderBy,
+  limit
+} from 'firebase/firestore'
 
 const db = getFirestore(firebaseApp)
 
@@ -112,9 +121,10 @@ export default {
 
   methods: {
     async fetchLeaderboard() {
-      const querySnapshot = await getDocs(query(collection(db, 'Leaderboard')))
+      const querySnapshot = await getDocs(
+        query(collection(db, 'Leaderboard'), orderBy('TotalHours', 'desc'), limit(10))
+      )
       const leaderboardData = querySnapshot.docs.map((doc) => doc.data())
-      leaderboardData.sort((a, b) => b.TotalHours - a.TotalHours)
       const userPosition = leaderboardData.findIndex((data) => data.Email === this.useremail)
       this.leaderboardData = leaderboardData
       this.userPosition = userPosition
