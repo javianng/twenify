@@ -21,7 +21,7 @@
         <button
           @click="manualToggleSession('pomo')"
           :class="{ underline: sessionNumber % 2 === 0 }"
-          class="px-4 py-2 text-white underline-offset-4"
+          class="px-4 py-2 text-white underline-offset-4 duration-150 hover:scale-110"
         >
           Pomodoro
         </button>
@@ -30,18 +30,21 @@
           :class="{
             underline: (sessionNumber % 2 === 1 && sessionNumber !== 7) || sessionNumber === -1
           }"
-          class="px-4 py-2 text-white underline-offset-4"
+          class="px-4 py-2 text-white underline-offset-4 duration-150 hover:scale-110"
         >
           Short Break
         </button>
         <button
           @click="manualToggleSession('long')"
           :class="{ underline: sessionNumber === 7 }"
-          class="px-4 py-2 text-white underline-offset-4"
+          class="px-4 py-2 text-white underline-offset-4 duration-150 hover:scale-110"
         >
           Long Break
         </button>
-        <button @click="toggleSettings" class="px-4 py-2 text-white rounded-md">
+        <button
+          @click="toggleSettings"
+          class="px-4 py-2 text-white rounded-md duration-150 hover:scale-125"
+        >
           <img src="/icons/gear-solid.svg" alt="" class="w-4 gear-icon cursor-pointer" />
         </button>
       </div>
@@ -108,9 +111,11 @@
 
     <!-- Pomodoro Functional -->
     <div class="grid grid-cols-2">
-      <img :src="pomodoroImage" alt="" class="h-32" />
+      <img :src="pomodoroImage" alt="" class="h-32 hover:scale-105 duration-150" />
       <div class="flex flex-col -ml-28 items-center">
-        <div class="text-7xl font-bold mb-4 text-white">{{ formatTime }}</div>
+        <div class="text-7xl font-bold mb-4 text-white duration-150 hover:scale-110">
+          {{ formatTime }}
+        </div>
         <Button @click="toggleTimer" :buttonText="isRunning ? 'Stop' : 'Start'"></Button>
       </div>
     </div>

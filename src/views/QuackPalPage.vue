@@ -34,7 +34,9 @@
 
         <!-- Coin Display -->
 
-        <div class="bg-yellow-50 p-3 rounded-xl flex items-center justify-center gap-3">
+        <div
+          class="bg-yellow-50 p-3 rounded-xl flex items-center justify-center gap-3 duration-150 hover:scale-105"
+        >
           <img src="/icons/coins.svg" alt="" class="h-9 w-9" />
           <p class="text-2xl font-semibold text-tPurple">{{ coins.toFixed(0) }}</p>
         </div>
@@ -46,7 +48,7 @@
           class="bg-white p-4 rounded-lg flex flex-col gap-7 overflow-auto h-fit duration-200 hover:bg-tLightPurple"
         >
           <div v-for="(data, index) in storeFoodDetail" :key="index">
-            <button @click="buyFood(data)">
+            <button @click="buyFood(data)" class="duration-150 hover:scale-105">
               <div
                 class="w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg"
               >
@@ -64,8 +66,10 @@
       <!-- Pet -->
 
       <div class="flex flex-col items-center h-full justify-center gap-5 w-full">
-        <p class="text-4xl text-white font-semibold">{{ petName }}</p>
-        <div class="w-96 h-96 relative">
+        <p class="text-4xl text-white font-semibold duration-150 hover:scale-105">
+          {{ petName }}
+        </p>
+        <div class="w-96 h-96 relative duration-150 hover:scale-105">
           <img
             src="/shop/cloud.png"
             alt=""
@@ -100,7 +104,7 @@
           <div v-for="(data, index) in subcollectionEquipment" :key="index">
             <button
               @click="buyEquipment(data)"
-              class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg group hover:bg-tLightPurple duration-200 hover:text-white"
+              class="hover:scale-105 w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg group hover:bg-tLightPurple duration-150 hover:text-white"
             >
               <p>{{ data.Name }}</p>
               <div class="overflow-hidden flex justify-center">
@@ -109,7 +113,7 @@
               <p v-if="data.Price != 0">{{ data.Price }} Coins</p>
               <button
                 v-if="data.Price == 0"
-                class="bg-tYellow rounded-lg w-full text-white fond-semibold group-hover:bg-tPurple duration-200"
+                class="bg-tYellow rounded-lg w-full text-white fond-semibold group-hover:bg-tPurple duration-150"
               >
                 Wear
               </button>

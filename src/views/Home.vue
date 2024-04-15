@@ -35,12 +35,12 @@
       <div class="flex justify-center py-8">
         <a
           href="#feature"
-          class="border-2 border-tBeige hover:border-tYellow transition duration-200 py-2 px-4 rounded-full"
+          class="border-2 border-tBeige hover:border-tYellow transition duration-150 py-2 px-4 rounded-full p"
         >
           <p class="text-white text-xl">↓ View Our Features</p>
         </a>
       </div>
-      <div class="flex flex-row min-h-[50vh] items-center">
+      <div class="flex flex-row min-h-[50vh] items-center hover:scale-105 duration-150">
         <div class="border-l-8 border-tYellow">
           <div class="px-6 max-w-[66%] flex flex-col gap-4">
             <h1 class="text-7xl font-bold text-white" id="feature">Customisable Pomodoro Timer</h1>
@@ -51,7 +51,7 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-row min-h-[50vh] items-center">
+      <div class="flex flex-row min-h-[50vh] items-center hover:scale-105 duration-150">
         <div class="border-r-8 border-tYellow flex justify-end text-end">
           <div class="px-6 max-w-[66%] flex flex-col gap-4">
             <h1 class="text-7xl font-bold text-white">Integrated Calender & To-Do List</h1>
@@ -62,7 +62,7 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-row min-h-[50vh] items-center">
+      <div class="flex flex-row min-h-[50vh] items-center hover:scale-105 duration-150">
         <div class="border-l-8 border-tYellow">
           <div class="px-6 max-w-[66%] flex flex-col gap-4">
             <h1 class="text-7xl font-bold text-white">Productivity Analytics & Leaderboard</h1>
@@ -73,7 +73,7 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-row min-h-[50vh] items-center">
+      <div class="flex flex-row min-h-[50vh] items-center hover:scale-105 duration-150">
         <div class="border-r-8 border-tYellow flex justify-end text-end">
           <div class="px-6 max-w-[66%] flex flex-col gap-4">
             <h1 class="text-7xl font-bold text-white">Website Blocking Capabilities</h1>
@@ -85,7 +85,7 @@
         </div>
       </div>
       <div class="min-h-[50vh] flex flex-col gap-5">
-        <div class="border-l-8 border-tYellow">
+        <div class="border-l-8 border-tYellow hover:scale-105 duration-150">
           <div class="px-6 max-w-[66%] flex flex-col gap-4">
             <h1 class="text-7xl font-bold text-white">A Friend for the Road Ahead</h1>
             <p class="text-white text-xl pb-5">
@@ -95,7 +95,7 @@
           </div>
         </div>
         <div class="flex flex-row w-full">
-          <img src="/bird.svg" alt="" class="max-w-[25%]" />
+          <img src="/bird.svg" alt="" class="max-w-[25%] hover:scale-105 duration-150" />
           <div class="flex flex-col gap-5 justify-center items-center text-white text-xl w-full">
             <p>
               Ready to unlock the <span class="text-tYellow"> twenty-fifth hour </span> of your day?

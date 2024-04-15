@@ -4,7 +4,7 @@
       <h1 class="text-center text-5xl font-medium text-white">User Setting</h1>
       <div class="flex flex-col items-center">
         <div
-          class="w-[20vh] bg-tLightPurple rounded-full border-8 border-tYellow overflow-hidden p-8 my-3"
+          class="w-[20vh] bg-tLightPurple rounded-full border-8 border-tYellow overflow-hidden p-8 my-3 duration-150 hover:scale-105"
         >
           <img src="/bird.svg" alt="" />
         </div>
@@ -18,7 +18,11 @@
             :placeholder="usernamePlaceholder"
             class="rounded-lg p-2"
           />
-          <button @click="changeUsername" title="Change username">
+          <button
+            @click="changeUsername"
+            title="Change username"
+            class="duration-150 hover:scale-125"
+          >
             <img src="/icons/pencil.svg" alt="" class="h-6 w-6" />
           </button>
         </div>
@@ -30,7 +34,11 @@
             placeholder="New Password"
             class="rounded-lg p-2"
           />
-          <button @click="changePassword" title="Change password">
+          <button
+            @click="changePassword"
+            title="Change password"
+            class="duration-150 hover:scale-125"
+          >
             <img src="/icons/pencil.svg" alt="" class="h-6 w-6" />
           </button>
         </div>
@@ -39,15 +47,18 @@
           <div class="grid grid-flow-col gap-3">
             <button
               @click="changeBackgroundStyle('style1')"
-              class="bg-[#3C0777] w-8 h-8 border-4 border-white rounded-full"
+              :class="backgroundStyle === 'style1' ? 'border-tYellow' : 'border-white'"
+              class="bg-[#3C0777] w-8 h-8 border-4 rounded-full duration-150 hover:scale-110"
             ></button>
             <button
               @click="changeBackgroundStyle('style2')"
-              class="bg-[#48C6A1] w-8 h-8 border-4 border-white rounded-full"
+              :class="backgroundStyle === 'style2' ? 'border-tYellow' : 'border-white'"
+              class="bg-[#48C6A1] w-8 h-8 border-4 rounded-full duration-150 hover:scale-110"
             ></button>
             <button
               @click="changeBackgroundStyle('style3')"
-              class="bg-[#F26745] w-8 h-8 border-4 border-white rounded-full"
+              :class="backgroundStyle === 'style3' ? 'border-tYellow' : 'border-white'"
+              class="bg-[#F26745] w-8 h-8 border-4 rounded-full duration-150 hover:scale-110"
             ></button>
           </div>
         </div>

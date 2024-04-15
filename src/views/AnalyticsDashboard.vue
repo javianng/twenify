@@ -1,35 +1,35 @@
 <template>
   <PageLayout>
     <div class="grid grid-cols-2 gap-10 p-8 text-center">
-      <div class="items-center flex flex-col justify-end">
+      <div class="items-center flex flex-col justify-end duration-150 hover:scale-105">
         <h1 class="text-tLightPurple text-6xl font-bold">Performance Analytics</h1>
         <p class="text-white">Keep track of how productive you have been through the weeks</p>
       </div>
 
-      <div class="items-center flex flex-col justify-end">
+      <div class="items-center flex flex-col justify-end duration-150 hover:scale-105">
         <h1 class="text-tLightPurple text-6xl font-bold">Leaderboard</h1>
         <p class="text-white">based on total productive hours on twenify this week</p>
       </div>
 
       <!-- Analytics -->
 
-      <div class="grid grid-cols-2 grid-rows-2 w-full gap-3">
-        <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
+      <div class="grid grid-cols-2 grid-rows-2 w-full gap-4">
+        <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4 duration-150 hover:scale-105">
           <p class="text-start font-semibold">Performance History</p>
           <div class="flex justify-center h-full items-center">
             <AnalyticsChart :data="subcollectionDateFocused"></AnalyticsChart>
           </div>
         </div>
-        <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
+        <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4 duration-150 hover:scale-105">
           <p class="text-start font-semibold">Total Hours spent on twenify</p>
           <p class="text-[6rem] font-bold text-tYellow flex h-full justify-center items-center">
             {{ Math.floor(totalHoursSpent) }}
           </p>
         </div>
-        <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
+        <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4 duration-150 hover:scale-105">
           <p class="text-start font-semibold">Longest Pomodoro Streak in hours</p>
         </div>
-        <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4">
+        <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4 duration-150 hover:scale-105">
           <p class="text-start font-semibold">Global Ranking</p>
           <p
             class="text-[6rem] font-bold text-tLightPurple flex h-full justify-center items-center"
@@ -47,8 +47,10 @@
             v-for="(data, index) in leaderboardData"
             :key="index"
             :class="{
-              'bg-tPurple text-tYellow p-3 w-full rounded-md': data.Email === useremail,
-              'bg-tPurple text-white p-3 w-full rounded-md': data.Email !== useremail
+              'bg-tPurple text-tYellow p-3 w-full rounded-md duration-150 hover:scale-105':
+                data.Email === useremail,
+              'bg-tPurple text-white p-3 w-full rounded-md duration-150 hover:scale-105':
+                data.Email !== useremail
             }"
           >
             <div class="flex px-3">
