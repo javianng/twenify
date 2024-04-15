@@ -111,7 +111,7 @@ const register = async () => {
     const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value)
     const userId = userCredential.user.email
 
-    const currentDate = Timestamp.fromDate(new Date())
+    const futureDate = Timestamp.fromDate(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))
 
     await setDoc(doc(db, 'Users', userId), {
       Name: name.value,
@@ -122,12 +122,12 @@ const register = async () => {
       PomoTime: 25,
       ActivePetAccessory: 'Duck',
       PetName: `Javian's Pet`,
-      PetHealth: currentDate,
+      PetHealth: futureDate,
       BlockedWebsite: ['testwebsite.com']
     })
 
     const Task = { TaskName: 'task name', Deleted: false }
-    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
+    const DateFocused = { Date: futureDate, FocusedMinute: 10 }
     const equipments = [
       {
         Name: 'Crown',
@@ -193,7 +193,7 @@ const signInWithGoogle = async () => {
     const user = userCredential.user
     const userId = user.email
     const { displayName } = user
-    const currentDate = Timestamp.fromDate(new Date())
+    const futureDate = Timestamp.fromDate(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))
 
     await setDoc(doc(db, 'Users', userId), {
       Name: displayName,
@@ -204,12 +204,12 @@ const signInWithGoogle = async () => {
       PomoTime: 25,
       ActivePetAccessory: 'Duck',
       PetName: `Javian's Pet`,
-      PetHealth: currentDate,
+      PetHealth: futureDate,
       BlockedWebsite: ['testwebsite.com']
     })
 
     const Task = { TaskName: 'task name', Deleted: false }
-    const DateFocused = { Date: currentDate, FocusedMinute: 10 }
+    const DateFocused = { Date: futureDate, FocusedMinute: 10 }
     const equipments = [
       {
         Name: 'Crown',
