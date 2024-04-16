@@ -106,12 +106,46 @@ const router = useRouter()
 const auth = getAuth()
 const db = getFirestore()
 
+const futureDate = Timestamp.fromDate(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))
+const Task = { TaskName: 'task name', Deleted: false }
+const DateFocused = { Date: futureDate, FocusedMinute: 10 }
+const equipments = [
+  {
+    Name: 'Crown',
+    Price: 500,
+    href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/crown.png?alt=media&token=4fd82452-eff0-4cde-93f8-348f947defd3'
+  },
+  {
+    Name: 'Duck',
+    Price: 0,
+    href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/no.png?alt=media&token=34a83578-8180-4ccd-908a-fb5f975120c8'
+  },
+  {
+    Name: 'Sunglasses',
+    Price: 500,
+    href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/sunglasses.png?alt=media&token=76dbf644-b945-44b7-8088-ee63af4a7114'
+  },
+  {
+    Name: 'Horns',
+    Price: 500,
+    href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/horns.png?alt=media&token=95bbe082-dae2-47b5-9222-206446cb0aff'
+  },
+  {
+    Name: 'Cowboyhat',
+    Price: 500,
+    href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/cowboyhat.png?alt=media&token=718446b9-b616-48c2-9850-c323b8771af7'
+  },
+  {
+    Name: 'Partyhat',
+    Price: 500,
+    href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/partyhat.png?alt=media&token=e2cb2112-7691-402a-9240-c0199f55ac2c'
+  }
+]
+
 const register = async () => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value)
     const userId = userCredential.user.email
-
-    const futureDate = Timestamp.fromDate(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))
 
     await setDoc(doc(db, 'Users', userId), {
       Name: name.value,
@@ -125,31 +159,6 @@ const register = async () => {
       PetHealth: futureDate,
       BlockedWebsite: ['testwebsite.com']
     })
-
-    const Task = { TaskName: 'task name', Deleted: false }
-    const DateFocused = { Date: futureDate, FocusedMinute: 10 }
-    const equipments = [
-      {
-        Name: 'Crown',
-        Price: 500,
-        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/crown.png?alt=media&token=4fd82452-eff0-4cde-93f8-348f947defd3'
-      },
-      {
-        Name: 'Duck',
-        Price: 0,
-        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/no.png?alt=media&token=34a83578-8180-4ccd-908a-fb5f975120c8'
-      },
-      {
-        Name: 'Horns',
-        Price: 500,
-        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/horns.png?alt=media&token=95bbe082-dae2-47b5-9222-206446cb0aff'
-      },
-      {
-        Name: 'Partyhat',
-        Price: 500,
-        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/partyhat.png?alt=media&token=e2cb2112-7691-402a-9240-c0199f55ac2c'
-      }
-    ]
 
     for (const equipment of equipments) {
       await setDoc(doc(db, 'Users', userId, 'Equipment', equipment.Name), equipment)
@@ -193,7 +202,6 @@ const signInWithGoogle = async () => {
     const user = userCredential.user
     const userId = user.email
     const { displayName } = user
-    const futureDate = Timestamp.fromDate(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))
 
     await setDoc(doc(db, 'Users', userId), {
       Name: displayName,
@@ -207,31 +215,6 @@ const signInWithGoogle = async () => {
       PetHealth: futureDate,
       BlockedWebsite: ['testwebsite.com']
     })
-
-    const Task = { TaskName: 'task name', Deleted: false }
-    const DateFocused = { Date: futureDate, FocusedMinute: 10 }
-    const equipments = [
-      {
-        Name: 'Crown',
-        Price: 500,
-        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/crown.png?alt=media&token=4fd82452-eff0-4cde-93f8-348f947defd3'
-      },
-      {
-        Name: 'Duck',
-        Price: 0,
-        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/no.png?alt=media&token=34a83578-8180-4ccd-908a-fb5f975120c8'
-      },
-      {
-        Name: 'Horns',
-        Price: 500,
-        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/horns.png?alt=media&token=95bbe082-dae2-47b5-9222-206446cb0aff'
-      },
-      {
-        Name: 'Partyhat',
-        Price: 500,
-        href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/partyhat.png?alt=media&token=e2cb2112-7691-402a-9240-c0199f55ac2c'
-      }
-    ]
 
     await addDoc(collection(db, 'Users', userId, 'Tasks'), Task)
     await addDoc(collection(db, 'Users', userId, 'DateFocused'), DateFocused)
