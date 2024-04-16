@@ -112,7 +112,7 @@ const DateFocused = { Date: futureDate, FocusedMinute: 10 }
 const equipments = [
   {
     Name: 'Crown',
-    Price: 500,
+    Price: 200,
     href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/crown.png?alt=media&token=4fd82452-eff0-4cde-93f8-348f947defd3'
   },
   {
@@ -122,22 +122,22 @@ const equipments = [
   },
   {
     Name: 'Sunglasses',
-    Price: 500,
+    Price: 100,
     href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/sunglasses.png?alt=media&token=76dbf644-b945-44b7-8088-ee63af4a7114'
   },
   {
     Name: 'Horns',
-    Price: 500,
+    Price: 50,
     href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/horns.png?alt=media&token=95bbe082-dae2-47b5-9222-206446cb0aff'
   },
   {
     Name: 'Cowboyhat',
-    Price: 500,
+    Price: 70,
     href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/cowboyhat.png?alt=media&token=718446b9-b616-48c2-9850-c323b8771af7'
   },
   {
     Name: 'Partyhat',
-    Price: 500,
+    Price: 40,
     href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/partyhat.png?alt=media&token=e2cb2112-7691-402a-9240-c0199f55ac2c'
   }
 ]
