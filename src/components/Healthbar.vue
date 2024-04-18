@@ -19,17 +19,26 @@ export default {
       required: true
     }
   },
+  methods: {
+    calculateTreshold() {
+      return Date.now() + 1000 * 60 * 60 * 24 * 7
+    },
+    calculateTotal(future, now) {
+      return future - now
+    }
+  },
   computed: {
     healthPercentage() {
-      const treshold = new Date().getTime() + 1000 * 60 * 60 * 24 * 7 // 7 days from now
-      const future = new Date(this.futureDate)
-      const now = new Date()
+      const treshold = this.calculateTreshold()
+      const future = new Date(this.futureDate).getTime()
+      const now = Date.now()
+
       if (future > treshold) {
         return 100
       } else if (now > future) {
         return 0
       } else {
-        const total = future - now
+        const total = this.calculateTotal(future, now)
         const percentage = (total / (1000 * 60 * 60 * 24 * 7)) * 100
         return Math.max(0, Math.min(100, percentage))
       }

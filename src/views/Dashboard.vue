@@ -1,9 +1,7 @@
 <template>
   <Layout>
     <PomodoroTimer v-if="userData && useremail" :user-data="userData" :user-email="useremail" />
-    <section class="container mx-auto p-4">
-      <!-- Home page content goes here -->
-    </section>
+    <section class="container mx-auto p-4"></section>
   </Layout>
 </template>
 
@@ -34,7 +32,7 @@ export default {
       if (user) {
         this.user = user
         this.useremail = auth.currentUser.email
-        await this.fetchData(this.useremail) // Wait for fetchData
+        await this.fetchData(this.useremail)
       }
     })
   },

@@ -225,8 +225,8 @@ export default {
         const equipmentRef = collection(docRef, 'Equipment')
         const querySnapshot = await getDocs(equipmentRef)
         const itemDoc = querySnapshot.docs.find((doc) => doc.data().Name === item.Name)
-        await updateDoc(docRef, { Coins: increment(-item.Price) }) // decrease user's coin
-        await updateDoc(itemDoc.ref, { Price: 0 }) // set price as 0
+        await updateDoc(docRef, { Coins: increment(-item.Price) })
+        await updateDoc(itemDoc.ref, { Price: 0 })
         await updateDoc(docRef, { ActivePetAccessory: item.Name })
         await this.fetchUserDataAndAccessories(this.useremail)
         this.successMessages.push(`You bought ${item.Name}!`)
@@ -284,7 +284,7 @@ export default {
 }
 
 .animate-cloud {
-  animation: moveCloud 5s linear infinite; /* Adjust duration as needed */
+  animation: moveCloud 5s linear infinite;
 }
 
 @keyframes rotateNote {
