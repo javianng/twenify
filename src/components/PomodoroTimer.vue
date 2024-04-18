@@ -212,7 +212,6 @@ export default {
           clearInterval(this.intervalId)
 
           if (this.sessionNumber % 2 === 1) {
-            // if it was break
             this.isRunning = false
             this.timeLeft = this.sessions['pomo'] * 60
             localStorage.setItem('timeLeft', this.timeLeft)
@@ -223,7 +222,6 @@ export default {
             }
             localStorage.setItem('sessionNumber', this.sessionNumber)
           } else {
-            // if it was pomo
             this.playAudio(this.volume)
             this.incrementCoin()
             this.incrementTotalHours()
@@ -261,7 +259,6 @@ export default {
       this.isRunning = false
       if (sessionType === 'pomo') {
         if (this.sessionNumber % 2 != 0) {
-          // if not already a pomodoro state, reset pomo timer
           localStorage.setItem('sessionNumber', 0)
           this.sessionNumber = 0
         }

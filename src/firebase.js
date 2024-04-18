@@ -1,7 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: 'AIzaSyBNS5lPob943BHz34F2YrNUKbmxHv-3pX4',
   authDomain: 'twenify.firebaseapp.com',
@@ -13,11 +12,7 @@ const firebaseConfig = {
 }
 
 console.log('Initializing Firebase...')
-
-// Initialize Firebase app
 const firebaseApp = initializeApp(firebaseConfig)
 export const db = getFirestore(firebaseApp)
-
 console.log('Firebase initialized successfully.')
-
 export default firebaseApp

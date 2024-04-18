@@ -78,7 +78,7 @@ const router = useRouter()
 const register = () => {
   const auth = getAuth()
   signInWithEmailAndPassword(auth, email.value, password.value)
-    .then((data) => {
+    .then(() => {
       console.log('Successfully signed in!')
       console.log(auth.currentUser)
       router.push('/dashboard')
@@ -106,14 +106,11 @@ const register = () => {
 const signInWithGoogle = () => {
   const provider = new GoogleAuthProvider()
   signInWithPopup(getAuth(), provider)
-    .then((result) => {
+    .then(() => {
       router.push('/dashboard')
     })
     .catch((error) => {
       const errorMessage = error.message
-      /*const errorCode = error.code;
-    const email = error.customData.email;
-    const crediential = GoogleAuthProvider.credentialFromError(error);*/
       console.alert(errorMessage)
     })
 }

@@ -135,6 +135,7 @@ export default {
     async fetchTotalHours() {
       const docRef = doc(db, 'Total Hours', this.useremail)
       const docSnap = await getDoc(docRef)
+
       if (docSnap.exists()) {
         this.totalHoursSpent = docSnap.data().TotalHours
         console.log(this.totalHoursSpent)
@@ -146,8 +147,9 @@ export default {
     async fetchDateFocused(useremail) {
       try {
         const userDocRef = doc(db, 'Users', useremail)
-        const subcollectionRef = collection(userDocRef, 'DateFocused')
-        const subcollectionSnapshot = await getDocs(subcollectionRef)
+        const subcollectionSnapshot = await getDocs(
+          query(collection(userDocRef, 'DateFocused'), orderBy('Date', 'asc'), limit(8))
+        )
         this.subcollectionDateFocused = subcollectionSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data()
