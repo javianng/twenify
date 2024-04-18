@@ -7,7 +7,7 @@ If you are new to the project, you should read the [Getting Started](/getting-st
 and then check out the documentation of each of the libraries and frameworks mentioned before continuing.
 
 ```
-twenity
+twenify
 ├─ docs
 ├─ public
 │  └─ *
@@ -30,7 +30,7 @@ twenity
 
 ## `public`
 
-The `public` folder contains static files that are served to the client. This includes the Twenity logo in `favicon.ico` and various images used in banners and promotions.
+The `public` folder contains static files that are served to the client. This includes the twenify logo in `favicon.ico` and various images used in banners and promotions.
 
 ## `src`
 

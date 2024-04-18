@@ -105,7 +105,7 @@ For more information about Git, refer to the [Git Book](https://git-scm.com/book
 
 Our workflow is loosely based off of the [Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow).
 
-- The `main` branch is the branch that is deployed to production and visible to the public at [twenity](https://twenity.vercel.app/).
+- The `main` branch is the branch that is deployed to production and visible to the public at [twenify](https://twenify.vercel.app/).
 
 - The `dev` branch is the development branch of the repository. This is the branch that is deployed to the staging environment at `.vercel.app/`.
 
