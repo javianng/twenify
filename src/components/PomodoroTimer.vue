@@ -67,21 +67,21 @@
           <input
             type="number"
             v-model="sessions.pomo"
-            @change="updateSession('pomo')"
+            @change="manualToggleSession('pomo')"
             :disabled="isRunning"
             class="flex w-28 rounded-lg"
           />
           <input
             type="number"
             v-model="sessions.short"
-            @change="updateSession('short')"
+            @change="manualToggleSession('short')"
             :disabled="isRunning"
             class="flex w-28 rounded-lg"
           />
           <input
             type="number"
             v-model="sessions.long"
-            @change="updateSession('long')"
+            @change="manualToggleSession('long')"
             :disabled="isRunning"
             class="flex w-28 rounded-lg"
           />
@@ -224,7 +224,7 @@ export default {
             localStorage.setItem('sessionNumber', this.sessionNumber)
           } else {
             // if it was pomo
-            this.playAudio(this.audioVolume)
+            this.playAudio(this.volume)
             this.incrementCoin()
             this.incrementTotalHours()
             this.addToDateFocusedCollection()
