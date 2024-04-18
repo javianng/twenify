@@ -1,10 +1,5 @@
 <template>
-  <button
-    :class="buttonClass"
-    @click="handleClick"
-    id="btn"
-    class="bg-gradient-to-b from-yellow-300 to-purple-700 shadow-md rounded-full py-2 px-5 min-w-32 text-white"
-  >
+  <button :class="[buttonClass, defaultClass]" @click="handleClick" id="btn">
     {{ buttonText }}
   </button>
 </template>
@@ -23,6 +18,11 @@ export default {
     buttonFunction: {
       type: Function,
       default: () => {}
+    }
+  },
+  computed: {
+    defaultClass() {
+      return 'bg-gradient-to-b from-yellow-300 to-purple-700 shadow-md rounded-full py-2 px-5 min-w-32 text-white'
     }
   },
   methods: {
