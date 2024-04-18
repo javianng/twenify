@@ -2,7 +2,7 @@
 
 We use GitHub Issues for tracking feature requests and bugs.
 
-You can view existing issues [here](https://github.com/javianng/twenify/issues) or at the command line using the [GitHub CLI](https://cli.github.com/):
+You can view existing issues [here](https://github.com/javianng/twenity/issues) or at the command line using the [GitHub CLI](https://cli.github.com/):
 
 ```
 gh issue list

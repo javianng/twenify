@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: 'twenify',
+  title: 'twenity',
   description:
     "Twenify is your go-to productivity platform, meticulously crafted to tackle the challenges of modern-day student life while catering to the needs of individuals striving for efficient time management. Whether you're a student aiming for academic excellence or a professional seeking enhanced productivity, Twenify has got you covered.",
   themeConfig: {
