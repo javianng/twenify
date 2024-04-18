@@ -22,7 +22,10 @@
           ><p class="hover:text-tYellow duration-150">Log In</p></router-link
         >
       </div>
-      <router-link v-else to="/dashboard" class="flex justify-end gap-4 text-white"
+      <router-link
+        v-else
+        to="/dashboard"
+        class="flex justify-end gap-4 text-white hover:text-tYellow duration-150"
         ><p>Dashboard</p></router-link
       >
       <div class="min-h-[50vh] items-center flex justify-center">
