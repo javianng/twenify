@@ -4,9 +4,9 @@
       <h1 class="text-center text-5xl font-medium text-white">User Setting</h1>
       <div class="flex flex-col items-center">
         <div
-          class="w-[20vh] bg-tLightPurple rounded-full border-8 border-tYellow overflow-hidden p-8 my-3 duration-150 hover:scale-105"
+          class="w-96 h-96 bg-tLightPurple rounded-full border-8 border-tYellow overflow-hidden p-8 my-3 duration-150 hover:scale-105"
         >
-          <img src="/bird.svg" alt="" />
+          <img :src="petImageLink" alt="" class="z-50 scale-[2.2] pt-8" />
         </div>
       </div>
       <div class="flex flex-col gap-2">
@@ -72,7 +72,7 @@
 import firebaseApp from '../firebase.js'
 import PageLayout from '@/components/PageLayout.vue'
 import LogOutButton from '@/components/LogOutButton.vue'
-import { doc, getFirestore, updateDoc, getDoc } from 'firebase/firestore'
+import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged, updatePassword } from 'firebase/auth'
 
 const db = getFirestore(firebaseApp)
@@ -93,6 +93,8 @@ export default {
       user: false,
       useremail: null,
       userData: null,
+      petImageName: null,
+      petImageLink: null,
       newPassword: '',
       newUsername: '',
       backgroundStyle: localStorage.getItem('backgroundStyle') || 'default'
@@ -104,7 +106,7 @@ export default {
       if (user) {
         this.user = user
         this.useremail = auth.currentUser.email
-        await this.fetchData(this.useremail) // Wait for fetchData
+        await this.fetchData(this.useremail)
       }
     })
   },
@@ -117,17 +119,17 @@ export default {
     },
 
     async fetchData(useremail) {
-      try {
-        const docRef = doc(db, 'Users', useremail)
-        const docSnap = await getDoc(docRef)
-        if (docSnap.exists()) {
-          this.userData = docSnap.data()
-          console.log(this.userData)
-        } else {
-          console.log('User not found')
+      const docRef = doc(db, 'Users', useremail)
+      const docSnap = await getDoc(docRef)
+
+      if (docSnap.exists()) {
+        this.userData = docSnap.data()
+        this.petImageName = docSnap.data().ActivePetAccessory
+        const accessoriesDocRef = doc(db, 'Pet Accessories', this.petImageName)
+        const accessoriesDocSnap = await getDoc(accessoriesDocRef)
+        if (accessoriesDocSnap.exists()) {
+          this.petImageLink = accessoriesDocSnap.data().Duck1
         }
-      } catch (error) {
-        console.error('Error fetching user:', error)
       }
     },
 

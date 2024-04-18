@@ -45,12 +45,12 @@
 
         <div
           v-if="storeFoodDetail"
-          class="bg-white p-4 rounded-lg flex flex-col gap-7 overflow-auto h-fit duration-200 hover:bg-tLightPurple"
+          class="bg-white p-4 rounded-lg flex flex-col gap-7 overflow-auto h-fit"
         >
           <div v-for="(data, index) in storeFoodDetail" :key="index">
             <button @click="buyFood(data)" class="duration-150 hover:scale-105">
               <div
-                class="w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg"
+                class="w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg duration-200 hover:bg-tLightPurple hover:text-white"
               >
                 <p>{{ data.Name }}</p>
                 <div class="overflow-hidden flex justify-center">
@@ -184,6 +184,7 @@ export default {
     async fetchUserDataAndAccessories(useremail) {
       const docRef = doc(db, 'Users', useremail)
       const docSnap = await getDoc(docRef)
+
       if (docSnap.exists()) {
         this.coins = docSnap.data().Coins
         this.petName = docSnap.data().PetName
@@ -197,6 +198,7 @@ export default {
           ...doc.data()
         }))
       }
+
       const accessoriesDocRef = doc(db, 'Pet Accessories', this.petImageName)
       const accessoriesDocSnap = await getDoc(accessoriesDocRef)
       if (accessoriesDocSnap.exists()) {
