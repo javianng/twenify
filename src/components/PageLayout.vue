@@ -24,14 +24,25 @@
           <router-link to="/dashboard">
             <img src="/icons/clock-solid.svg" class="h-14 w-14" />
           </router-link>
+
           <a><img src="/icons/shield-halved-solid.svg" class="h-14 w-14" /></a>
+
           <router-link to="/analyticsDashboard">
             <img src="/icons/chart-simple-solid.svg" class="h-14 w-14" />
           </router-link>
-          <a @click="showSpotifyWidget">
-            <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer"
+          
+          <a @click="showQuackPalAvatar">
+            <img src="/icons/dove-solid.svg" class="h-14 w-14 cursor-pointer" 
           /></a>
-          <a><img src="/icons/dove-solid.svg" class="h-14 w-14" /></a>
+
+          <a @click="showSpotifyWidget">
+            <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer"  
+          /></a>
+
+          <!-- <router-link to="/quackPalWidget">
+            <img src="/icons/dove-solid.svg" class="h-14 w-14" />  
+          </router-link> -->
+
           <router-link to="/profile">
             <img src="/icons/user-solid.svg" class="h-14 w-14" />
           </router-link>
@@ -45,6 +56,12 @@
           </router-link>
         </nav>
       </div>
+    </div>
+
+
+    <!-- QuackPalAvatar Widget Overlay-->
+    <div v-if="isQuackPalAvatarVisible" class="z-50">
+      <QuackPalAvatar @close="isQuackPalAvatarVisible = false"></QuackPalAvatar>
     </div>
 
     <!-- Spotify Widget Overlay-->
@@ -61,13 +78,16 @@
 <script>
 import Background from './Background.vue'
 import SpotifyWidget from '@/components/widgets/Spotify.vue'
+import QuackPalAvatar from '@/components/widgets/QuackPalAvatar.vue' // ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS
+
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 export default {
   name: 'PageLayout',
   components: {
     SpotifyWidget,
-    Background
+    Background,
+    QuackPalAvatar // ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS
   },
   mounted() {
     const auth = getAuth()
@@ -82,6 +102,7 @@ export default {
       backgroundStyle: localStorage.getItem('backgroundStyle') || 'default',
       isDropdownVisible: false,
       isSpotifyWidgetVisible: false,
+      isQuackPalAvatarVisible: false, // ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS
       user: false
     }
   },
@@ -92,6 +113,10 @@ export default {
 
     showSpotifyWidget() {
       this.isSpotifyWidgetVisible = !this.isSpotifyWidgetVisible
+    },
+
+    showQuackPalAvatar() {  // Add this method
+    this.isQuackPalAvatarVisible = !this.isQuackPalAvatarVisible // ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// 
     }
   }
 }

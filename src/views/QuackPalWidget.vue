@@ -22,8 +22,8 @@
   </template>
   
   <script>
-  import firebaseApp from '../firebase.js'
-  import Layout from '../components/PageLayout.vue'
+  import firebaseApp from '@/firebase.js'
+  import Layout from '@/components/PageLayout.vue'
   import { getAuth, onAuthStateChanged } from 'firebase/auth'
   import { doc, getDoc, getFirestore } from 'firebase/firestore'
   
