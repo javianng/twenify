@@ -19,36 +19,30 @@
       <div class="absolute">
         <nav
           id="navbar"
-          class="bg-neutral-800 w-24 relative mx-8 shadow-lg rounded-b-xl h-fit pb-4 overflow-scroll"
+          class="bg-neutral-800 w-24 relative mx-8 shadow-lg rounded-b-xl h-fit pb-4 overflow-scroll items-center justify-start flex flex-col gap-4"
         >
-          <div class="flex h-fit flex-col gap-7 items-center pt-8">
-            <router-link to="/dashboard">
-              <img src="/icons/clock-solid.svg" class="h-14 w-14" />
-            </router-link>
+          <router-link to="/dashboard">
+            <img src="/icons/clock-solid.svg" class="h-14 w-14" />
+          </router-link>
+          <a><img src="/icons/shield-halved-solid.svg" class="h-14 w-14" /></a>
+          <router-link to="/analyticsDashboard">
+            <img src="/icons/chart-simple-solid.svg" class="h-14 w-14" />
+          </router-link>
+          <a @click="showSpotifyWidget">
+            <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer"
+          /></a>
+          <a><img src="/icons/dove-solid.svg" class="h-14 w-14" /></a>
+          <router-link to="/profile">
+            <img src="/icons/user-solid.svg" class="h-14 w-14" />
+          </router-link>
 
-            <a><img src="/icons/shield-halved-solid.svg" class="h-14 w-14" /></a>
+          <router-link to="/friendsPage">
+            <img src="/icons/friends-soild.svg" class="h-14 w-14" />
+          </router-link>
 
-            <router-link to="/analyticsDashboard">
-              <img src="/icons/chart-simple-solid.svg" class="h-14 w-14" />
-            </router-link>
-
-            <a @click="showSpotifyWidget">
-              <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer"
-            /></a>
-
-            <router-link to="/quackPalWidget">
-            <img src="/icons/dove-solid.svg" class="h-14 w-14" />
-            </router-link>
-
-            <router-link to="/profile">
-              <img src="/icons/user-solid.svg" class="h-14 w-14" />
-            </router-link>
-
-            <router-link to="/quackPalPage">
-              <img src="/icons/store.svg" class="h-14 w-14" />
-            </router-link>
-
-          </div>
+          <router-link to="/quackPalPage">
+            <img src="/icons/store.svg" class="h-14 w-14" />
+          </router-link>
         </nav>
       </div>
     </div>
