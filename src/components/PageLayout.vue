@@ -35,6 +35,17 @@
             </p>
           </router-link>
 
+          <router-link
+            to="/calendarToDo"
+            class="flex items-center gap-6 hover:scale-105 duration-150"
+          >
+            <img src="/icons/calendar.svg" class="h-14 w-14" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              Calendar
+            </p>
+          </router-link>
+
+
           <a class="flex items-center gap-6 hover:scale-105 duration-150">
             <img src="/icons/shield-halved-solid.svg" class="h-14 w-14" />
             <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
