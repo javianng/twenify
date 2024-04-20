@@ -70,7 +70,7 @@
     </div>
 
     <main>
-      <slot />
+      <slot/>
     </main>
   </Background>
 </template>

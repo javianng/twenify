@@ -1,6 +1,5 @@
 <template>
   <div 
-    class="grid grid-cols-2 gap-10 p-8 text-center" 
     @mousedown="startDrag"
     @mouseup="endDrag"
     @mousemove="drag"
@@ -15,23 +14,17 @@
       class="draggable"
       draggable="false"
     />
-    <p v-else>Error</p>
   </div>
 </template>
 
 <script>
 import firebaseApp from '@/firebase.js'
-// import PageLayout from '@/components/PageLayout.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { doc, getDoc, getFirestore } from 'firebase/firestore'
 
 const db = getFirestore(firebaseApp)
 
 export default {
-  // components: {
-  //   PageLayout
-  // },
-
   data() {
     return {
       user: false,
@@ -170,5 +163,6 @@ export default {
   position: absolute;
   cursor: grab;
   clip-path: polygon(35% 25%, 65% 25%, 65% 100%, 35% 100%);
+  z-index: 9; 
 }
 </style>
