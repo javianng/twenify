@@ -24,12 +24,14 @@
           <router-link to="/dashboard">
             <img src="/icons/clock-solid.svg" class="h-14 w-14" />
           </router-link>
-          <a><img src="/icons/shield-halved-solid.svg" class="h-14 w-14" /></a>
           <router-link to="/analyticsDashboard">
             <img src="/icons/chart-simple-solid.svg" class="h-14 w-14" />
           </router-link>
           <a @click="showSpotifyWidget">
             <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer"
+          /></a>
+          <a @click="showWebsiteBlockingWidget">
+            <img src="/icons/shield-halved-solid.svg" class="h-14 w-14 cursor-pointer"
           /></a>
           <a><img src="/icons/dove-solid.svg" class="h-14 w-14" /></a>
           <router-link to="/profile">
@@ -52,6 +54,11 @@
       <SpotifyWidget @close="isSpotifyWidgetVisible = false"></SpotifyWidget>
     </div>
 
+    <!-- Website Blocking Widget Overlay-->
+    <div v-if="isWebsiteBlockingWidgetVisible" class="z-50">
+      <WebsiteBlockingWidget @close="isWebsiteBlockingWidgetVisible = false"></WebsiteBlockingWidget>
+    </div>
+
     <main>
       <slot />
     </main>
@@ -61,12 +68,14 @@
 <script>
 import Background from './Background.vue'
 import SpotifyWidget from '@/components/widgets/Spotify.vue'
+import WebsiteBlockingWidget from '@/components/widgets/WebsiteBlocker.vue';
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 export default {
   name: 'PageLayout',
   components: {
     SpotifyWidget,
+    WebsiteBlockingWidget,
     Background
   },
   mounted() {
@@ -82,6 +91,7 @@ export default {
       backgroundStyle: localStorage.getItem('backgroundStyle') || 'default',
       isDropdownVisible: false,
       isSpotifyWidgetVisible: false,
+      isWebsiteBlockingWidgetVisible: false,
       user: false
     }
   },
@@ -92,6 +102,9 @@ export default {
 
     showSpotifyWidget() {
       this.isSpotifyWidgetVisible = !this.isSpotifyWidgetVisible
+    },
+    showWebsiteBlockingWidget() {
+      this.isWebsiteBlockingWidgetVisible = !this.isWebsiteBlockingWidgetVisible
     }
   }
 }
