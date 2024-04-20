@@ -81,7 +81,7 @@ const fetchCalendarEvents = async (accessToken, email) => {
     const startOfWeek = new Date()
     startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay())
     const endOfWeek = new Date(startOfWeek)
-    endOfWeek.setDate(startOfWeek.getDate() + 6)
+    endOfWeek.setDate(startOfWeek.getDate() + 7)
 
     const response = await axios.get(
       'https://www.googleapis.com/calendar/v3/calendars/primary/events',
