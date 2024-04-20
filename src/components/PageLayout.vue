@@ -63,19 +63,26 @@
             </p>
           </router-link>
           
-          <a @click="showQuackPalAvatar">
-            <img src="/icons/dove-solid.svg" class="h-14 w-14 cursor-pointer" 
-          /></a>
+          <a @click="showQuackPalAvatar"
+            class="flex items-center gap-6 hover:scale-105 duration-150"
+          >
+            <img src="/icons/dove-solid.svg" class="h-14 w-14 cursor-pointer" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              QuackPal
+            </p>
+          </a>
 
-          <a @click="showSpotifyWidget">
-            <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer"  
-          /></a>
+          <a
+            @click="showSpotifyWidget"
+            class="flex items-center gap-6 hover:scale-105 duration-150"
+          >
+            <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              Spotify
+            </p>
+          </a>
 
-          <!-- <router-link to="/quackPalWidget">
-            <img src="/icons/dove-solid.svg" class="h-14 w-14" />  
-          </router-link> -->
-
-          <router-link to="/profile">
+          <router-link to="/profile" class="flex items-center gap-6 hover:scale-105 duration-150">
             <img src="/icons/user-solid.svg" class="h-14 w-14" />
             <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
               User Profile
