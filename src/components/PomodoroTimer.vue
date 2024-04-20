@@ -5,7 +5,8 @@
     <!-- Coin Message Box -->
     <div
       v-if="coinMessage"
-      class="absolute bg-neutral-800 top-[10rem] right-0 rounded-l-full py-4 pl-9 pr-8"
+      class="absolute bg-neutral-800 top-[10rem] right-0 rounded-l-full py-4 pl-9 pr-8 z-10"
+      style="z-index: 10;"
     >
       <div class="flex items-center justify-center gap-2">
         <img src="/icons/coins.svg" alt="" class="w-4 h-4" />
