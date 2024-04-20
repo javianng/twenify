@@ -78,7 +78,7 @@
 <script>
 import Background from './Background.vue'
 import SpotifyWidget from '@/components/widgets/Spotify.vue'
-import QuackPalAvatar from '@/components/widgets/QuackPalAvatar.vue' // ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS
+import QuackPalAvatar from '@/components/widgets/QuackPalAvatar.vue' 
 
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
@@ -87,7 +87,7 @@ export default {
   components: {
     SpotifyWidget,
     Background,
-    QuackPalAvatar // ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS
+    QuackPalAvatar 
   },
   mounted() {
     const auth = getAuth()
@@ -102,7 +102,7 @@ export default {
       backgroundStyle: localStorage.getItem('backgroundStyle') || 'default',
       isDropdownVisible: false,
       isSpotifyWidgetVisible: false,
-      isQuackPalAvatarVisible: false, // ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS
+      isQuackPalAvatarVisible: false, 
       user: false
     }
   },
@@ -115,8 +115,8 @@ export default {
       this.isSpotifyWidgetVisible = !this.isSpotifyWidgetVisible
     },
 
-    showQuackPalAvatar() {  // Add this method
-    this.isQuackPalAvatarVisible = !this.isQuackPalAvatarVisible // ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// ADDED THIS// 
+    showQuackPalAvatar() {  
+    this.isQuackPalAvatarVisible = !this.isQuackPalAvatarVisible 
     }
   }
 }
