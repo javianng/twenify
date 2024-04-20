@@ -3,9 +3,13 @@
     <div class="flex justify-between px-8 h-24">
       <div
         @click="toggleDropdown"
-        class="bg-neutral-800 h-24 w-24 flex items-center justify-center cursor-pointer"
+        class="bg-neutral-800 h-24 w-24 flex items-center justify-center group cursor-pointer"
       >
-        <img src="/twenifyLogo.png" alt="logo" class="h-16 w-16 items-center" />
+        <img
+          src="/twenifyLogo.png"
+          alt="logo"
+          class="h-16 w-16 items-center group-hover:scale-105 duration-150"
+        />
       </div>
       <div class="flex items-center">
         <router-link to="/">
@@ -15,20 +19,48 @@
     </div>
 
     <!-- Dropdown Content -->
-    <div v-if="isDropdownVisible" class="relative">
+    <div v-if="isDropdownVisible" class="relative z-10">
       <div class="absolute">
         <nav
           id="navbar"
-          class="bg-neutral-800 w-24 relative mx-8 shadow-lg rounded-b-xl h-fit pb-4 overflow-scroll items-center justify-start flex flex-col gap-4"
+          class="bg-neutral-800 w-24 hover:w-52 group relative mx-8 shadow-lg rounded-b-xl h-fit pb-4 overflow-scroll items-center justify-start flex flex-col gap-4 pt-4"
         >
-          <router-link to="/dashboard">
+          <router-link
+            to="/dashboard"
+            class="flex items-center gap-6 group/edit hover:scale-105 duration-150"
+          >
             <img src="/icons/clock-solid.svg" class="h-14 w-14" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              Pomodoro
+            </p>
           </router-link>
 
-          <a><img src="/icons/shield-halved-solid.svg" class="h-14 w-14" /></a>
+          <router-link
+            to="/calendarToDo"
+            class="flex items-center gap-6 hover:scale-105 duration-150"
+          >
+            <img src="/icons/calendar.svg" class="h-14 w-14" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              Calendar
+            </p>
+          </router-link>
 
-          <router-link to="/analyticsDashboard">
+
+          <a class="flex items-center gap-6 hover:scale-105 duration-150">
+            <img src="/icons/shield-halved-solid.svg" class="h-14 w-14" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              Blocker
+            </p>
+          </a>
+
+          <router-link
+            to="/analyticsDashboard"
+            class="flex items-center gap-6 hover:scale-105 duration-150"
+          >
             <img src="/icons/chart-simple-solid.svg" class="h-14 w-14" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              Analytics
+            </p>
           </router-link>
           
           <a @click="showQuackPalAvatar">
@@ -45,14 +77,29 @@
 
           <router-link to="/profile">
             <img src="/icons/user-solid.svg" class="h-14 w-14" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              User Profile
+            </p>
           </router-link>
 
-          <router-link to="/friendsPage">
+          <router-link
+            to="/friendsPage"
+            class="flex items-center gap-6 hover:scale-105 duration-150"
+          >
             <img src="/icons/friends-soild.svg" class="h-14 w-14" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              Friends
+            </p>
           </router-link>
 
-          <router-link to="/quackPalPage">
+          <router-link
+            to="/quackPalPage"
+            class="flex items-center gap-6 hover:scale-105 duration-150"
+          >
             <img src="/icons/store.svg" class="h-14 w-14" />
+            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
+              Store
+            </p>
           </router-link>
         </nav>
       </div>

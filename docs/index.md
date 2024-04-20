@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: 'twenity'
+  name: 'twenify'
   text: 'Your go-to productivity platform, meticulously crafted to tackle the challenges of modern-day student life while catering to the needs of individuals striving for efficient time management.'
   tagline: Whether you're a student aiming for academic excellence or a professional seeking enhanced productivity, Twenify has got you covered.
   actions:

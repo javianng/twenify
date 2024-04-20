@@ -53,7 +53,7 @@ export default {
           ]
         },
         options: {
-          responsive: true, // Add this line
+          responsive: true,
           scales: {
             x: {
               ticks: {
