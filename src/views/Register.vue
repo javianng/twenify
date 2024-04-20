@@ -124,7 +124,7 @@ const register = async () => {
       ActivePetAccessory: 'Duck',
       PetName: 'Henry',
       PetHealth: currentDate,
-      BlockedWebsite: ['testwebsite.com']
+      BlockedWebsite: ['']
     })
 
     await setDoc(doc(db, 'Leaderboard', userId), {
