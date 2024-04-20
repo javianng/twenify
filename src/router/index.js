@@ -11,7 +11,7 @@ import FriendsPage from '@/views/FriendsPage.vue'
 import QuackPalPage from '@/views/QuackPalPage.vue'
 import Register2 from '@/views/Register2.vue'
 import CalendarToDo from '@/views/CalendarToDo.vue'
-
+import QuackPalWidget from '@/views/QuackPalWidget.vue'
 import Spotify from '@/components/widgets/Spotify.vue'
 
 const routes = [
@@ -57,6 +57,11 @@ const routes = [
     path: '/quackPalPage',
     name: 'QuackPalPage',
     component: QuackPalPage
+  },
+  {
+    path: '/quackPalWidget',
+    name: 'QuackPalWidget',
+    component: QuackPalWidget
   },
   {
     path: '/analyticsDashboard',

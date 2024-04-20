@@ -62,25 +62,20 @@
               Analytics
             </p>
           </router-link>
+          
+          <a @click="showQuackPalAvatar">
+            <img src="/icons/dove-solid.svg" class="h-14 w-14 cursor-pointer" 
+          /></a>
 
-          <a
-            @click="showSpotifyWidget"
-            class="flex items-center gap-6 hover:scale-105 duration-150"
-          >
-            <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer" />
-            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
-              Spotify
-            </p>
-          </a>
+          <a @click="showSpotifyWidget">
+            <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer"  
+          /></a>
 
-          <a class="flex items-center gap-6 hover:scale-105 duration-150">
-            <img src="/icons/dove-solid.svg" class="h-14 w-14" />
-            <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
-              Pet!
-            </p>
-          </a>
+          <!-- <router-link to="/quackPalWidget">
+            <img src="/icons/dove-solid.svg" class="h-14 w-14" />  
+          </router-link> -->
 
-          <router-link to="/profile" class="flex items-center gap-6 hover:scale-105 duration-150">
+          <router-link to="/profile">
             <img src="/icons/user-solid.svg" class="h-14 w-14" />
             <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
               User Profile
@@ -110,13 +105,19 @@
       </div>
     </div>
 
+
+    <!-- QuackPalAvatar Widget Overlay-->
+    <div v-if="isQuackPalAvatarVisible" class="z-50">
+      <QuackPalAvatar @close="isQuackPalAvatarVisible = false"></QuackPalAvatar>
+    </div>
+
     <!-- Spotify Widget Overlay-->
     <div v-if="isSpotifyWidgetVisible" class="z-50">
       <SpotifyWidget @close="isSpotifyWidgetVisible = false"></SpotifyWidget>
     </div>
 
     <main>
-      <slot />
+      <slot/>
     </main>
   </Background>
 </template>
@@ -124,13 +125,16 @@
 <script>
 import Background from './Background.vue'
 import SpotifyWidget from '@/components/widgets/Spotify.vue'
+import QuackPalAvatar from '@/components/widgets/QuackPalAvatar.vue' 
+
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 export default {
   name: 'PageLayout',
   components: {
     SpotifyWidget,
-    Background
+    Background,
+    QuackPalAvatar 
   },
   mounted() {
     const auth = getAuth()
@@ -145,6 +149,7 @@ export default {
       backgroundStyle: localStorage.getItem('backgroundStyle') || 'default',
       isDropdownVisible: false,
       isSpotifyWidgetVisible: false,
+      isQuackPalAvatarVisible: false, 
       user: false
     }
   },
@@ -155,6 +160,10 @@ export default {
 
     showSpotifyWidget() {
       this.isSpotifyWidgetVisible = !this.isSpotifyWidgetVisible
+    },
+
+    showQuackPalAvatar() {  
+    this.isQuackPalAvatarVisible = !this.isQuackPalAvatarVisible 
     }
   }
 }
