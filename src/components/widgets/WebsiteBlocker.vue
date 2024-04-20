@@ -1,128 +1,128 @@
 <template>
-    <div class="blocker-widget" ref="blockerWidget">
-      <div class="widget-header">Website Blocker</div>
-      <div class="url-list-container" ref="urlContainer">
-        <ul>
-          <li v-for="(item, index) in blockedUrls" :key="index" class="url-item">
-            <span class="url-text">{{ item.url }}</span>
-            <button @click="deleteUrl(index)" class="delete-button">Delete</button>
-          </li>
-        </ul>
-      </div>
-      <div class="widget-footer">
-        <input
-          type="text"
-          v-model="newUrl"
-          placeholder="Enter Website URL"
-          @keypress.enter.prevent="addUrl"
-          class="url-input"
-        />
-        <button @click="addUrl" class="block-button">Block</button>
-      </div>
+  <div class="blocker-widget" ref="blockerWidget">
+    <div class="widget-header">Website Blocker</div>
+    <div class="url-list-container" ref="urlContainer">
+      <ul>
+        <li v-for="(item, index) in blockedUrls" :key="index" class="url-item">
+          <span class="url-text">{{ item.url }}</span>
+          <button @click="deleteUrl(index)" class="delete-button">Delete</button>
+        </li>
+      </ul>
     </div>
-  </template>
-  
-  
+    <div class="widget-footer">
+      <input
+        type="text"
+        v-model="newUrl"
+        placeholder="Enter Website URL"
+        @keypress.enter.prevent="addUrl"
+        class="url-input"
+      />
+      <button @click="addUrl" class="block-button">Block</button>
+    </div>
+  </div>
+</template>
+
+
 <script>
-    import { ref, onMounted, reactive } from 'vue';
-    import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
-    import { initializeApp } from 'firebase/app';
+  import { ref, onMounted, reactive } from 'vue';
+  import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
+  import { initializeApp } from 'firebase/app';
+
+  var firebaseConfig = {
+      apiKey: 'AIzaSyBNS5lPob943BHz34F2YrNUKbmxHv-3pX4',
+      authDomain: 'twenify.firebaseapp.com',
+      projectId: 'twenify',
+      storageBucket: 'twenify.appspot.com',
+      messagingSenderId: '271571950873',
+      appId: '1:271571950873:web:1f13a731c00db955beb988',
+      measurementId: 'G-524KVXZE3M'
+  };
   
-    var firebaseConfig = {
-        apiKey: 'AIzaSyBNS5lPob943BHz34F2YrNUKbmxHv-3pX4',
-        authDomain: 'twenify.firebaseapp.com',
-        projectId: 'twenify',
-        storageBucket: 'twenify.appspot.com',
-        messagingSenderId: '271571950873',
-        appId: '1:271571950873:web:1f13a731c00db955beb988',
-        measurementId: 'G-524KVXZE3M'
-    };
-    
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth();
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth();
 
-    export default {
-    setup() {
-        const user = ref(null);
-        const useremail = ref('');
-        const newUrl = ref('');
-        const blockedUrls = reactive([]);
-        const blockerWidget = ref(null);
+  export default {
+  setup() {
+      const user = ref(null);
+      const useremail = ref('');
+      const newUrl = ref('');
+      const blockedUrls = reactive([]);
+      const blockerWidget = ref(null);
 
-        onAuthStateChanged(auth, (userAuth) => {
-            if (userAuth) {
-                user.value = userAuth;
-                useremail.value = userAuth.email;
-                // Once we have the user email, we can subscribe to the user's document
-                const userDocRef = doc(db, 'Users', useremail.value);
-                onSnapshot(userDocRef, (docSnapshot) => {
-                    if (docSnapshot.exists()) {
-                        blockedUrls.splice(0, blockedUrls.length, ...(docSnapshot.data().BlockedWebsite || []));
-                    }
-                });
-            }
-        });
+      onAuthStateChanged(auth, (userAuth) => {
+          if (userAuth) {
+              user.value = userAuth;
+              useremail.value = userAuth.email;
+              // Once we have the user email, we can subscribe to the user's document
+              const userDocRef = doc(db, 'Users', useremail.value);
+              onSnapshot(userDocRef, (docSnapshot) => {
+                  if (docSnapshot.exists()) {
+                      blockedUrls.splice(0, blockedUrls.length, ...(docSnapshot.data().BlockedWebsite || []));
+                  }
+              });
+          }
+      });
 
-        onMounted(() => {
-            if (blockerWidget.value) {
-                // Assuming you have a dragElement function defined as shown before
-                dragElement(blockerWidget.value);
-            }
-        });
+      onMounted(() => {
+          if (blockerWidget.value) {
+              // Assuming you have a dragElement function defined as shown before
+              dragElement(blockerWidget.value);
+          }
+      });
 
-        const addUrl = async () => {
-            if (newUrl.value.trim() === '') return;
-            blockedUrls.push(newUrl.value); // Add the new URL to the local state
-            const userDocRef = doc(db, 'Users', useremail.value);
-            await updateDoc(userDocRef, {
-                BlockedWebsite: blockedUrls
-            });
-            newUrl.value = ''; // Clear the input
-        };
+      const addUrl = async () => {
+          if (newUrl.value.trim() === '') return;
+          blockedUrls.push(newUrl.value); // Add the new URL to the local state
+          const userDocRef = doc(db, 'Users', useremail.value);
+          await updateDoc(userDocRef, {
+              BlockedWebsite: blockedUrls
+          });
+          newUrl.value = ''; // Clear the input
+      };
 
-        const deleteUrl = async (urlToDelete) => {
-            const updatedBlockedUrls = blockedUrls.filter(url => url !== urlToDelete); // Remove the URL from the local state
-            const userDocRef = doc(db, 'Users', useremail.value);
-            await updateDoc(userDocRef, {
-                BlockedWebsite: updatedBlockedUrls
-            });
-            // The local state will be reactively updated by onSnapshot
-        };
+      const deleteUrl = async (urlToDelete) => {
+          const updatedBlockedUrls = blockedUrls.filter(url => url !== urlToDelete); // Remove the URL from the local state
+          const userDocRef = doc(db, 'Users', useremail.value);
+          await updateDoc(userDocRef, {
+              BlockedWebsite: updatedBlockedUrls
+          });
+          // The local state will be reactively updated by onSnapshot
+      };
 
-        const dragElement = (elmnt) => {
-            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            const header = elmnt.querySelector('.widget-header');
-            header.onmousedown = dragMouseDown;
+      const dragElement = (elmnt) => {
+          let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+          const header = elmnt.querySelector('.widget-header');
+          header.onmousedown = dragMouseDown;
 
-            function dragMouseDown(e) {
-                e = e || window.event;
-                e.preventDefault();
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                document.onmousemove = elementDrag;
-            }
+          function dragMouseDown(e) {
+              e = e || window.event;
+              e.preventDefault();
+              pos3 = e.clientX;
+              pos4 = e.clientY;
+              document.onmouseup = closeDragElement;
+              document.onmousemove = elementDrag;
+          }
 
-            function elementDrag(e) {
-                e = e || window.event;
-                e.preventDefault();
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px';
-                elmnt.style.top = (elmnt.offsetTop - pos2) + 'px';
-            }
+          function elementDrag(e) {
+              e = e || window.event;
+              e.preventDefault();
+              pos1 = pos3 - e.clientX;
+              pos2 = pos4 - e.clientY;
+              pos3 = e.clientX;
+              pos4 = e.clientY;
+              elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px';
+              elmnt.style.top = (elmnt.offsetTop - pos2) + 'px';
+          }
 
-            function closeDragElement() {
-                document.onmouseup = null;
-                document.onmousemove = null;
-            }
-        };
+          function closeDragElement() {
+              document.onmouseup = null;
+              document.onmousemove = null;
+          }
+      };
 
-        return { newUrl, blockedUrls, addUrl, deleteUrl, blockerWidget };
-    }
+      return { newUrl, blockedUrls, addUrl, deleteUrl, blockerWidget };
+  }
 };
 </script>
   
