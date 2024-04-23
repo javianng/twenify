@@ -20,7 +20,7 @@
         <button @click="addUrl" class="block-button">Block</button>
       </div>
     </div>
-  </template>
+</template>
   
   
 <script>

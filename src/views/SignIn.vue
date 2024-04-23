@@ -117,12 +117,5 @@ const signInWithGoogle = () => {
       console.alert(errorMessage)
     })
 
-// After successful login
-const email = auth.currentUser.email;
-// Send a message to your extension
-chrome.runtime.sendMessage(extensionId, { email }, function(response) {
-  console.log('Received response', response);
-  
-});
 }
 </script>
