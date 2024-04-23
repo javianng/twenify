@@ -46,7 +46,8 @@
           </router-link>
 
 
-          <a class="flex items-center gap-6 hover:scale-105 duration-150">
+          <a @click="showWebsiteBlockingWidget"
+            class="flex items-center gap-6 hover:scale-105 duration-150">
             <img src="/icons/shield-halved-solid.svg" class="h-14 w-14" />
             <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
               Blocker
@@ -57,6 +58,7 @@
             to="/analyticsDashboard"
             class="flex items-center gap-6 hover:scale-105 duration-150"
           >
+
             <img src="/icons/chart-simple-solid.svg" class="h-14 w-14" />
             <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
               Analytics
@@ -123,6 +125,11 @@
       <SpotifyWidget @close="isSpotifyWidgetVisible = false"></SpotifyWidget>
     </div>
 
+    <!-- Website Blocking Widget Overlay-->
+    <div v-if="isWebsiteBlockingWidgetVisible" class="z-50">
+      <WebsiteBlockingWidget @close="isWebsiteBlockingWidgetVisible = false"></WebsiteBlockingWidget>
+    </div>
+
     <main>
       <slot/>
     </main>
@@ -132,6 +139,7 @@
 <script>
 import Background from './Background.vue'
 import SpotifyWidget from '@/components/widgets/Spotify.vue'
+import WebsiteBlockingWidget from '@/components/widgets/WebsiteBlocker.vue';
 import QuackPalAvatar from '@/components/widgets/QuackPalAvatar.vue' 
 
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
@@ -140,7 +148,8 @@ export default {
   name: 'PageLayout',
   components: {
     SpotifyWidget,
-    Background,
+    WebsiteBlockingWidget,
+    Background
     QuackPalAvatar 
   },
   mounted() {
@@ -156,6 +165,7 @@ export default {
       backgroundStyle: localStorage.getItem('backgroundStyle') || 'default',
       isDropdownVisible: false,
       isSpotifyWidgetVisible: false,
+      isWebsiteBlockingWidgetVisible: false,
       isQuackPalAvatarVisible: false, 
       user: false
     }
@@ -167,6 +177,10 @@ export default {
 
     showSpotifyWidget() {
       this.isSpotifyWidgetVisible = !this.isSpotifyWidgetVisible
+    },
+
+    showWebsiteBlockingWidget() {
+      this.isWebsiteBlockingWidgetVisible = !this.isWebsiteBlockingWidgetVisible
     },
 
     showQuackPalAvatar() {  
