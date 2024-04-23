@@ -120,7 +120,7 @@ const fetchCalendarEvents = async (accessToken, email) => {
     if (error.response && error.response.status === 401) {
       // Access token expired, refresh the token
       try {
-        const refreshResponse = await axios.post('http://localhost:8000/refresh_token', {
+        const refreshResponse = await axios.post('https://twenify-backend.vercel.app/refresh_token', {
           email: email
         })
 
