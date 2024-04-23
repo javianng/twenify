@@ -186,11 +186,16 @@ export default {
   },
 
   mounted() {
-    this.isRunning = false
-    localStorage.getItem('volume') ?? localStorage.setItem('volume', 1.0)
+    this.checkTimerState();
   },
 
   methods: {
+    checkTimerState() {
+      if (localStorage.getItem('isRunning') === 'true') {
+        this.startTimer();
+      }
+    },
+
     updateVolume() {
       this.$emit('volume-change', this.volume)
       localStorage.setItem('volume', this.volume)
@@ -203,157 +208,93 @@ export default {
     },
 
     startTimer() {
-      this.isRunning = true
+      this.isRunning = true;
+      localStorage.setItem('isRunning', 'true');
       this.intervalId = setInterval(() => {
         if (this.timeLeft > 0) {
-          this.timeLeft--
-          localStorage.setItem('timeLeft', this.timeLeft)
+          this.timeLeft--;
+          localStorage.setItem('timeLeft', this.timeLeft);
         } else {
-          this.isRunning = false
-          clearInterval(this.intervalId)
-
-          if (this.sessionNumber % 2 === 1) {
-            this.isRunning = false
-            this.timeLeft = this.sessions['pomo'] * 60
-            localStorage.setItem('timeLeft', this.timeLeft)
-            if (this.sessionNumber === 7) {
-              this.sessionNumber = 0
-            } else {
-              this.sessionNumber++
-            }
-            localStorage.setItem('sessionNumber', this.sessionNumber)
-          } else {
-            this.playAudio(this.volume)
-            this.incrementCoin()
-            this.incrementTotalHours()
-            this.addToDateFocusedCollection()
-            this.sessionNumber++
-            localStorage.setItem('sessionNumber', this.sessionNumber)
-            if (this.sessionNumber === 6) {
-              this.isRunning = false
-              this.timeLeft = this.sessions['long'] * 60
-              localStorage.setItem('timeLeft', this.timeLeft)
-            } else {
-              this.isRunning = false
-              this.timeLeft = this.sessions['short'] * 60
-              localStorage.setItem('timeLeft', this.timeLeft)
-            }
-          }
+          this.stopTimer();
+          this.processSessionEnd();
         }
-      }, 1000)
+      }, 1000);
     },
 
-    pauseTimer() {
-      clearInterval(this.intervalId)
-      this.isRunning = false
+    stopTimer() {
+      clearInterval(this.intervalId);
+      this.isRunning = false;
+      localStorage.setItem('isRunning', 'false');
+    },
+
+    processSessionEnd() {
+      this.sessionNumber++;
+      localStorage.setItem('sessionNumber', this.sessionNumber);
+      if (this.sessionNumber % 8 === 0) {
+        this.sessionNumber = 0;
+        this.timeLeft = this.sessions.pomo * 60;
+      } else if (this.sessionNumber % 2 === 0) {
+        this.timeLeft = this.sessions.pomo * 60;
+      } else if (this.sessionNumber === 7) {
+        this.timeLeft = this.sessions.long * 60;
+      } else {
+        this.timeLeft = this.sessions.short * 60;
+      }
+      localStorage.setItem('timeLeft', this.timeLeft);
+      if (this.sessionNumber % 2 === 0) {
+        this.playAudio(this.volume);
+        this.incrementCoin();
+      }
     },
 
     toggleTimer() {
       if (!this.isRunning) {
-        this.startTimer()
+        this.startTimer();
       } else {
-        this.pauseTimer()
+        this.stopTimer();
       }
     },
 
     manualToggleSession(sessionType) {
-      this.isRunning = false
-      if (sessionType === 'pomo') {
-        if (this.sessionNumber % 2 != 0) {
-          localStorage.setItem('sessionNumber', 0)
-          this.sessionNumber = 0
-        }
-        localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
-        this.timeLeft = this.sessions['pomo'] * 60
-      } else if (sessionType === 'short') {
-        localStorage.setItem('sessionNumber', -1)
-        this.sessionNumber = -1
-        localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
-        this.timeLeft = this.sessions['short'] * 60
-      } else if (sessionType === 'long') {
-        localStorage.setItem('sessionNumber', 7)
-        this.sessionNumber = 7
-        localStorage.setItem('timeLeft', this.sessions[sessionType] * 60)
-        this.timeLeft = this.sessions['long'] * 60
-      }
-    },
-
-    incrementLeaderboard() {
-      const docRef = doc(db, 'Leaderboard', this.userEmail)
-      updateDoc(docRef, { TotalHours: increment(this.sessions.pomo / 60) })
-        .then(() => {
-          console.log('Leaderboard incremented successfully!')
-        })
-        .catch((error) => {
-          console.error('Error updating Leaderboard: ', error)
-        })
-    },
-
-    incrementTotalHours() {
-      const docRef = doc(db, 'Total Hours', this.userEmail)
-      updateDoc(docRef, { TotalHours: increment(this.sessions.pomo / 60) })
-        .then(() => {
-          console.log('Total Hours incremented successfully!')
-        })
-        .catch((error) => {
-          console.error('Error updating Total Hours: ', error)
-        })
-    },
-
-    addToDateFocusedCollection() {
-      const currentDate = new Date()
-      const duration = this.sessions['pomo']
-      const dateFocused = { Date: currentDate, FocusedMinute: duration }
-      const collectionRef = collection(db, 'Users', this.userEmail, 'DateFocused')
-      return addDoc(collectionRef, dateFocused)
-        .then(() => {
-          console.log('Duration added to DateFocused collection successfully!')
-        })
-        .catch((error) => {
-          console.error('Error adding duration to DateFocused collection: ', error)
-        })
-    },
-
-    incrementCoin() {
-      const docRef = doc(db, 'Users', this.userEmail)
-      updateDoc(docRef, { Coins: increment(this.sessions.pomo) })
-        .then(() => {
-          console.log('Coin added successfully!')
-          this.coinMessage = `You earned ${this.sessions.pomo} coin(s)!`
-
-          setTimeout(() => {
-            this.coinMessage = null
-          }, 3000)
-        })
-        .catch((error) => {
-          console.error('Error adding Coins: ', error)
-          this.coinMessage = null
-        })
+      this.stopTimer();
+      localStorage.setItem('sessionNumber', this.sessions[sessionType]);
+      this.timeLeft = this.sessions[sessionType] * 60;
+      localStorage.setItem('timeLeft', this.timeLeft);
     },
 
     toggleSettings() {
-      this.showSettings = !this.showSettings
-      const gearIcon = document.querySelector('.gear-icon')
-      gearIcon.classList.toggle('rotate')
+      this.showSettings = !this.showSettings;
+      const gearIcon = document.querySelector('.gear-icon');
+      gearIcon.classList.toggle('rotate');
     },
 
     saveSettings() {
-      const docRef = doc(db, 'Users', this.userEmail)
-      return updateDoc(docRef, {
+      const docRef = doc(db, 'Users', this.userEmail);
+      updateDoc(docRef, {
         PomoTime: this.sessions.pomo,
         ShortTime: this.sessions.short,
         LongTime: this.sessions.long
       }).then(() => {
-        this.showSettings = false
-        this.sessionNumber = 0
-        this.timeLeft = this.sessions.pomo * 60
-        localStorage.setItem('sessionNumber', this.sessionNumber)
-        localStorage.setItem('timeLeft', this.timeLeft)
-      })
+        this.showSettings = false;
+        this.sessionNumber = 0;
+        this.timeLeft = this.sessions.pomo * 60;
+        localStorage.setItem('sessionNumber', this.sessionNumber);
+        localStorage.setItem('timeLeft', this.timeLeft);
+      });
     },
 
     cancelSettings() {
-      this.showSettings = false
+      this.showSettings = false;
+    },
+
+    incrementCoin() {
+      const docRef = doc(db, 'Users', this.userEmail);
+      updateDoc(docRef, { Coins: increment(this.sessions.pomo) }).then(() => {
+        this.coinMessage = `You earned ${this.sessions.pomo} QuackCoins!`;
+        setTimeout(() => {
+          this.coinMessage = null;
+        }, 3000);
+      });
     }
   }
 }
