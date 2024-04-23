@@ -4,7 +4,7 @@ import { getAuth, signInWithCustomToken, signOut } from 'firebase/auth'
 const auth = getAuth()
 
 const backend = axios.create({
-  baseURL: 'http://localhost:8000'
+  baseURL: 'https://twenify-backend.vercel.app'
 })
 
 export const getGoogleAuthLink = async () => {
