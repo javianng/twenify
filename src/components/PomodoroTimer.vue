@@ -157,7 +157,14 @@ export default {
       audio.play()
     },
 
+    playRingAudio(volume) {
+      const audio = new Audio('./start.mp3')
+      audio.volume = volume
+      audio.play()
+    },
+
     startTimer() {
+      this.playStartAudio(this.volume);
       this.isRunning = true;
       localStorage.setItem('isRunning', 'true');
       this.intervalId = setInterval(() => {
@@ -194,6 +201,8 @@ export default {
       if (this.sessionNumber % 2 != 0) {
         this.playAudio(this.volume);
         this.incrementCoin();
+      } else {
+        this.playStartAudio(this.volume);
       }
     },
 
