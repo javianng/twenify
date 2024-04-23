@@ -10,9 +10,9 @@
     </div>
     <div class="grid grid-cols-2 h-screen bg-gradient-to-b to-tPurple from-tDarkPurple pl-6">
       <div class="flex items-end justify-start">
-        <div class="grid grid-rows-3 w-max h-3/4">
+        <div class="grid grid-rows-3 w-max h-2/3">
           <div class="flex flex-col gap-2">
-            <h2 class="text-6xl font-semibold text-[#9E4AF1]">Welcome Back!</h2>
+            <h2 class="text-6xl font-semibold text-tLightPurple">Welcome Back!</h2>
             <p class="text-2xl font-medium text-white">Are you ready to soar to new heights?</p>
           </div>
         </div>
@@ -20,7 +20,7 @@
 
       <div class="flex items-center justify-center h-full">
         <div class="flex flex-col items-center w-1/2 z-20">
-          <h1 class="text-4xl pb-9"><span class="text-[#9E4AF1]">Sign-In</span></h1>
+          <h1 class="text-4xl pb-9"><span class="text-tLightPurple">Sign-In</span></h1>
           <button
             class="flex bg-white w-full py-2 shadow-sm rounded-lg items-center justify-center gap-2"
             @click="signInWithGoogle"
@@ -78,7 +78,7 @@ const router = useRouter()
 const register = () => {
   const auth = getAuth()
   signInWithEmailAndPassword(auth, email.value, password.value)
-    .then((data) => {
+    .then(() => {
       console.log('Successfully signed in!')
       console.log(auth.currentUser)
       router.push('/dashboard')
@@ -106,14 +106,11 @@ const register = () => {
 const signInWithGoogle = () => {
   const provider = new GoogleAuthProvider()
   signInWithPopup(getAuth(), provider)
-    .then((result) => {
+    .then(() => {
       router.push('/dashboard')
     })
     .catch((error) => {
       const errorMessage = error.message
-      /*const errorCode = error.code;
-    const email = error.customData.email;
-    const crediential = GoogleAuthProvider.credentialFromError(error);*/
       console.alert(errorMessage)
     })
 

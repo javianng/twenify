@@ -1,5 +1,5 @@
 <template>
-  <Button id="btn" @click="signOut()" v-if="user" buttonText="Log Out"></Button>
+  <Button id="btn" @click="signOut" v-if="user" buttonText="Log Out"></Button>
 </template>
 
 <script>
@@ -13,23 +13,28 @@ export default {
   name: 'LogOut',
   data() {
     return {
-      user: false
+      user: false,
+      auth: null
     }
   },
+  created() {
+    this.auth = getAuth()
+  },
   mounted() {
-    const auth = getAuth()
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(this.auth, (user) => {
       if (user) {
         this.user = user
       }
     })
   },
   methods: {
-    signOut() {
-      const auth = getAuth()
-      const user = auth.currentUser
-      signOut(auth, user)
-      this.$router.push({ name: 'Home' })
+    async signOut() {
+      try {
+        await signOut(this.auth)
+        this.$router.push({ name: 'Home' })
+      } catch (error) {
+        console.error('Error signing out: ', error)
+      }
     }
   }
 }

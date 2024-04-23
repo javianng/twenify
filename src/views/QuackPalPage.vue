@@ -2,52 +2,124 @@
   <PageLayout>
     <div class="flex flex-row justify-between px-8 p-4 h-full w-screen">
       <div class="w-44 flex flex-col gap-4 h-full">
-        <div class="bg-[#FEF8EB] p-3 rounded-xl flex items-center justify-center gap-3">
+        <!-- Alert -->
+        <div class="absolute top-[10rem] right-0 rounded-l-full">
+          <div class="flex items-end flex-col gap-4">
+            <div
+              v-for="(message, index) in successMessages"
+              :key="'success-' + index"
+              class="flex bg-neutral-800 rounded-l-full py-4 pl-9 pr-8"
+            >
+              <div class="flex items-center justify-center gap-2">
+                <img src="/icons/square-check-solid.svg" alt="" class="w-4 h-4" />
+                <p class="text-white font-semibold">
+                  {{ message }}
+                </p>
+              </div>
+            </div>
+            <div
+              v-for="(message, index) in failureMessages"
+              :key="'failure-' + index"
+              class="flex bg-neutral-800 rounded-l-full py-4 pl-9 pr-8"
+            >
+              <div class="flex items-center justify-center gap-2">
+                <img src="/icons/square-xmark-solid.svg" alt="" class="w-4 h-4" />
+                <p class="text-white font-semibold">
+                  {{ message }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coin Display -->
+
+        <div
+          class="bg-yellow-50 p-3 rounded-xl flex items-center justify-center gap-3 duration-150 hover:scale-105"
+        >
           <img src="/icons/coins.svg" alt="" class="h-9 w-9" />
           <p class="text-2xl font-semibold text-tPurple">{{ coins.toFixed(0) }}</p>
         </div>
+
+        <!-- Store Food -->
+
         <div
           v-if="storeFoodDetail"
           class="bg-white p-4 rounded-lg flex flex-col gap-7 overflow-auto h-fit"
         >
           <div v-for="(data, index) in storeFoodDetail" :key="index">
-            <div
-              class="w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg"
-            >
-              <p>{{ data.Name }}</p>
-              <div class="overflow-hidden flex justify-center">
-                <img :src="data.href" alt="" />
+            <button @click="buyFood(data)" class="duration-150 hover:scale-105">
+              <div
+                class="w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg duration-200 hover:bg-tLightPurple hover:text-white"
+              >
+                <p>{{ data.Name }}</p>
+                <div class="overflow-hidden flex justify-center">
+                  <img :src="data.href" alt="" />
+                </div>
+                <p>{{ data.Price }} Coins</p>
               </div>
-              <p>{{ data.Price }} Coins</p>
-            </div>
+            </button>
           </div>
         </div>
       </div>
+
+      <!-- Pet -->
 
       <div class="flex flex-col items-center h-full justify-center gap-5 w-full">
-        <p class="text-4xl text-white font-semibold">{{ petName }}</p>
-        <div class="w-96 h-96 relative">
-          <img src="/shopAvatarBackdrop.png" alt="" class="absolute" />
-          <div class="absolute bottom-[5.7rem] right-28">
-            <img src="/bird.svg" alt="" class="h-40 animate-bounce" />
+        <p class="text-4xl text-white font-semibold duration-150 hover:scale-110">
+          {{ petName }}
+        </p>
+        <div class="w-96 h-96 relative duration-150 hover:scale-105">
+          <img
+            src="/shop/cloud.png"
+            alt=""
+            class="h-8 absolute top-12 z-50 left-20 animate-cloud"
+          />
+          <img
+            src="/shop/musicNote1.png"
+            alt=""
+            class="h-12 absolute top-16 z-50 right-20 music-note"
+          />
+          <img
+            src="/shop/musicNote2.png"
+            alt=""
+            class="h-12 absolute top-36 z-50 left-12 music-note"
+          />
+          <img src="/shop/backdrop.png" alt="" class="absolute" />
+
+          <div class="flex h-full w-full justify-between flex-col">
+            <div class="h-full z-50 flex items-end justify-center">
+              <img :src="petImageLink" alt="" class="z-50 animate-bounce" />
+            </div>
+            <div class="h-[28%]" />
           </div>
         </div>
-        <Healthbar :futureDate="petHealth" />
+        <div class="hover:scale-105 duration-150">
+          <Healthbar :futureDate="petHealth" />
+        </div>
       </div>
 
+      <!-- Store Equipments -->
+
       <div class="w-44 flex justify-end">
-        <div v-if="storeAccesssoriesDetail" class="w-40 flex flex-col gap-4 overflow-scroll h-full">
-          <div v-for="(data, index) in storeAccesssoriesDetail" :key="index">
-            <!-- Item -->
-            <div
-              class="w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg"
+        <div v-if="subcollectionEquipment" class="w-40 flex flex-col gap-4 overflow-scroll h-full">
+          <div v-for="(data, index) in subcollectionEquipment" :key="index">
+            <button
+              @click="buyEquipment(data)"
+              class="hover:scale-105 w-36 h-36 bg-white p-2 flex flex-col items-center justify-center rounded-lg group hover:bg-tLightPurple duration-150 hover:text-white"
             >
               <p>{{ data.Name }}</p>
               <div class="overflow-hidden flex justify-center">
                 <img :src="data.href" alt="" />
               </div>
-              <p>{{ data.Price }} Coins</p>
-            </div>
+              <p v-if="data.Price != 0">{{ data.Price }} Coins</p>
+              <button
+                v-if="data.Price == 0"
+                class="bg-tYellow rounded-lg w-full text-white fond-semibold group-hover:bg-tPurple duration-150"
+              >
+                Wear
+              </button>
+            </button>
           </div>
         </div>
       </div>
@@ -66,7 +138,7 @@ import {
   query,
   collection,
   updateDoc,
-  arrayUnion
+  increment
 } from 'firebase/firestore'
 import PageLayout from '@/components/PageLayout.vue'
 import Healthbar from '@/components/Healthbar.vue'
@@ -83,12 +155,16 @@ export default {
 
   data() {
     return {
-      useremail: null,
-      storeAccesssoriesDetail: null,
-      storeFoodDetail: null,
+      coins: 0,
       petName: null,
+      useremail: null,
       petHealth: null,
-      coins: 0
+      storeFoodDetail: null,
+      subcollectionEquipment: null,
+      petImageName: null,
+      petImageLink: null,
+      successMessages: [],
+      failureMessages: []
     }
   },
 
@@ -98,27 +174,35 @@ export default {
       if (user) {
         this.user = user
         this.useremail = auth.currentUser.email
-        await this.fetchData(this.useremail)
         await this.fetchFood()
-        await this.fetchAccessories()
+        await this.fetchUserDataAndAccessories(this.useremail)
       }
     })
   },
 
   methods: {
-    async fetchData(useremail) {
-      try {
-        const docRef = doc(db, 'Users', useremail)
-        const docSnap = await getDoc(docRef)
-        if (docSnap.exists()) {
-          this.petName = docSnap.data().PetName
-          this.petHealth = docSnap.data().PetHealth.toDate()
-          this.coins = docSnap.data().Coins
-        } else {
-          console.log('User not found')
-        }
-      } catch (error) {
-        console.error('Error fetching user:', error)
+    async fetchUserDataAndAccessories(useremail) {
+      const docRef = doc(db, 'Users', useremail)
+      const docSnap = await getDoc(docRef)
+
+      if (docSnap.exists()) {
+        this.coins = docSnap.data().Coins
+        this.petName = docSnap.data().PetName
+        this.petHealth = docSnap.data().PetHealth.toDate()
+        this.petImageName = docSnap.data().ActivePetAccessory
+
+        const subcollectionRef = collection(docRef, 'Equipment')
+        const subcollectionSnapshot = await getDocs(subcollectionRef)
+        this.subcollectionEquipment = subcollectionSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        }))
+      }
+
+      const accessoriesDocRef = doc(db, 'Pet Accessories', this.petImageName)
+      const accessoriesDocSnap = await getDoc(accessoriesDocRef)
+      if (accessoriesDocSnap.exists()) {
+        this.petImageLink = accessoriesDocSnap.data().Duck1
       }
     },
 
@@ -128,30 +212,94 @@ export default {
       this.storeFoodDetail = foodData
     },
 
-    async fetchAccessories() {
-      const querySnapshot = await getDocs(query(collection(db, 'Accessories')))
-      const accessoriesData = querySnapshot.docs.map((doc) => doc.data())
-      this.storeAccesssoriesDetail = accessoriesData
+    async buyEquipment(item) {
+      if (this.coins < item.Price) {
+        this.failureMessages.push(`You dont have enough coins!`)
+      } else if (item.Price == 0) {
+        const docRef = doc(db, 'Users', this.useremail)
+        await updateDoc(docRef, { ActivePetAccessory: item.Name })
+        await this.fetchUserDataAndAccessories(this.useremail)
+        this.successMessages.push(`You equipped ${item.Name}!`)
+      } else {
+        const docRef = doc(db, 'Users', this.useremail)
+        const equipmentRef = collection(docRef, 'Equipment')
+        const querySnapshot = await getDocs(equipmentRef)
+        const itemDoc = querySnapshot.docs.find((doc) => doc.data().Name === item.Name)
+        await updateDoc(docRef, { Coins: increment(-item.Price) })
+        await updateDoc(itemDoc.ref, { Price: 0 })
+        await updateDoc(docRef, { ActivePetAccessory: item.Name })
+        await this.fetchUserDataAndAccessories(this.useremail)
+        this.successMessages.push(`You bought ${item.Name}!`)
+      }
+      setTimeout(() => {
+        this.clearMessages()
+      }, 3000)
     },
 
-    async buyItem(item, type) {
+    async buyFood(item) {
       if (this.coins < item.Price) {
-        console.log('Not enough coins')
-        return
-      }
-      this.coins -= item.Price
+        this.failureMessages.push(`You dont have enough coins!`)
+      } else {
+        const docRef = doc(db, 'Users', this.useremail)
+        const userData = await getDoc(docRef)
 
-      try {
-        const userRef = doc(db, 'Users', this.useremail)
-        await updateDoc(userRef, {
-          Coins: this.coins,
-          [type]: arrayUnion(item)
-        })
-        console.log('Purchase successful')
-      } catch (error) {
-        console.error('Error updating document:', error)
+        const currentPetHealth = new Date(userData.data().PetHealth.toDate())
+        const newPetHealth = new Date(currentPetHealth)
+        newPetHealth.setDate(newPetHealth.getDate() + item.HealthPoints)
+
+        await updateDoc(docRef, { PetHealth: newPetHealth })
+        await updateDoc(docRef, { Coins: increment(-item.Price) })
+
+        await this.fetchUserDataAndAccessories(this.useremail)
+        this.successMessages.push(`You bought ${item.Name}!`)
+      }
+      setTimeout(() => {
+        this.clearMessages()
+      }, 3000)
+    },
+
+    clearMessages() {
+      if (this.successMessages.length > 0) {
+        this.successMessages.shift()
+      }
+      if (this.failureMessages.length > 0) {
+        this.failureMessages.shift()
       }
     }
   }
 }
 </script>
+
+<style scoped>
+@keyframes moveCloud {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(2rem);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-cloud {
+  animation: moveCloud 5s linear infinite;
+}
+
+@keyframes rotateNote {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(20deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.music-note {
+  animation: rotateNote 2s ease-in-out infinite alternate;
+}
+</style>

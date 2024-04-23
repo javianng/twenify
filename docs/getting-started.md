@@ -8,7 +8,7 @@ Before you get started, ensure that you have the following software installed on
 
 - [**Node.js**](https://nodejs.dev/en/download/) v16.17.1 or higher
 - [**Git**](https://git-scm.com/downloads) v2.17.0 or higher
-- a [**GitHub**](https://github.com) account with read and write permissions to the [twenity codebase](https://github.com/javianng/twenity).
+- a [**GitHub**](https://github.com) account with read and write permissions to the [twenify codebase](https://github.com/javianng/twenify).
   If you do not have access to the codebase, please let any member of the core team know.
 - any IDE of your choice, but [**WebStorm**](https://www.jetbrains.com/webstorm/) is strongly recommended.
   [Visual Studio Code](https://code.visualstudio.com/) is also another popular choice, but requires additional configuration with plugins.
@@ -31,13 +31,13 @@ cd /path/to/directory
 2. Clone the repository.
 
 ```
-git clone https://github.com/javianng/twenity.git
+git clone https://github.com/javianng/twenify.git
 ```
 
-3. Navigate to the newly created folder containing the twenity codebase.
+3. Navigate to the newly created folder containing the twenify codebase.
 
 ```
-cd twenity
+cd twenify
 ```
 
 4. Install the dependencies.
@@ -47,7 +47,7 @@ npm install
 ```
 
 5. Start the development server, then navigate to `http://localhost:5173` in your browser.
-   You should see the twenity landing page.
+   You should see the twenify landing page.
 
 ```
 npm run dev

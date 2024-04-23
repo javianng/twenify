@@ -10,7 +10,8 @@ import AnalyticsDashboard from '@/views/AnalyticsDashboard.vue'
 import FriendsPage from '@/views/FriendsPage.vue'
 import QuackPalPage from '@/views/QuackPalPage.vue'
 import WebsiteBlocker from '@/components/widgets/WebsiteBlocker.vue'
-
+import Register2 from '@/views/Register2.vue'
+import CalendarToDo from '@/views/CalendarToDo.vue'
 import Spotify from '@/components/widgets/Spotify.vue'
 
 const routes = [
@@ -63,6 +64,11 @@ const routes = [
     component: AnalyticsDashboard
   },
   {
+    path: '/register2',
+    name: 'Register2',
+    component: Register2
+  },
+  {
     path: '/friendsPage',
     name: 'FriendsPage',
     component: FriendsPage
@@ -71,6 +77,11 @@ const routes = [
     path: '/websiteBlocker',
     name: 'WebsiteBlocker',
     component: WebsiteBlocker
+  },
+  {
+    path: '/calendarToDo',
+    name: 'CalendarToDo',
+    component: CalendarToDo
   }
 ]
 
