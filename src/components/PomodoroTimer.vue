@@ -39,11 +39,11 @@
           <label class="text-white w-28 font-semibold flex justify-center items-end">Short Break</label>
           <label class="text-white w-28 font-semibold flex justify-center items-end">Long Break</label>
           <input type="number" v-model="sessions.pomo" @change="manualToggleSession('pomo')" :disabled="isRunning"
-            class="flex w-28 rounded-lg" />
+            class="flex w-28 rounded-lg" min="15" max="90" />
           <input type="number" v-model="sessions.short" @change="manualToggleSession('short')" :disabled="isRunning"
-            class="flex w-28 rounded-lg" />
+            class="flex w-28 rounded-lg" min="5" max="45" />
           <input type="number" v-model="sessions.long" @change="manualToggleSession('long')" :disabled="isRunning"
-            class="flex w-28 rounded-lg" />
+            class="flex w-28 rounded-lg" min="5" max="45" />
         </div>
         <div class="flex justify-between">
           <button @click="saveSettings" class="px-4 py-2 bg-tYellow text-white rounded-md mr-2">
