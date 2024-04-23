@@ -162,7 +162,7 @@ export default {
 .draggable {
   position: absolute;
   cursor: grab;
-  clip-path: polygon(35% 25%, 65% 25%, 65% 100%, 35% 100%);
+  clip-path: polygon(35% 10%, 65% 10%, 65% 100%, 35% 100%);
   z-index: 9; 
 }
 </style>

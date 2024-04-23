@@ -8,7 +8,7 @@
 
       <div class="items-center flex flex-col justify-end duration-150 hover:scale-105">
         <h1 class="text-tLightPurple text-6xl font-bold">Leaderboard</h1>
-        <p class="text-white">based on total productive hours on twenify this week</p>
+        <p class="text-white">based on total productive hours on Twenify this week</p>
       </div>
 
       <!-- Analytics -->
