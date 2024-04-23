@@ -48,7 +48,7 @@
 
           <a @click="showWebsiteBlockingWidget"
             class="flex items-center gap-6 hover:scale-105 duration-150">
-            <img src="/icons/shield-halved-solid.svg" class="h-14 w-14" />
+            <img src="/icons/shield-halved-solid.svg" class="h-14 w-14 cursor-pointer" />
             <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
               Blocker
             </p>
@@ -149,7 +149,7 @@ export default {
   components: {
     SpotifyWidget,
     WebsiteBlockingWidget,
-    Background
+    Background,
     QuackPalAvatar 
   },
   mounted() {
