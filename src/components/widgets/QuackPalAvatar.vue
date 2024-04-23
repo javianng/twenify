@@ -20,7 +20,7 @@
 <script>
 import firebaseApp from '@/firebase.js'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { doc, getDoc, getFirestore } from 'firebase/firestore'
+import { doc, getDoc, getFirestore, onSnapshot } from 'firebase/firestore'
 
 const db = getFirestore(firebaseApp)
 
@@ -50,6 +50,7 @@ export default {
           await this.fetchPetAccessoryData(this.userData.ActivePetAccessory)
         }
         this.startDuckImageTimer()
+        this.setupPetAccessoryListener(this.userData.ActivePetAccessory)
       }
     })
   },
@@ -83,6 +84,15 @@ export default {
       } catch (error) {
         console.error('Error fetching pet accessory:', error)
       }
+    },
+    
+    setupPetAccessoryListener(activePetAccessoryId) {
+      const docRef = doc(db, 'Pet Accessories', activePetAccessoryId)
+      onSnapshot(docRef, (doc) => {
+        if (doc.exists()) {
+          this.petAccessoryData = doc.data()
+        }
+      })
     },
     
     startDuckImageTimer() {
@@ -162,7 +172,7 @@ export default {
 .draggable {
   position: absolute;
   cursor: grab;
-  clip-path: polygon(35% 25%, 65% 25%, 65% 100%, 35% 100%);
+  clip-path: polygon(35% 10%, 65% 10%, 65% 100%, 35% 100%);
   z-index: 9; 
 }
 </style>
