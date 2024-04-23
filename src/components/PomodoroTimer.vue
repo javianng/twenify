@@ -1,13 +1,8 @@
 <template>
-  <div
-    class="bg-opacity-30 bg-neutral-800 flex flex-col items-center justify-center py-8 min-h-[50vh]"
-  >
+  <div class="bg-opacity-30 bg-neutral-800 flex flex-col items-center justify-center py-8 min-h-[50vh]">
     <!-- Coin Message Box -->
-    <div
-      v-if="coinMessage"
-      class="absolute bg-neutral-800 top-[10rem] right-0 rounded-l-full py-4 pl-9 pr-8 z-10"
-      style="z-index: 10;"
-    >
+    <div v-if="coinMessage" class="absolute bg-neutral-800 top-[10rem] right-0 rounded-l-full py-4 pl-9 pr-8 z-10"
+      style="z-index: 10;">
       <div class="flex items-center justify-center gap-2">
         <img src="/icons/coins.svg" alt="" class="w-4 h-4" />
         <p class="text-white font-semibold">
@@ -19,73 +14,36 @@
     <!-- Pomodoro Toggle -->
     <div class="relative">
       <div class="flex gap-4">
-        <button
-          @click="manualToggleSession('pomo')"
-          :class="{ underline: sessionNumber % 2 === 0 }"
-          class="px-4 py-2 text-white underline-offset-4 duration-150 hover:scale-110"
-        >
+        <button @click="manualToggleSession('pomo')" :class="{ underline: sessionNumber % 2 === 0 }"
+          class="px-4 py-2 text-white underline-offset-4 duration-150 hover:scale-110">
           Pomodoro
         </button>
-        <button
-          @click="manualToggleSession('short')"
-          :class="{
-            underline: (sessionNumber % 2 === 1 && sessionNumber !== 7) || sessionNumber === -1
-          }"
-          class="px-4 py-2 text-white underline-offset-4 duration-150 hover:scale-110"
-        >
+        <button @click="manualToggleSession('short')" :class="{
+          underline: (sessionNumber % 2 === 1 && sessionNumber !== 7) || sessionNumber === -1
+        }" class="px-4 py-2 text-white underline-offset-4 duration-150 hover:scale-110">
           Short Break
         </button>
-        <button
-          @click="manualToggleSession('long')"
-          :class="{ underline: sessionNumber === 7 }"
-          class="px-4 py-2 text-white underline-offset-4 duration-150 hover:scale-110"
-        >
+        <button @click="manualToggleSession('long')" :class="{ underline: sessionNumber === 7 }"
+          class="px-4 py-2 text-white underline-offset-4 duration-150 hover:scale-110">
           Long Break
         </button>
-        <button
-          @click="toggleSettings"
-          class="px-4 py-2 text-white rounded-md duration-150 hover:scale-125"
-        >
+        <button @click="toggleSettings" class="px-4 py-2 text-white rounded-md duration-150 hover:scale-125">
           <img src="/icons/gear-solid.svg" alt="" class="w-4 gear-icon cursor-pointer" />
         </button>
       </div>
 
       <!-- Setting Dashboard -->
-      <div
-        v-if="showSettings"
-        class="bg-tPurple p-4 rounded-lg shadow-xl absolute top-0 -right-[25em]"
-      >
+      <div v-if="showSettings" class="bg-tPurple p-4 rounded-lg shadow-xl absolute top-0 -right-[25em]">
         <div class="grid grid-cols-3 grid-rows-2 gap-2 mb-4 -mt-6">
-          <label class="text-white w-28 font-semibold flex justify-center items-end"
-            >Pomodoro</label
-          >
-          <label class="text-white w-28 font-semibold flex justify-center items-end"
-            >Short Break</label
-          >
-          <label class="text-white w-28 font-semibold flex justify-center items-end"
-            >Long Break</label
-          >
-          <input
-            type="number"
-            v-model="sessions.pomo"
-            @change="manualToggleSession('pomo')"
-            :disabled="isRunning"
-            class="flex w-28 rounded-lg"
-          />
-          <input
-            type="number"
-            v-model="sessions.short"
-            @change="manualToggleSession('short')"
-            :disabled="isRunning"
-            class="flex w-28 rounded-lg"
-          />
-          <input
-            type="number"
-            v-model="sessions.long"
-            @change="manualToggleSession('long')"
-            :disabled="isRunning"
-            class="flex w-28 rounded-lg"
-          />
+          <label class="text-white w-28 font-semibold flex justify-center items-end">Pomodoro</label>
+          <label class="text-white w-28 font-semibold flex justify-center items-end">Short Break</label>
+          <label class="text-white w-28 font-semibold flex justify-center items-end">Long Break</label>
+          <input type="number" v-model="sessions.pomo" @change="manualToggleSession('pomo')" :disabled="isRunning"
+            class="flex w-28 rounded-lg" />
+          <input type="number" v-model="sessions.short" @change="manualToggleSession('short')" :disabled="isRunning"
+            class="flex w-28 rounded-lg" />
+          <input type="number" v-model="sessions.long" @change="manualToggleSession('long')" :disabled="isRunning"
+            class="flex w-28 rounded-lg" />
         </div>
         <div class="flex justify-between">
           <button @click="saveSettings" class="px-4 py-2 bg-tYellow text-white rounded-md mr-2">
@@ -97,15 +55,7 @@
         </div>
         <div class="pt-2 flex flex-row gap-3">
           <label class="text-white w-28 font-semibold text-nowrap">Audio Level</label>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            v-model="volume"
-            @input="updateVolume"
-            class="flex w-full"
-          />
+          <input type="range" min="0" max="1" step="0.01" v-model="volume" @input="updateVolume" class="flex w-full" />
         </div>
       </div>
     </div>
@@ -241,7 +191,7 @@ export default {
         this.timeLeft = this.sessions.short * 60;
       }
       localStorage.setItem('timeLeft', this.timeLeft);
-      if (this.sessionNumber % 2 === 0) {
+      if (this.sessionNumber % 2 != 0) {
         this.playAudio(this.volume);
         this.incrementCoin();
       }
