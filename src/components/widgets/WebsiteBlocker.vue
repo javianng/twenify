@@ -17,7 +17,10 @@
           @keypress.enter.prevent="addUrl"
           class="url-input"
         />
-        <button @click="addUrl" class="block-button">Block</button>
+        <button @click="addUrl" class="block-button">Enter</button>
+        <button :class="{ 'block': !isBlockingActive, 'unblock': isBlockingActive }" @click="toggleBlocking">
+          {{ isBlockingActive ? 'Unblock' : 'Block' }}
+        </button>
       </div>
     </div>
 </template>
@@ -51,6 +54,7 @@
         const newUrl = ref('');
         const blockedUrls = reactive([]);
         const blockerWidget = ref(null);
+        const isBlockingActive = ref(false); 
 
         onAuthStateChanged(auth, (userAuth) => {
             if (userAuth) {
@@ -72,7 +76,16 @@
             console.error("Error fetching document: ", error);
             });
           }
-         });
+        });
+
+        const toggleBlocking = async () => {
+          const userDocRef = doc(db, 'Users', useremail.value);
+          const newState = !isBlockingActive.value;
+          await updateDoc(userDocRef, {
+              blocker_status: newState // Make sure to use the correct field name in your Firestore
+          });
+          isBlockingActive.value = newState;
+        };
 
         onMounted(() => {
             if (blockerWidget.value) {
@@ -133,7 +146,7 @@
             }
         };
     
-        return { newUrl, blockedUrls, addUrl, deleteUrl, blockerWidget };
+        return { newUrl, blockedUrls, addUrl, deleteUrl, toggleBlocking, blockerWidget, isBlockingActive };
         }
   };
 </script>
@@ -215,8 +228,15 @@ body {
 .widget-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between; /* This will space out the child elements */
   margin-top: 20px;
+  gap: 10px; /* This adds space between the buttons */
+}
+
+.block-button, .toggle-button {
+  padding: 10px 20px; /* Adjust padding to increase button size */
+  margin: 0 5px; /* Add a little margin to each side of the buttons */
+  flex: 1; /* This will make the buttons share the available space equally */
 }
 
 .widget-footer button:hover {
@@ -226,4 +246,21 @@ body {
 .widget-footer button:focus {
   outline: none;
 }
+
+.unblock {
+  background-color: grey;
+  color: black;
+}
+
+.block {
+  background-color: #ffc54e; /* Maintain yellow color for the block button */
+  color: black;
+}
+
+/* Increased specificity for the Unblock button to ensure it overrides other styles */
+.delete-button.unblock, .widget-footer button.unblock {
+  background-color: grey; /* Set background color to grey for unblock button */
+  color: black;
+}
+
 </style>
