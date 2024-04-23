@@ -1,16 +1,18 @@
 <template>
     <PageLayout>
-      <div class="flex flex-col items-center gap-8 pt-12" v-if="user">
-        <h1 class="text-center text-5xl font-medium text-white">Friends Page</h1>
-        <div class="flex flex-col items-center">
-            <div>
-            <Button id="btnSend" @click="changeToSendRequest()" v-if="user" buttonText="Send Request"></Button>
-            <Button id="btnPending" @click="changeToPendingRequest()" v-if="user" buttonText="Pending Request"></Button>
-        </div>
-        </div>
+      <div class="grid grid-cols-2 gap-10 p-8 text-center">
+      <div class="items-center flex flex-col justify-end duration-150 hover:scale-105">
+        <h1 class="text-tLightPurple text-6xl font-bold">Send Friend Requests</h1>
+        <p class="text-white">Input another user's email to send a friend request</p>
+      </div>
+      <div class="items-center flex flex-col justify-end duration-150 hover:scale-105">
+        <h1 class="text-tLightPurple text-6xl font-bold">Pending Requests</h1>
+        <p class="text-white" id = "friend-request-description">See who has sent you friend requests and who has accepted your requests</p>
+      </div>
 
-        <div class="flex flex-col gap-2" v-show = "SendRequestPage && !PendingRequestPage">
-          <div class="flex items-center gap-4">
+      <!-- Send friend request-->
+      <div class="flex flex-col items-center align-top" id ="sendFR">
+        <div class="flex items-center gap-4 w-80 justify-center">
             <p class="font-bold text-white w-20">Friend's Email</p>
             <input
               type="text"
@@ -20,9 +22,39 @@
               @input = "handleInputChange"
             />
             <Button id="btn" @click=" fetchData(friendsEmail)" v-if="user" buttonText="Search"></Button>
+        </div>
+        
+
+      </div>
+      <!-- test-->
+      <div class="flex items-start justify-center">
+        <div  v-if="RequestEmail.length > 0 " class="flex flex-col gap-2 w-[80%]">
+          <div  class="flex px-3">
+            <p class="flex w-[25%] text-start font-bold text-white"> Username</p>
+            <p class="flex w-[45%] text-start font-bold text-white"> Email</p>
           </div>
-          <br>
-          <div class="flex flex-col items-left">
+          <div
+            v-for= "(email, index) in RequestEmail" :key = "email" 
+            class=
+              'bg-tPurple text-white p-3 w-full rounded-md duration-150 hover:scale-105'>
+            <div class="flex px-3">
+              <div class="flex w-[25%] text-start font-bold">{{RequestNames[index]}}</div>
+              <div class="flex w-[45%] text-start font-bold">{{email}} </div>
+              <div class="flex w-[15%] justify-start font-bold">
+                <button class = "acceptBtn" id = "acceptBtn" @click="acceptFriend(email)"> Accept</button>
+              </div>
+              <div class="flex w-[15%] justify-end font-bold">
+                <button class = "declineBtn" id = "declineBtn" @click="declineFriend(email)"> Decline</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <p class="font-bold text-white w-70 items-left" v-else>
+                No Incoming Requests!
+        </p>
+      </div> 
+      <div class="flex items-start justify-center">
             <p v-if= "isAlreadyFriend  && friendsEmail !== '' && searchedPressed" class="font-bold text-white"> Is Already A Friend!</p>
             <p v-if = "isMyself  && friendsEmail !== '' && searchedPressed" class="font-bold text-white"> Can't be friends with yourself</p>
             <p v-if ="friendExists === true && friendsEmail !== '' && searchedPressed && !isAlreadyFriend && !isMyself" class="font-bold text-white">
@@ -32,55 +64,33 @@
             <p v-if ="friendExists === false && friendsEmail !== '' && searchedPressed && !isAlreadyFriend && !isMyself" class="font-bold text-white">
             Email was not found
             </p>
-        </div>
+      </div>
+      
+      <div class="flex items-start justify-center">
+        <div v-if="newFriendsEmail.length > 0 " class="flex flex-col gap-2 w-[80%]">
+          <div  class="flex px-3">
+            <p class="flex w-[25%] text-start font-bold text-white"> Username</p>
+            <p class="flex w-[45%] text-start font-bold text-white"> Email</p>
+          </div>
+          <div v-for = "(email, index) in newFriendsEmail" :key = "email" class= 'bg-tPurple text-white p-3 w-full rounded-md duration-150 hover:scale-105'>
+            <div class="flex px-3">
+              <div class="flex w-[25%] text-start font-bold">{{newFriendsName[index]}}</div>
+              <div class="flex w-[75%] text-start font-bold">{{email}}</div>
+            </div>
+          </div>
+          <div class = "flex px-3">
+            <p class="flex w-[90%] font-bold text-white"> </p>
+            <button id = "dismissBtn" class = "flex w-[10%] font-bold" @click="dismiss()"> Dismiss </button>
+          </div>
         </div>
         
-        
-        <div class="flex flex-col gap-2" v-show = "!SendRequestPage && PendingRequestPage">
-            <p class="font-bold text-white w-70 items-left" v-if="RequestEmail.length > 0 ">
-                <table class = "incomingRequestTable" >
-                    <thead>
-                        <tr>
-                            <th> Request From: </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for = "(email, index) in RequestEmail" :key = "email">
-                            <td> {{RequestNames[index]}}</td>
-                            <td>{{email}} </td>
-                            <td> <button class = "acceptBtn" @click="acceptFriend(email)"> Accept</button></td>
-                            <td> <button class = "declineBtn" @click="declineFriend(email)"> Decline</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </p>
-            <p class="font-bold text-white w-70 items-left" v-else>
-                No Incoming Requests!
-            </p>
-
-            <p class="font-bold text-white w-70 items-left" v-if="newFriendsEmail.length > 0 "> 
-                <br>
-                <table class = "acceptedRequestTable">
-                    <thead>
-                        <tr>
-                            <th> New Friends: </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for = "(email, index) in newFriendsEmail" :key = "email">
-                            <td> {{newFriendsName[index]}}</td>
-                            <td>{{email}} </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button class = "dismissBtn" @click="dismiss()"> Dismiss </button>
-            </p>
-            <p class="font-bold text-white w-70 items-left" v-else>
+        <p class="font-bold text-white w-90 items-left" v-else>
                 <br>
                 No New Friends!
-            </p>
-        </div>
+        </p>
       </div>
+    </div>
+      
     </PageLayout>
   </template>
   
@@ -115,8 +125,6 @@
         searchedPressed: false,
         isMyself: false,
         isAlreadyFriend: false,
-        SendRequestPage: true,
-        PendingRequestPage: false,
         RequestEmail: [],
         RequestNames:[],
         newFriendsEmail:[],
@@ -129,6 +137,7 @@
         if (user) {
           this.user = user
           this.useremail = auth.currentUser.email
+          await this.changeToPendingRequest()
         }
       })
     },
@@ -185,12 +194,11 @@
         await updateDoc(docRef2,{IncomingRequests: oldCopy2});
 
         this.friendsEmail = '';
-        this.handleInputChange()
+        this.handleInputChange();
+        await this.changeToPendingRequest();
 
     },
     async changeToPendingRequest() {
-        this.SendRequestPage = false;
-        this.PendingRequestPage = true;
 
         this.RequestEmail=[];
         this.RequestNames=[];
@@ -211,12 +219,6 @@
             const docSnap3 =  await getDoc(DocRef3);
             this.newFriendsName.push(docSnap3.data().Name);
         }
-
-    },
-
-    changeToSendRequest(){
-        this.SendRequestPage = true;
-        this.PendingRequestPage = false;
     },
     async acceptFriend(email) {
         const DocRef = doc(db, 'Friends', this.useremail);
@@ -254,6 +256,7 @@
             this.RequestEmail.splice(index,-1);
         }
         this.changeToPendingRequest();
+        document.getElementById("acceptBtn").disabled = true;
     },
     async declineFriend(email) {
         //remove from my incoming requests
@@ -268,6 +271,7 @@
         const PendingAcceptanceUpdated = docSnap2.data().PendingAcceptance.filter(item => item !== this.useremail);
         await updateDoc(DocRef2, {PendingAcceptance: PendingAcceptanceUpdated});
         this.changeToPendingRequest();
+        document.getElementById("declineBtn").disabled = true;
     },
     async dismiss() {
         const DocRef = doc(db, 'Friends', this.useremail);
@@ -297,7 +301,8 @@
 .acceptedRequestTable th,
 .acceptedRequestTable td{
   padding: 8px;
-  border-bottom: 1px solid #ccc;
+  
+  width: 120px;
 }
 
 .incomingRequestTable th, 
@@ -311,7 +316,7 @@
 .declineBtn{
     color:rgb(186, 50, 83);
 }
-.dismissBtn{
+#dismissBtn{
     color: #ffc665
 }
 </style>
