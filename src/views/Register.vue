@@ -107,7 +107,7 @@ const auth = getAuth()
 const db = getFirestore()
 
 const futureDate = Timestamp.fromDate(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))
-const Task = { TaskName: 'task name', Cleared: false }
+const Task = { TaskName: 'task name', Deleted: false }
 const DateFocused = { Date: futureDate, FocusedMinute: 10 }
 const equipments = [
   {
@@ -139,6 +139,11 @@ const equipments = [
     Name: 'Partyhat',
     Price: 40,
     href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/partyhat.png?alt=media&token=e2cb2112-7691-402a-9240-c0199f55ac2c'
+  },
+  {
+    Name: 'Egg',
+    Price: 0,
+    href: 'https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/egg.png?alt=media&token=b57c04b7-2510-4a31-9bb4-f7d76bd4056c'
   }
 ]
 
@@ -154,7 +159,7 @@ const register = async () => {
       LongTime: 10,
       ShortTime: 5,
       PomoTime: 25,
-      ActivePetAccessory: 'Duck',
+      ActivePetAccessory: 'Egg', //here
       PetName: `Javian's Pet`,
       PetHealth: futureDate,
       BlockedWebsite: ['testwebsite.com']
@@ -210,7 +215,7 @@ const signInWithGoogle = async () => {
       LongTime: 10,
       ShortTime: 5,
       PomoTime: 25,
-      ActivePetAccessory: 'Duck',
+      ActivePetAccessory: 'Egg', //here
       PetName: `Javian's Pet`,
       PetHealth: futureDate,
       BlockedWebsite: ['testwebsite.com']

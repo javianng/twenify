@@ -45,12 +45,12 @@
 
         <div
           v-if="storeFoodDetail"
-          class="bg-white p-4 rounded-lg flex flex-col gap-7 overflow-auto h-fit"
+          class="bg-white p-4 rounded-lg flex flex-col gap-7 overflow-auto h-fit duration-200 hover:bg-tLightPurple"
         >
           <div v-for="(data, index) in storeFoodDetail" :key="index">
             <button @click="buyFood(data)" class="duration-150 hover:scale-105">
               <div
-                class="w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg duration-200 hover:bg-tLightPurple hover:text-white"
+                class="w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg"
               >
                 <p>{{ data.Name }}</p>
                 <div class="overflow-hidden flex justify-center">
@@ -138,7 +138,8 @@ import {
   query,
   collection,
   updateDoc,
-  increment
+  increment,
+setDoc
 } from 'firebase/firestore'
 import PageLayout from '@/components/PageLayout.vue'
 import Healthbar from '@/components/Healthbar.vue'
@@ -164,7 +165,8 @@ export default {
       petImageName: null,
       petImageLink: null,
       successMessages: [],
-      failureMessages: []
+      failureMessages: [],
+      isHatched: null,
     }
   },
 
@@ -176,6 +178,8 @@ export default {
         this.useremail = auth.currentUser.email
         await this.fetchFood()
         await this.fetchUserDataAndAccessories(this.useremail)
+        await this.fetchHatchedStatus()
+        console.log(this.isHatched)
       }
     })
   },
@@ -184,7 +188,6 @@ export default {
     async fetchUserDataAndAccessories(useremail) {
       const docRef = doc(db, 'Users', useremail)
       const docSnap = await getDoc(docRef)
-
       if (docSnap.exists()) {
         this.coins = docSnap.data().Coins
         this.petName = docSnap.data().PetName
@@ -196,9 +199,16 @@ export default {
         this.subcollectionEquipment = subcollectionSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data()
-        }))
+        })).filter((data) => data.Name != "Egg").filter((data) =>{
+          console.log(docSnap.data().ActivePetAccessory)
+          if (docSnap.data().ActivePetAccessory == "Egg") {
+            return data.Name != "Duck"
+          } else {
+            //console.log(data.Name);
+            return true
+          }
+        })
       }
-
       const accessoriesDocRef = doc(db, 'Pet Accessories', this.petImageName)
       const accessoriesDocSnap = await getDoc(accessoriesDocRef)
       if (accessoriesDocSnap.exists()) {
@@ -213,7 +223,9 @@ export default {
     },
 
     async buyEquipment(item) {
-      if (this.coins < item.Price) {
+      if (!this.isHatched) {
+        this.failureMessages.push(`You cannot buy any accessories before ${this.petName} is hatched!`)
+      } else if(this.coins < item.Price) {
         this.failureMessages.push(`You dont have enough coins!`)
       } else if (item.Price == 0) {
         const docRef = doc(db, 'Users', this.useremail)
@@ -225,8 +237,8 @@ export default {
         const equipmentRef = collection(docRef, 'Equipment')
         const querySnapshot = await getDocs(equipmentRef)
         const itemDoc = querySnapshot.docs.find((doc) => doc.data().Name === item.Name)
-        await updateDoc(docRef, { Coins: increment(-item.Price) })
-        await updateDoc(itemDoc.ref, { Price: 0 })
+        await updateDoc(docRef, { Coins: increment(-item.Price) }) // decrease user's coin
+        await updateDoc(itemDoc.ref, { Price: 0 }) // set price as 0
         await updateDoc(docRef, { ActivePetAccessory: item.Name })
         await this.fetchUserDataAndAccessories(this.useremail)
         this.successMessages.push(`You bought ${item.Name}!`)
@@ -265,7 +277,27 @@ export default {
       if (this.failureMessages.length > 0) {
         this.failureMessages.shift()
       }
-    }
+    },
+    async fetchHatchedStatus(){
+      const docRef = doc(db, 'Leaderboard',this.useremail)
+      const docSnap = await getDoc(docRef)
+      const numHours = docSnap.data().TotalHours
+      const docRef1 = doc(db, 'Users',this.useremail)
+      const docSnap1 = await getDoc(docRef1)
+      const currAvatar = docSnap1.data().ActivePetAccessory
+      if (numHours < 100) { //num hours of study less thqn 100, the egg cannot be hatched
+        this.isHatched = false;
+      } else { //num hours greater than 100, the egg must be hatched
+        this.isHatched = true;
+        if (currAvatar == "Egg") {
+          const docRef1 = doc(db, 'Users', this.useremail);
+          await updateDoc(docRef1, {
+            ActivePetAccessory: "Duck"
+          });
+          this.fetchUserDataAndAccessories(this.useremail);
+        }
+      }
+    },
   }
 }
 </script>
@@ -284,7 +316,7 @@ export default {
 }
 
 .animate-cloud {
-  animation: moveCloud 5s linear infinite;
+  animation: moveCloud 5s linear infinite; /* Adjust duration as needed */
 }
 
 @keyframes rotateNote {
