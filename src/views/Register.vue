@@ -155,9 +155,9 @@ const register = async () => {
       ShortTime: 5,
       PomoTime: 25,
       ActivePetAccessory: 'Duck',
-      PetName: `Javian's Pet`,
-      PetHealth: futureDate,
-      BlockedWebsite: ['testwebsite.com']
+      PetName: 'Henry',
+      PetHealth: currentDate,
+      BlockedWebsite: ['']
     })
 
     for (const equipment of equipments) {

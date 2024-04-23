@@ -1,0 +1,42 @@
+{
+    "manifest_version": 3,
+    "name": "Twenify - Website Blocker",
+    "version": "1.0",
+    "description": "Block access to specified websites.",
+    "permissions": [
+      "declarativeNetRequest",
+      "declarativeNetRequestFeedback",
+      "storage",
+      "activeTab"
+    ],
+    "background": {
+      "service_worker": "dist/background.bundle.js"
+    },
+    "host_permissions": [
+      "<all_urls>"
+    ],
+    "declarative_net_request": {
+        "action_types": ["block"],
+        "rule_resources": [
+            {
+              "id": "ruleset1",
+              "enabled": true,
+              "path": "rules.json"
+            }
+        ]
+    },
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'"
+    },
+
+    "icons": {
+        "128": "icons/twenifyblack.png"
+    },
+    "action": {
+        "default_icon": {
+        "128": "icons/twenifyblack.png"
+        },
+        "default_popup": "popup.html"
+    }
+}
+    
