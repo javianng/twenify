@@ -241,7 +241,7 @@ export default {
     },
 
     playRingAudio(volume) {
-      const audio = new Audio('./start.mp3')
+      const audio = new Audio('./audios/start.mp3')
       audio.volume = volume
       audio.play()
     },
