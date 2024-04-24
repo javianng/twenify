@@ -8,7 +8,7 @@
             <div
               v-for="(message, index) in successMessages"
               :key="'success-' + index"
-              class="flex bg-neutral-800 rounded-l-full py-4 pl-9 pr-8"
+              class="success-message flex bg-neutral-800 rounded-l-full py-4 pl-9 pr-8"
             >
               <div class="flex items-center justify-center gap-2">
                 <img src="/icons/square-check-solid.svg" alt="" class="w-4 h-4" />
@@ -20,7 +20,7 @@
             <div
               v-for="(message, index) in failureMessages"
               :key="'failure-' + index"
-              class="flex bg-neutral-800 rounded-l-full py-4 pl-9 pr-8"
+              class="failure-message flex bg-neutral-800 rounded-l-full py-4 pl-9 pr-8"
             >
               <div class="flex items-center justify-center gap-2">
                 <img src="/icons/square-xmark-solid.svg" alt="" class="w-4 h-4" />
@@ -139,7 +139,7 @@ import {
   collection,
   updateDoc,
   increment,
-setDoc
+  setDoc
 } from 'firebase/firestore'
 import PageLayout from '@/components/PageLayout.vue'
 import Healthbar from '@/components/Healthbar.vue'
@@ -166,7 +166,7 @@ export default {
       petImageLink: null,
       successMessages: [],
       failureMessages: [],
-      isHatched: null,
+      isHatched: null
     }
   },
 
@@ -196,18 +196,21 @@ export default {
 
         const subcollectionRef = collection(docRef, 'Equipment')
         const subcollectionSnapshot = await getDocs(subcollectionRef)
-        this.subcollectionEquipment = subcollectionSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data()
-        })).filter((data) => data.Name != "Egg").filter((data) =>{
-          console.log(docSnap.data().ActivePetAccessory)
-          if (docSnap.data().ActivePetAccessory == "Egg") {
-            return data.Name != "Duck"
-          } else {
-            //console.log(data.Name);
-            return true
-          }
-        })
+        this.subcollectionEquipment = subcollectionSnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+          }))
+          .filter((data) => data.Name != 'Egg')
+          .filter((data) => {
+            console.log(docSnap.data().ActivePetAccessory)
+            if (docSnap.data().ActivePetAccessory == 'Egg') {
+              return data.Name != 'Duck'
+            } else {
+              //console.log(data.Name);
+              return true
+            }
+          })
       }
       const accessoriesDocRef = doc(db, 'Pet Accessories', this.petImageName)
       const accessoriesDocSnap = await getDoc(accessoriesDocRef)
@@ -224,8 +227,14 @@ export default {
 
     async buyEquipment(item) {
       if (!this.isHatched) {
-        this.failureMessages.push(`You cannot buy any accessories before ${this.petName} is hatched!`)
-      } else if(this.coins < item.Price) {
+        const docRef1 = doc(db, 'Leaderboard', this.useremail)
+        const docSnap1 = await getDoc(docRef1)
+        const numHours = docSnap1.data().TotalHours
+        const numHoursLeft = 100 - numHours
+        this.failureMessages.push(
+          `You cannot buy any accessories before ${this.petName} is hatched! ${numHoursLeft} hours left to go!`
+        )
+      } else if (this.coins < item.Price) {
         this.failureMessages.push(`You dont have enough coins!`)
       } else if (item.Price == 0) {
         const docRef = doc(db, 'Users', this.useremail)
@@ -278,26 +287,28 @@ export default {
         this.failureMessages.shift()
       }
     },
-    async fetchHatchedStatus(){
-      const docRef = doc(db, 'Leaderboard',this.useremail)
+    async fetchHatchedStatus() {
+      const docRef = doc(db, 'Leaderboard', this.useremail)
       const docSnap = await getDoc(docRef)
       const numHours = docSnap.data().TotalHours
-      const docRef1 = doc(db, 'Users',this.useremail)
+      const docRef1 = doc(db, 'Users', this.useremail)
       const docSnap1 = await getDoc(docRef1)
       const currAvatar = docSnap1.data().ActivePetAccessory
-      if (numHours < 100) { //num hours of study less thqn 100, the egg cannot be hatched
-        this.isHatched = false;
-      } else { //num hours greater than 100, the egg must be hatched
-        this.isHatched = true;
-        if (currAvatar == "Egg") {
-          const docRef1 = doc(db, 'Users', this.useremail);
+      if (numHours < 100) {
+        //num hours of study less thqn 100, the egg cannot be hatched
+        this.isHatched = false
+      } else {
+        //num hours greater than 100, the egg must be hatched
+        this.isHatched = true
+        if (currAvatar == 'Egg') {
+          const docRef1 = doc(db, 'Users', this.useremail)
           await updateDoc(docRef1, {
-            ActivePetAccessory: "Duck"
-          });
-          this.fetchUserDataAndAccessories(this.useremail);
+            ActivePetAccessory: 'Duck'
+          })
+          this.fetchUserDataAndAccessories(this.useremail)
         }
       }
-    },
+    }
   }
 }
 </script>
@@ -333,5 +344,10 @@ export default {
 
 .music-note {
   animation: rotateNote 2s ease-in-out infinite alternate;
+}
+
+.success-message,
+.failure-message {
+  z-index: 9999;
 }
 </style>
