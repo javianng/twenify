@@ -54,7 +54,7 @@ router.get('/login_redirect', async (req, res) => {
 
                 const fbToken = await createFbToken(userRecord.uid);
                 await updateTokens(userInfo.data.email, tokens.refresh_token, tokens.access_token);
-                res.redirect(`http://localhost:5173/calendarToDo?id_token=${fbToken}`);
+                res.redirect(`https://twenity.vercel.app/calendarToDo?id_token=${fbToken}`);
             }
         }
     }

@@ -6,7 +6,7 @@
     <div
       v-if="coinMessage"
       class="absolute bg-neutral-800 top-[10rem] right-0 rounded-l-full py-4 pl-9 pr-8 z-10"
-      style="z-index: 10;"
+      style="z-index: 10"
     >
       <div class="flex items-center justify-center gap-2">
         <img src="/icons/coins.svg" alt="" class="w-4 h-4" />
@@ -71,6 +71,8 @@
             @change="manualToggleSession('pomo')"
             :disabled="isRunning"
             class="flex w-28 rounded-lg"
+            min="15"
+            max="90"
           />
           <input
             type="number"
@@ -78,6 +80,8 @@
             @change="manualToggleSession('short')"
             :disabled="isRunning"
             class="flex w-28 rounded-lg"
+            min="5"
+            max="45"
           />
           <input
             type="number"
@@ -85,8 +89,11 @@
             @change="manualToggleSession('long')"
             :disabled="isRunning"
             class="flex w-28 rounded-lg"
+            min="5"
+            max="45"
           />
         </div>
+
         <div class="flex justify-between">
           <button @click="saveSettings" class="px-4 py-2 bg-tYellow text-white rounded-md mr-2">
             Save
@@ -95,7 +102,7 @@
             Cancel
           </button>
         </div>
-        <div class="pt-2 flex flex-row gap-3">
+        <div class="pb-4 pt-6 flex flex-row gap-3">
           <label class="text-white w-28 font-semibold text-nowrap">Audio Level</label>
           <input
             type="range"
@@ -106,6 +113,14 @@
             @input="updateVolume"
             class="flex w-full"
           />
+        </div>
+        <div class="pt-2 flex flex-row items-center gap-3">
+          <label class="text-white font-semibold text-nowrap">Audio File</label>
+          <select v-model="selectedAudio" class="flex rounded-md shadow-md">
+            <option value="./audios/quack.mp3">Quack</option>
+            <option value="./audios/bedside-clock-alarm.m4a">Bedside Clock</option>
+            <option value="./audios/digital-alarm-clock.m4a">Digital Alarm Clock</option>
+          </select>
         </div>
       </div>
     </div>
@@ -145,17 +160,18 @@ export default {
   data() {
     return {
       sessions: {
-        long: parseInt(this.userData.LongTime),
-        pomo: parseInt(this.userData.PomoTime),
-        short: parseInt(this.userData.ShortTime)
+        long: 0,
+        pomo: 0,
+        short: 0
       },
       isRunning: false,
       intervalId: null,
       coinMessage: null,
       showSettings: false,
-      sessionNumber: parseInt(localStorage.getItem('sessionNumber') || 0),
-      timeLeft: parseFloat(localStorage.getItem('timeLeft') || this.userData.PomoTime * 60),
-      volume: parseFloat(localStorage.getItem('volume'))
+      sessionNumber: 0,
+      timeLeft: 0,
+      volume: 1,
+      selectedAudio: './audios/quack.mp3'
     }
   },
 
@@ -186,13 +202,30 @@ export default {
   },
 
   mounted() {
-    this.checkTimerState();
+    this.initializeData()
   },
 
   methods: {
+    initializeData() {
+      this.sessions = {
+        long: parseInt(this.userData.LongTime),
+        pomo: parseInt(this.userData.PomoTime),
+        short: parseInt(this.userData.ShortTime)
+      }
+      this.sessionNumber = parseInt(localStorage.getItem('sessionNumber') || 0)
+      this.timeLeft = parseFloat(localStorage.getItem('timeLeft') || this.userData.PomoTime * 60)
+      this.volume = parseFloat(localStorage.getItem('volume')) || 1
+      this.selectedAudio = localStorage.getItem('selectedAudio') || './audios/quack.mp3'
+
+      localStorage.setItem('sessionNumber', this.sessionNumber)
+      localStorage.setItem('timeLeft', this.timeLeft)
+      localStorage.setItem('volume', this.volume)
+      localStorage.setItem('selectedAudio', this.selectedAudio)
+    },
+
     checkTimerState() {
       if (localStorage.getItem('isRunning') === 'true') {
-        this.startTimer();
+        this.startTimer()
       }
     },
 
@@ -202,99 +235,108 @@ export default {
     },
 
     playAudio(volume) {
-      const audio = new Audio('./quack.mp3')
+      const audio = new Audio(this.selectedAudio)
+      audio.volume = volume
+      audio.play()
+    },
+
+    playRingAudio(volume) {
+      const audio = new Audio('./audios/start.mp3')
       audio.volume = volume
       audio.play()
     },
 
     startTimer() {
-      this.isRunning = true;
-      localStorage.setItem('isRunning', 'true');
+      this.playRingAudio(this.volume)
+      this.isRunning = true
+      localStorage.setItem('isRunning', 'true')
       this.intervalId = setInterval(() => {
         if (this.timeLeft > 0) {
-          this.timeLeft--;
-          localStorage.setItem('timeLeft', this.timeLeft);
+          this.timeLeft--
+          localStorage.setItem('timeLeft', this.timeLeft)
         } else {
-          this.stopTimer();
-          this.processSessionEnd();
+          this.stopTimer()
+          this.processSessionEnd()
         }
-      }, 1000);
+      }, 1000)
     },
 
     stopTimer() {
-      clearInterval(this.intervalId);
-      this.isRunning = false;
-      localStorage.setItem('isRunning', 'false');
+      clearInterval(this.intervalId)
+      this.isRunning = false
+      localStorage.setItem('isRunning', 'false')
     },
 
     processSessionEnd() {
-      this.sessionNumber++;
-      localStorage.setItem('sessionNumber', this.sessionNumber);
+      this.sessionNumber++
+      localStorage.setItem('sessionNumber', this.sessionNumber)
       if (this.sessionNumber % 8 === 0) {
-        this.sessionNumber = 0;
-        this.timeLeft = this.sessions.pomo * 60;
+        this.sessionNumber = 0
+        this.timeLeft = this.sessions.pomo * 60
       } else if (this.sessionNumber % 2 === 0) {
-        this.timeLeft = this.sessions.pomo * 60;
+        this.timeLeft = this.sessions.pomo * 60
       } else if (this.sessionNumber === 7) {
-        this.timeLeft = this.sessions.long * 60;
+        this.timeLeft = this.sessions.long * 60
       } else {
-        this.timeLeft = this.sessions.short * 60;
+        this.timeLeft = this.sessions.short * 60
       }
-      localStorage.setItem('timeLeft', this.timeLeft);
-      if (this.sessionNumber % 2 === 0) {
-        this.playAudio(this.volume);
-        this.incrementCoin();
+      localStorage.setItem('timeLeft', this.timeLeft)
+      if (this.sessionNumber % 2 != 0) {
+        this.playAudio(this.volume)
+        this.incrementCoin()
+      } else {
+        this.playRingAudio(this.volume)
       }
     },
 
     toggleTimer() {
       if (!this.isRunning) {
-        this.startTimer();
+        this.startTimer()
       } else {
-        this.stopTimer();
+        this.stopTimer()
       }
     },
 
     manualToggleSession(sessionType) {
-      this.stopTimer();
-      localStorage.setItem('sessionNumber', this.sessions[sessionType]);
-      this.timeLeft = this.sessions[sessionType] * 60;
-      localStorage.setItem('timeLeft', this.timeLeft);
+      this.stopTimer()
+      localStorage.setItem('sessionNumber', this.sessions[sessionType])
+      this.timeLeft = this.sessions[sessionType] * 60
+      localStorage.setItem('timeLeft', this.timeLeft)
     },
 
     toggleSettings() {
-      this.showSettings = !this.showSettings;
-      const gearIcon = document.querySelector('.gear-icon');
-      gearIcon.classList.toggle('rotate');
+      this.showSettings = !this.showSettings
+      const gearIcon = document.querySelector('.gear-icon')
+      gearIcon.classList.toggle('rotate')
     },
 
     saveSettings() {
-      const docRef = doc(db, 'Users', this.userEmail);
+      const docRef = doc(db, 'Users', this.userEmail)
       updateDoc(docRef, {
         PomoTime: this.sessions.pomo,
         ShortTime: this.sessions.short,
         LongTime: this.sessions.long
       }).then(() => {
-        this.showSettings = false;
-        this.sessionNumber = 0;
-        this.timeLeft = this.sessions.pomo * 60;
-        localStorage.setItem('sessionNumber', this.sessionNumber);
-        localStorage.setItem('timeLeft', this.timeLeft);
-      });
+        this.showSettings = false
+        this.sessionNumber = 0
+        this.timeLeft = this.sessions.pomo * 60
+        localStorage.setItem('sessionNumber', this.sessionNumber)
+        localStorage.setItem('timeLeft', this.timeLeft)
+      })
     },
 
     cancelSettings() {
-      this.showSettings = false;
+      this.showSettings = false
     },
 
     incrementCoin() {
-      const docRef = doc(db, 'Users', this.userEmail);
+      const docRef = doc(db, 'Users', this.userEmail)
       updateDoc(docRef, { Coins: increment(this.sessions.pomo) }).then(() => {
-        this.coinMessage = `You earned ${this.sessions.pomo} QuackCoins!`;
+        this.coinMessage = `You earned ${this.sessions.pomo} QuackCoins!`
         setTimeout(() => {
-          this.coinMessage = null;
-        }, 3000);
-      });
+          this.coinMessage = null
+        }, 3000)
+      })
     }
   }
 }
