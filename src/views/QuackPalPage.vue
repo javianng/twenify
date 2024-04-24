@@ -179,7 +179,6 @@ export default {
         await this.fetchFood()
         await this.fetchUserDataAndAccessories(this.useremail)
         await this.fetchHatchedStatus()
-        console.log(this.isHatched)
       }
     })
   },
@@ -207,7 +206,6 @@ export default {
             if (docSnap.data().ActivePetAccessory == 'Egg') {
               return data.Name != 'Duck'
             } else {
-              //console.log(data.Name);
               return true
             }
           })

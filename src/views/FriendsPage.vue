@@ -10,7 +10,7 @@
         <p class="text-white" id = "friend-request-description">See who has sent you friend requests and who has accepted your requests</p>
       </div>
 
-      <!-- Send friend request-->
+      <!-- Sending Request part 1-->
       <div class="flex flex-col items-center align-top" id ="sendFR">
         <div class="flex items-center gap-4 w-80 justify-center">
             <p class="font-bold text-white w-20">Friend's Email</p>
@@ -26,7 +26,7 @@
         
 
       </div>
-      <!-- test-->
+      <!-- Incoming requests-->
       <div class="flex items-start justify-center">
         <div  v-if="RequestEmail.length > 0 " class="flex flex-col gap-2 w-[80%]">
           <div  class="flex px-3">
@@ -54,6 +54,7 @@
                 No Incoming Requests!
         </p>
       </div> 
+      <!-- Sending Request part 2-->
       <div class="flex items-start justify-center">
             <p v-if= "isAlreadyFriend  && friendsEmail !== '' && searchedPressed" class="font-bold text-white"> Is Already A Friend!</p>
             <p v-if = "isMyself  && friendsEmail !== '' && searchedPressed" class="font-bold text-white"> Can't be friends with yourself</p>
@@ -65,7 +66,7 @@
             Email was not found
             </p>
       </div>
-      
+      <!-- New Friends Table -->
       <div class="flex items-start justify-center">
         <div v-if="newFriendsEmail.length > 0 " class="flex flex-col gap-2 w-[80%]">
           <div  class="flex px-3">
@@ -137,12 +138,17 @@
         if (user) {
           this.user = user
           this.useremail = auth.currentUser.email
-          await this.changeToPendingRequest()
+          await this.refreshTables()
         }
       })
     },
   
     methods: {
+      /*checks the validity of emailimpuct by user. Checks if the  imput email is:
+      1. Is not the users own email
+      2. Is a resgistered email in Twenify
+      3. Is not already a friend
+      */
       async fetchData(friendsEmail) {
         this.searchedPressed = true;
         try {
@@ -172,6 +178,7 @@
           console.error('Error fetching user:', error)
         }
       },
+      /* Handles the reset of the text box */
       handleInputChange() {
         if(this.friendsEmail ==='') {
             this.searchedPressed = false;
@@ -179,27 +186,29 @@
             this.isMyself = false; 
         }
     },
+    /* Send the friend request to the other user to wait for their acceptance */
     async sendRequest(friendsEmail) {
-        //update the user's pending acceptance list
         const docRef1 = doc(db, 'Friends', this.useremail);
         const docSnap1 = await getDoc(docRef1)
         const oldCopy1 = docSnap1.data().PendingAcceptance;
         oldCopy1.push(friendsEmail);
+        //update the user's pending acceptance list
         await updateDoc(docRef1,{PendingAcceptance: oldCopy1});
 
         const docRef2 = doc(db, 'Friends', friendsEmail);
         const docSnap2 = await getDoc(docRef2);
         const oldCopy2 = docSnap2.data().IncomingRequests;
         oldCopy2.push(this.useremail);
+        //update the other end's incoming acceptance list
         await updateDoc(docRef2,{IncomingRequests: oldCopy2});
 
         this.friendsEmail = '';
         this.handleInputChange();
-        await this.changeToPendingRequest();
+        await this.refreshTables();
 
     },
-    async changeToPendingRequest() {
-
+    /* Update tables when a new input is expected */
+    async refreshTables() {
         this.RequestEmail=[];
         this.RequestNames=[];
         this.newFriendsEmail=[];
@@ -220,6 +229,7 @@
             this.newFriendsName.push(docSnap3.data().Name);
         }
     },
+    // relevent updates to Firestore fields when the user accepts a friend request
     async acceptFriend(email) {
         const DocRef = doc(db, 'Friends', this.useremail);
         const docSnap = await getDoc(DocRef);
@@ -255,9 +265,10 @@
         if( index != -1) {
             this.RequestEmail.splice(index,-1);
         }
-        this.changeToPendingRequest();
+        this.refreshTables();
         document.getElementById("acceptBtn").disabled = true;
     },
+    // relevent updates to Firestore fields when the user declines a friend request
     async declineFriend(email) {
         //remove from my incoming requests
         const DocRef = doc(db, 'Friends', this.useremail);
@@ -270,13 +281,13 @@
         const docSnap2 = await getDoc(DocRef2);
         const PendingAcceptanceUpdated = docSnap2.data().PendingAcceptance.filter(item => item !== this.useremail);
         await updateDoc(DocRef2, {PendingAcceptance: PendingAcceptanceUpdated});
-        this.changeToPendingRequest();
+        this.refreshTables();
         document.getElementById("declineBtn").disabled = true;
     },
     async dismiss() {
         const DocRef = doc(db, 'Friends', this.useremail);
         await updateDoc(DocRef, {NewFriends: []});
-        this.changeToPendingRequest();
+        this.refreshTables();
     }
     }
   }

@@ -8,6 +8,7 @@
     <div class="absolute w-[56%] h-full right-0">
       <div class="absolute h-[200vh] w-[200vh] -top-[50vh] bg-tBeige rounded-full z-10" />
     </div>
+    <!-- Design for continuity-->
     <div class="grid grid-cols-2 h-screen bg-gradient-to-b to-tPurple from-tDarkPurple pl-6">
       <div class="flex items-end justify-start">
         <div class="grid grid-rows-3 w-max h-2/3">
@@ -17,7 +18,7 @@
           </div>
         </div>
       </div>
-
+      <!-- Sign in methods-->
       <div class="flex items-center justify-center h-full">
         <div class="flex flex-col items-center w-1/2 z-20">
           <h1 class="text-4xl pb-9"><span class="text-tLightPurple">Sign-In</span></h1>
