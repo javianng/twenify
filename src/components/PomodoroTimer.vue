@@ -284,6 +284,9 @@ export default {
       if (this.sessionNumber % 2 != 0) {
         this.playAudio(this.volume)
         this.incrementCoin()
+        this.incrementTotalHours()
+        this.incrementLeaderboard()
+        this.addToDateFocusedCollection()
       } else {
         this.playRingAudio(this.volume)
       }
@@ -337,6 +340,42 @@ export default {
           this.coinMessage = null
         }, 3000)
       })
+    },
+
+    incrementTotalHours() {
+      const docRef = doc(db, 'Total Hours', this.userEmail)
+      updateDoc(docRef, { TotalHours: increment(this.sessions.pomo / 60) })
+        .then(() => {
+          console.log('Total Hours incremented successfully!')
+        })
+        .catch((error) => {
+          console.error('Error updating Total Hours: ', error)
+        })
+    },
+
+    incrementLeaderboard() {
+      const docRef = doc(db, 'Leaderboard', this.userEmail)
+      updateDoc(docRef, { TotalHours: increment(this.sessions.pomo / 60) })
+        .then(() => {
+          console.log('Leaderboard incremented successfully!')
+        })
+        .catch((error) => {
+          console.error('Error updating Leaderboard: ', error)
+        })
+    },
+
+    addToDateFocusedCollection() {
+      const currentDate = new Date()
+      const duration = this.sessions['pomo']
+      const dateFocused = { Date: currentDate, FocusedMinute: duration }
+      const collectionRef = collection(db, 'Users', this.userEmail, 'DateFocused')
+      return addDoc(collectionRef, dateFocused)
+        .then(() => {
+          console.log('Duration added to DateFocused collection successfully!')
+        })
+        .catch((error) => {
+          console.error('Error adding duration to DateFocused collection: ', error)
+        })
     }
   }
 }
