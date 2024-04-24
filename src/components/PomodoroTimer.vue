@@ -117,8 +117,9 @@
         <div class="pt-2 flex flex-row items-center gap-3">
           <label class="text-white font-semibold text-nowrap">Audio File</label>
           <select v-model="selectedAudio" class="flex rounded-md shadow-md">
-            <option value="./quack.mp3">Quack</option>
-            <option value="./duck.mp3">Duck</option>
+            <option value="./audios/quack.mp3">Quack</option>
+            <option value="./audios/bedside-clock-alarm.m4a">Bedside Clock</option>
+            <option value="./audios/digital-alarm-clock.m4a">Digital Alarm Clock</option>
           </select>
         </div>
       </div>
@@ -170,7 +171,7 @@ export default {
       sessionNumber: 0,
       timeLeft: 0,
       volume: 1,
-      selectedAudio: './quack.mp3'
+      selectedAudio: './audios/quack.mp3'
     }
   },
 
@@ -201,19 +202,27 @@ export default {
   },
 
   mounted() {
-    this.checkTimerState()
-    this.sessionNumber = localStorage.getItem('sessionNumber') || 0
-    this.timeLeft = localStorage.getItem('timeLeft') || parseInt(this.userData.PomoTime) * 60
-    this.volume = localStorage.getItem('volume') || 1
-    this.selectedAudio = localStorage.getItem('selectedAudio') || './quack.mp3'
-
-    localStorage.setItem('sessionNumber', this.sessionNumber)
-    localStorage.setItem('timeLeft', this.timeLeft)
-    localStorage.setItem('volume', this.volume)
-    localStorage.setItem('selectedAudio', this.selectedAudio)
+    this.initializeData()
   },
 
   methods: {
+    initializeData() {
+      this.sessions = {
+        long: parseInt(this.userData.LongTime),
+        pomo: parseInt(this.userData.PomoTime),
+        short: parseInt(this.userData.ShortTime)
+      }
+      this.sessionNumber = parseInt(localStorage.getItem('sessionNumber') || 0)
+      this.timeLeft = parseFloat(localStorage.getItem('timeLeft') || this.userData.PomoTime * 60)
+      this.volume = parseFloat(localStorage.getItem('volume')) || 1
+      this.selectedAudio = localStorage.getItem('selectedAudio') || './audios/quack.mp3'
+
+      localStorage.setItem('sessionNumber', this.sessionNumber)
+      localStorage.setItem('timeLeft', this.timeLeft)
+      localStorage.setItem('volume', this.volume)
+      localStorage.setItem('selectedAudio', this.selectedAudio)
+    },
+
     checkTimerState() {
       if (localStorage.getItem('isRunning') === 'true') {
         this.startTimer()
