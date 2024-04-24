@@ -25,11 +25,11 @@ const app = initializeApp(firebaseConfig)
 // Initialize Firestore Database
 const db = getFirestore(app)
 
+// Define the user's email ID
+const userEmail = "anushkaashirgade@u.nus.edu";
+
 async function updateBlockedWebsitesRules() {
   try {
-    // Define the user's email ID
-    const userEmail = "anushkaashirgade@u.nus.edu";
-
     // Fetch the user's document from Firestore using the email ID
     const userDocRef = doc(db, 'Users', userEmail);
     const userDocSnapshot = await getDoc(userDocRef);
@@ -39,6 +39,15 @@ async function updateBlockedWebsitesRules() {
     }
 
     const userData = userDocSnapshot.data();
+
+    // Check if blocking is enabled for the user
+    if (!userData.blocker_status) {
+      console.log('Blocking is disabled for this user.');
+      await chrome.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: Array.from({length: 100}, (_, i) => i + 1) // Removes first 100 rules as example
+      });
+      return; // Exit the function if blocking is disabled
+    }
 
     // Get the array of blocked websites from the user's document
     const blockedWebsites = userData.BlockedWebsite || [];

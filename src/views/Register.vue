@@ -162,7 +162,8 @@ const register = async () => {
       ActivePetAccessory: 'Egg', //here
       PetName: `Javian's Pet`,
       PetHealth: futureDate,
-      BlockedWebsite: ['testwebsite.com']
+      BlockedWebsite: ['testwebsite.com'],
+      blocker_status: false
     })
 
     for (const equipment of equipments) {
