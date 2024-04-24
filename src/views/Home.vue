@@ -31,7 +31,8 @@
       <div class="min-h-[50vh] items-center flex justify-center">
         <div class="flex flex-col gap-8">
           <div class="items-center flex justify-center">
-            <img src="/twenifyLogoName.png" alt="logo" class="max-w-4xl" />
+            <img src="/twenifyLogoName.png" alt="logo" class="max-w-4xl" style="width: 60%;" />
+
           </div>
           <p class="text-white text-xl text-center">
             Unlock your twenty-fifth hour of productivity with twenify - the all in one productivity
@@ -102,7 +103,7 @@
           </div>
         </div>
         <div class="flex flex-row w-full">
-          <img src="/bird.svg" alt="" class="max-w-[25%] hover:scale-105 duration-150" />
+          <img src="https://firebasestorage.googleapis.com/v0/b/twenify.appspot.com/o/homeduck2.svg?alt=media&token=487a65f8-4702-40ce-8362-aecec35144af" alt="" class="max-w-[30%] hover:scale-105 duration-150"  />
           <div class="flex flex-col gap-5 justify-center items-center text-white text-xl w-full">
             <p>
               Ready to unlock the <span class="text-tYellow"> twenty-fifth hour </span> of your day?

@@ -12,7 +12,7 @@
         />
       </div>
       <div class="flex items-center">
-        <router-link to="/">
+        <router-link to="/dashboard">
           <img src="/twenifyLogoName.png" alt="logo" class="h-16" />
         </router-link>
       </div>

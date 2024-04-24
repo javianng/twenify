@@ -1,6 +1,7 @@
 <template>
   <div>
-    <canvas id="myChart" style="width: 180%; height: 600px;"></canvas> <!-- Adjust width and height as needed -->
+    <canvas id="myChart" style="width: 100%; height: 250px;" class="p-4"></canvas>
+    <!-- Adjust width and height as needed -->
   </div>
 </template>
 
@@ -42,11 +43,11 @@ export default {
       for (let i = 0; i < 7; i++) {
         pastSevenDays.push(today.clone().subtract(i, 'days').format('DD/MM/YY')); // Add formatted dates to array
       }
-      
+
       new Chart(ctx, {
         type: 'bar', // Set chart type to 'bar'
         data: {
-          labels: pastSevenDays.reverse(), // Reverse array to display in chronological order
+          labels: pastSevenDays.reverse().map(date => moment(date, 'DD/MM/YY').format('DD/MM')), // Updated date format
           datasets: [{
             label: 'Focused Minute',
             data: this.data.map(item => item.FocusedMinute),
@@ -57,15 +58,20 @@ export default {
           responsive: true,
           scales: {
             x: {
-              stacked: true, // Stack bars on the x-axis if needed
+              stacked: true,
               ticks: {
                 autoSkip: false,
-                maxRotation: 90,
-                minRotation: 90
+                maxRotation: 0,
+                minRotation: 0
               }
             },
             y: {
-              beginAtZero: true // Start y-axis from zero
+              beginAtZero: true,
+              ticks: {
+                callback: function (value) {
+                  return value + ' mins'; // Display mins on y-axis label
+                }
+              }
             }
           }
         }
