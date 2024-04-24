@@ -1,10 +1,10 @@
 <template>
   <PageLayout>
-    <div class="flex flex-col items-center gap-8 pt-12" v-if="user">
-      <h1 class="text-center text-5xl font-medium text-white">User Setting</h1>
+    <div class="flex flex-col items-center gap-8 pt-0" v-if="user">
+      <h1 class="text-center text-4xl font-medium text-white">User Setting</h1>
       <div class="flex flex-col items-center">
         <div
-          class="w-96 h-96 bg-tLightPurple rounded-full border-8 border-tYellow overflow-hidden p-8 my-3 duration-150 hover:scale-105"
+          class="w-64 h-64 bg-tLightPurple rounded-full border-8 border-tYellow overflow-hidden p-8 my-3 duration-150 hover:scale-105"
         >
           <img :src="petImageLink" alt="" class="z-50 scale-[2.2] pt-8" />
         </div>
@@ -16,7 +16,7 @@
             type="text"
             v-model="newUsername"
             :placeholder="usernamePlaceholder"
-            class="rounded-lg p-2"
+            class="rounded-lg p-1.5"
           />
           <button
             @click="changeUsername"
@@ -32,7 +32,7 @@
             type="password"
             v-model="newPassword"
             placeholder="New Password"
-            class="rounded-lg p-2"
+            class="rounded-lg p-1.5"
           />
           <button
             @click="changePassword"
