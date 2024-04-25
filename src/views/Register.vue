@@ -27,7 +27,7 @@
             </p>
           </div>
           <div class="flex flex-col gap-4">
-            <h3 class="text-4xl font-medium text-white">
+            <h3 class="text-3xl font-medium text-white">
               “Twenify has helped me <span class="text-tLightPurple">steer away</span>
               <span class="text-tLightPurple"> from distractions</span>, allowing me to focus on my
               work every single day!”
