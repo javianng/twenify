@@ -1,18 +1,22 @@
 <template>
   <PageLayout>
-    <div class="calendar-todo-container flex flex-col md:flex-row">
-      <div class="calendar-container flex-1 ml-4">
+    <div class="calendar-todo-container flex flex-col md:flex-row gap-2 md:gap-0">
+      <div class="calendar-container flex-1 mx-4">
         <!-- Calendar section -->
         <div class="flex items-center mt-4 space-x-4">
           <h1 class="text-5xl font-bold text-tLightPurple">Your Calendar</h1>
-          <button v-if="!hasCalendarAccess" class="bg-red-500 text-white px-4 py-2 mt-2 rounded" @click="googleLogin">
+          <button
+            v-if="!hasCalendarAccess"
+            class="bg-red-500 text-white px-4 py-2 mt-2 rounded"
+            @click="googleLogin"
+          >
             Connect Google Calendar
           </button>
           <button v-else class="bg-red-500 text-white px-4 py-2 mt-2 rounded" @click="signOut">
             Sign Out
           </button>
         </div>
-        <div class="calendar-wrapper bg-white p-4 mt-4">
+        <div class="calendar-wrapper bg-white p-4 mt-4 rounded-lg shadow-md">
           <FullCalendar ref="calendar" :options="calendarOptions" />
         </div>
       </div>
@@ -22,21 +26,42 @@
         <div class="flex flex-col bg-white rounded-lg shadow mt-4 p-4 h-full">
           <!-- Task list container -->
           <div class="overflow-y-auto max-h-96">
-            <div v-for="task in userTasks" :key="task.id" class="flex items-center justify-between p-2 border-b">
+            <div
+              v-for="task in userTasks"
+              :key="task.id"
+              class="flex items-center justify-between p-2 border-b"
+            >
               <div class="flex items-center">
-                <input type="checkbox" :id="task.id" @change="toggleTaskStatus(task)" :checked="task.Cleared"
-                  class="mr-2" />
-                <label :for="task.id" :class="{ 'line-through': task.Cleared }">{{ task.TaskName }}</label>
+                <input
+                  type="checkbox"
+                  :id="task.id"
+                  @change="toggleTaskStatus(task)"
+                  :checked="task.Cleared"
+                  class="mr-2"
+                />
+                <label :for="task.id" :class="{ 'line-through': task.Cleared }">{{
+                  task.TaskName
+                }}</label>
               </div>
-              <button @click="deleteTask(task.id)"
-                class="bg-red-500 text-white px-4 py-2 rounded ml-auto">Delete</button>
+              <button
+                @click="deleteTask(task.id)"
+                class="bg-red-500 text-white px-4 py-2 rounded ml-auto"
+              >
+                Delete
+              </button>
             </div>
           </div>
           <!-- Form submission container -->
           <div class="mt-auto">
-            <input v-model="newTaskName" type="text" placeholder="Enter task name"
-              class="p-2 border rounded w-full mb-2">
-            <button @click="addTask" class="bg-blue-500 text-white px-4 py-2 rounded w-full">Add Task</button>
+            <input
+              v-model="newTaskName"
+              type="text"
+              placeholder="Enter task name"
+              class="p-2 border rounded w-full mb-2"
+            />
+            <button @click="addTask" class="bg-blue-500 text-white px-4 py-2 rounded w-full">
+              Add Task
+            </button>
           </div>
         </div>
       </div>
@@ -48,7 +73,16 @@
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { getFirestore, doc, getDoc, getDocs, updateDoc, deleteDoc, addDoc, collection } from 'firebase/firestore'
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+  addDoc,
+  collection
+} from 'firebase/firestore'
 import axios from 'axios'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -120,9 +154,12 @@ const fetchCalendarEvents = async (accessToken, email) => {
     if (error.response && error.response.status === 401) {
       // Access token expired, refresh the token
       try {
-        const refreshResponse = await axios.post('https://twenify-backend.vercel.app/refresh_token', {
-          email: email
-        })
+        const refreshResponse = await axios.post(
+          'https://twenify-backend.vercel.app/refresh_token',
+          {
+            email: email
+          }
+        )
 
         const newAccessToken = refreshResponse.data.access_token
         const userRef = doc(db, 'Users', email)
@@ -227,5 +264,4 @@ const deleteTask = async (taskId) => {
   // Remove the task from the local state
   userTasks.value = userTasks.value.filter((task) => task.id !== taskId)
 }
-
 </script>
