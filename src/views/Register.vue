@@ -29,7 +29,7 @@
           <div class="flex flex-col gap-4">
             <h3 class="text-4xl font-medium text-white">
               “Twenify has helped me <span class="text-tLightPurple">steer away</span>
-              <span class="text-tLightPurple">from distractions</span>, allowing me to focus on my
+              <span class="text-tLightPurple"> from distractions</span>, allowing me to focus on my
               work every single day!”
             </h3>
             <p class="text-2xl text-white">- Anders Ooi, Student at NUS</p>
