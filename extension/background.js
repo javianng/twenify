@@ -26,7 +26,7 @@ const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 
 // Define the user's email ID
-const userEmail = "anushkaashirgade@u.nus.edu";
+const userEmail = "testuser@test.com";
 
 async function updateBlockedWebsitesRules() {
   try {
