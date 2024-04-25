@@ -138,8 +138,7 @@ import {
   query,
   collection,
   updateDoc,
-  increment,
-  setDoc
+  increment
 } from 'firebase/firestore'
 import PageLayout from '@/components/PageLayout.vue'
 import Healthbar from '@/components/Healthbar.vue'
