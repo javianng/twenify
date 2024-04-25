@@ -134,6 +134,14 @@ export default {
     },
 
     async changePassword() {
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+      if (!passwordRegex.test(this.newPassword)) {
+        alert(
+          'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
+        )
+        return
+      }
+
       try {
         await updatePassword(this.user, this.newPassword)
         alert('Password updated successfully!')
@@ -144,6 +152,11 @@ export default {
     },
 
     async changeUsername() {
+      if (this.newUsername.length <= 1) {
+        console.log('Username must be more than 1 character')
+        return
+      }
+
       const docRef = doc(db, 'Users', this.useremail)
       const leadRef = doc(db, 'Leaderboard', this.useremail)
       await updateDoc(docRef, {
