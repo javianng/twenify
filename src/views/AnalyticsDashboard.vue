@@ -28,13 +28,13 @@
         <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4 duration-150 hover:scale-105">
           <p class="text-start font-semibold">Total Hours spent on twenify</p>
           <p class="text-[6rem] font-bold text-tYellow flex h-full justify-center items-center">
-            {{ Math.floor(totalHoursSpent) }}
+            {{ Math.round(totalHoursSpent) }}
           </p>
         </div>
         <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4 duration-150 hover:scale-105">
           <p class="text-start font-semibold">Friends Ranking</p>
           <p class="text-[6rem] font-bold text-tLightPurple flex h-full justify-center items-center">
-            {{ formattedRanking(userFriendPosition) }}
+            {{ formattedRanking(this.userFriendPosition) }}
           </p>
         </div>
         <div class="bg-white rounded-lg h-[30vh] flex flex-col p-4 duration-150 hover:scale-105">
@@ -152,7 +152,7 @@ export default {
 
   methods: {
     formattedRanking(position) {
-      if (position == -1 | position >= 10) {
+      if (position == -1) {
         return '-';
       } else {
         const rank = position + 1;
@@ -197,15 +197,20 @@ export default {
 
       }
       console.log(this.userFriendPosition)
-      // Fetch global leaderboard data if not showing friends leaderboard
-      if (!this.showFriendsLeaderboard) {
-        querySnapshot = await getDocs(
-          query(collection(db, 'Leaderboard'), orderBy('TotalHours', 'desc'), limit(10))
-        );
-        this.leaderboardData = querySnapshot.docs.map((doc) => doc.data());
-        this.userPosition = this.leaderboardData.findIndex((data) => data.Email === this.useremail);
-        console.log(this.userPosition)
-      }
+      
+      // get the global ranking
+      querySnapshot = await getDocs(
+        query(collection(db, 'Leaderboard'), orderBy('TotalHours', 'desc'))
+      );
+      const allData = querySnapshot.docs.map((doc) => doc.data());
+      this.userPosition = allData.findIndex((data) => data.Email === this.useremail);
+
+      // get the top 10 leaderboard
+      querySnapshot = await getDocs(
+        query(collection(db, 'Leaderboard'), orderBy('TotalHours', 'desc'), limit(10))
+      );
+      this.leaderboardData = querySnapshot.docs.map((doc) => doc.data());
+      console.log(this.userPosition)
     },
 
     async fetchTotalHours() {
@@ -216,21 +221,6 @@ export default {
         this.totalHoursSpent = docSnap.data().TotalHours;
       }
     },
-
-    // async fetchDateFocused(useremail) {
-    //   try {
-    //     const userDocRef = doc(db, 'Users', useremail);
-    //     const subcollectionSnapshot = await getDocs(
-    //       query(collection(userDocRef, 'DateFocused'), orderBy('Date', 'asc'), limit(8))
-    //     );
-    //     this.subcollectionDateFocused = subcollectionSnapshot.docs.map((doc) => ({
-    //       id: doc.id,
-    //       ...doc.data()
-    //     }));
-    //   } catch (error) {
-    //     console.error('Error fetching user:', error);
-    //   }
-    // },
 
     async fetchDateFocused(useremail) {
       try {
