@@ -31,7 +31,7 @@
         <div  v-if="RequestEmail.length > 0 " class="flex flex-col gap-2 w-[80%]">
           <div  class="flex px-3">
             <p class="flex w-[25%] text-start font-bold text-white"> Username</p>
-            <p class="flex w-[45%] text-start font-bold text-white"> Email</p>
+            <p class="flex w-[45%] text-start font-bold text-white"> Incoming Request from: </p>
           </div>
           <div
             v-for= "(email, index) in RequestEmail" :key = "email" 
@@ -70,8 +70,8 @@
       <div class="flex items-start justify-center">
         <div v-if="newFriendsEmail.length > 0 " class="flex flex-col gap-2 w-[80%]">
           <div  class="flex px-3">
-            <p class="flex w-[25%] text-start font-bold text-white"> Username</p>
-            <p class="flex w-[45%] text-start font-bold text-white"> Email</p>
+            <p class="flex w-[25%] text-start font-bold text-white">Username</p>
+            <p class="flex w-[45%] text-start font-bold text-white">New Friend's Email</p>
           </div>
           <div v-for = "(email, index) in newFriendsEmail" :key = "email" class= 'bg-tPurple text-white p-3 w-full rounded-md duration-150 hover:scale-105'>
             <div class="flex px-3">
