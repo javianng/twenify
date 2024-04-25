@@ -106,6 +106,7 @@ const router = useRouter()
 const auth = getAuth()
 const db = getFirestore()
 
+const futureDate = Timestamp.fromDate(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))
 const Task = { TaskName: 'task name', Deleted: false }
 const DateFocused = { Date: new Date(), FocusedMinute: 0 }
 const equipments = [
