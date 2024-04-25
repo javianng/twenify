@@ -227,7 +227,7 @@ export default {
         const docRef1 = doc(db, 'Leaderboard', this.useremail)
         const docSnap1 = await getDoc(docRef1)
         const numHours = docSnap1.data().TotalHours
-        const numHoursLeft = 100 - numHours
+        const numHoursLeft = Math.ceil(100 - numHours)
         this.failureMessages.push(
           `You cannot buy any accessories before ${this.petName} is hatched! ${numHoursLeft} hours left to go!`
         )
