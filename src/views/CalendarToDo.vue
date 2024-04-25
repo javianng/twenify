@@ -37,7 +37,7 @@
                   :id="task.id"
                   @change="toggleTaskStatus(task)"
                   :checked="task.Cleared"
-                  class="mr-2"
+                  class="mr-2 checked:bg-tLightPurple"
                 />
                 <label :for="task.id" :class="{ 'line-through': task.Cleared }">{{
                   task.TaskName
@@ -59,7 +59,10 @@
               placeholder="Enter task name"
               class="p-2 border rounded w-full mb-2"
             />
-            <button @click="addTask" class="bg-blue-500 text-white px-4 py-2 rounded w-full">
+            <button
+              @click="addTask"
+              class="bg-tYellow text-white px-4 py-2 rounded w-full hover:bg-tLightPurple duration-200"
+            >
               Add Task
             </button>
           </div>
