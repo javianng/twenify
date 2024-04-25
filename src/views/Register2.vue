@@ -2,7 +2,7 @@
   <PageLayout>
     <div class="px-8 h-full w-full flex justify-between items-center gap-9">
       <div class="flex flex-col gap-8">
-        <h1 class="text-7xl font-bold text-tLightPurple">Shhh... Somethings Hatching...</h1>
+        <h1 class="text-7xl font-bold text-tLightPurple">Shhh... Something's Hatching...</h1>
         <p class="text-3xl text-white">
           Say hello to your <span class="text-tYellow"> QuackPal </span>
           - a feathery friend to follow along with your productive streaks! Get ready to watch it
@@ -10,7 +10,8 @@
         </p>
         <p class="text-3xl text-white">
           Remember to feed them regularly! <br />
-          More time spent working = More QuackCoins to buy food
+          More time spent working = More QuackCoins to buy food <br />
+          Your egg will hatch after 100 hours of work 
         </p>
         <div class="flex items-center">
           <p class="text-3xl text-white pr-6 w-fit text-nowrap">Name your QuackPal</p>

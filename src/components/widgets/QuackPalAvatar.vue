@@ -102,7 +102,7 @@ export default {
           this.duckImage = isDuck1 ? this.petAccessoryData.Duck1 : this.petAccessoryData.Duck2
           isDuck1 = !isDuck1
         }
-      }, 500) // Switching interval between duck1 and 2 is 0.5 seconds (stopmotion animation)
+      }, 500) // Switching interval between duck1 (standing) and duck2 (squatting) is 0.5 seconds (stopmotion animation)
     },
 
     startDrag(event) {
