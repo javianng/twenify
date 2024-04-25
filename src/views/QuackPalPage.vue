@@ -45,19 +45,18 @@
 
         <div
           v-if="storeFoodDetail"
-          class="bg-white p-4 rounded-lg flex flex-col gap-7 overflow-auto h-fit duration-200 hover:bg-tLightPurple"
+          class="bg-white p-4 rounded-lg flex flex-col gap-7 overflow-auto h-fit duration-200"
         >
           <div v-for="(data, index) in storeFoodDetail" :key="index">
-            <button @click="buyFood(data)" class="duration-150 hover:scale-105">
-              <div
-                class="w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg"
-              >
-                <p>{{ data.Name }}</p>
-                <div class="overflow-hidden flex justify-center">
-                  <img :src="data.href" alt="" />
-                </div>
-                <p>{{ data.Price }} Coins</p>
+            <button
+              @click="buyFood(data)"
+              class="duration-150 hover:scale-105 hover:bg-tLightPurple hover:text-white w-36 h-36 bg-tYellow p-2 flex flex-col items-center justify-center rounded-lg"
+            >
+              <p>{{ data.Name }}</p>
+              <div class="overflow-hidden flex justify-center">
+                <img :src="data.href" alt="" />
               </div>
+              <p>{{ data.Price }} Coins</p>
             </button>
           </div>
         </div>
