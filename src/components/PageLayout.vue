@@ -45,9 +45,10 @@
             </p>
           </router-link>
 
-
-          <a @click="showWebsiteBlockingWidget"
-            class="flex items-center gap-6 hover:scale-105 duration-150">
+          <a
+            @click="showWebsiteBlockingWidget"
+            class="flex items-center gap-6 hover:scale-105 duration-150"
+          >
             <img src="/icons/shield-halved-solid.svg" class="h-14 w-14 cursor-pointer" />
             <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
               Blocker
@@ -58,14 +59,15 @@
             to="/analyticsDashboard"
             class="flex items-center gap-6 hover:scale-105 duration-150"
           >
-
             <img src="/icons/chart-simple-solid.svg" class="h-14 w-14" />
             <p class="hidden group-hover:block group-hover:w-[5.5rem] text-start text-white">
               Analytics
             </p>
           </router-link>
-          
-          <a @click="showQuackPalAvatar"
+
+          <a
+            @click="showQuackPalAvatar"
+            v-if="this.$route.path === '/dashboard'"
             class="flex items-center gap-6 hover:scale-105 duration-150"
           >
             <img src="/icons/dove-solid.svg" class="h-14 w-14 cursor-pointer" />
@@ -76,6 +78,7 @@
 
           <a
             @click="showSpotifyWidget"
+            v-if="this.$route.path === '/dashboard'"
             class="flex items-center gap-6 hover:scale-105 duration-150"
           >
             <img src="/icons/spotify.svg" class="h-14 w-14 cursor-pointer" />
@@ -114,7 +117,6 @@
       </div>
     </div>
 
-
     <!-- QuackPalAvatar Widget Overlay-->
     <div v-if="isQuackPalAvatarVisible" class="z-50">
       <QuackPalAvatar @close="isQuackPalAvatarVisible = false"></QuackPalAvatar>
@@ -127,11 +129,13 @@
 
     <!-- Website Blocking Widget Overlay-->
     <div v-if="isWebsiteBlockingWidgetVisible" class="z-50">
-      <WebsiteBlockingWidget @close="isWebsiteBlockingWidgetVisible = false"></WebsiteBlockingWidget>
+      <WebsiteBlockingWidget
+        @close="isWebsiteBlockingWidgetVisible = false"
+      ></WebsiteBlockingWidget>
     </div>
 
     <main>
-      <slot/>
+      <slot />
     </main>
   </Background>
 </template>
@@ -139,8 +143,8 @@
 <script>
 import Background from './Background.vue'
 import SpotifyWidget from '@/components/widgets/Spotify.vue'
-import WebsiteBlockingWidget from '@/components/widgets/WebsiteBlocker.vue';
-import QuackPalAvatar from '@/components/widgets/QuackPalAvatar.vue' 
+import WebsiteBlockingWidget from '@/components/widgets/WebsiteBlocker.vue'
+import QuackPalAvatar from '@/components/widgets/QuackPalAvatar.vue'
 
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
@@ -150,7 +154,7 @@ export default {
     SpotifyWidget,
     WebsiteBlockingWidget,
     Background,
-    QuackPalAvatar 
+    QuackPalAvatar
   },
   mounted() {
     const auth = getAuth()
@@ -166,7 +170,7 @@ export default {
       isDropdownVisible: false,
       isSpotifyWidgetVisible: false,
       isWebsiteBlockingWidgetVisible: false,
-      isQuackPalAvatarVisible: false, 
+      isQuackPalAvatarVisible: false,
       user: false
     }
   },
@@ -183,8 +187,8 @@ export default {
       this.isWebsiteBlockingWidgetVisible = !this.isWebsiteBlockingWidgetVisible
     },
 
-    showQuackPalAvatar() {  
-    this.isQuackPalAvatarVisible = !this.isQuackPalAvatarVisible 
+    showQuackPalAvatar() {
+      this.isQuackPalAvatarVisible = !this.isQuackPalAvatarVisible
     }
   }
 }
