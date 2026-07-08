@@ -11,7 +11,7 @@
         <p class="text-3xl text-white">
           Remember to feed them regularly! <br />
           More time spent working = More QuackCoins to buy food <br />
-          Your egg will hatch after 100 hours of work 
+          Your egg will hatch after 100 hours of work
         </p>
         <div class="flex items-center">
           <p class="text-3xl text-white pr-6 w-fit text-nowrap">Name your QuackPal</p>

@@ -1,7 +1,12 @@
 <template>
-  <div class="bg-opacity-30 bg-neutral-800 flex flex-col items-center justify-center py-8 min-h-[50vh]">
+  <div
+    class="bg-opacity-30 bg-neutral-800 flex flex-col items-center justify-center py-8 min-h-[50vh]"
+  >
     <!-- Coin Message Box -->
-    <div v-if="coinMessage" class="absolute bg-neutral-800 top-[10rem] right-0 rounded-l-full py-4 pl-9 pr-8 z-10">
+    <div
+      v-if="coinMessage"
+      class="absolute bg-neutral-800 top-[10rem] right-0 rounded-l-full py-4 pl-9 pr-8 z-10"
+    >
       <div class="flex items-center justify-center gap-2">
         <img src="/icons/coins.svg" alt="" class="w-4 h-4" />
         <p class="text-white font-semibold">
@@ -13,36 +18,79 @@
     <!-- Pomodoro Toggle -->
     <div class="relative">
       <div class="flex gap-4">
-        <button @click="manualToggleSession('pomo')" :class="{ underline: sessionNumber % 2 === 0 }"
-          class="px-4 py-2 text-white underline-offset-4 duration-150 hover:scale-110">
+        <button
+          @click="manualToggleSession('pomo')"
+          :class="{ underline: sessionNumber % 2 === 0 }"
+          class="px-4 py-2 text-white underline-offset-4 duration-150 hover:scale-110"
+        >
           Pomodoro
         </button>
-        <button @click="manualToggleSession('short')" :class="{
-          underline: (sessionNumber % 2 === 1 && sessionNumber !== 7) || sessionNumber === -1
-        }" class="px-4 py-2 text-white underline-offset-4 duration-150 hover:scale-110">
+        <button
+          @click="manualToggleSession('short')"
+          :class="{
+            underline: (sessionNumber % 2 === 1 && sessionNumber !== 7) || sessionNumber === -1
+          }"
+          class="px-4 py-2 text-white underline-offset-4 duration-150 hover:scale-110"
+        >
           Short Break
         </button>
-        <button @click="manualToggleSession('long')" :class="{ underline: sessionNumber === 7 }"
-          class="px-4 py-2 text-white underline-offset-4 duration-150 hover:scale-110">
+        <button
+          @click="manualToggleSession('long')"
+          :class="{ underline: sessionNumber === 7 }"
+          class="px-4 py-2 text-white underline-offset-4 duration-150 hover:scale-110"
+        >
           Long Break
         </button>
-        <button @click="toggleSettings" class="px-4 py-2 text-white rounded-md duration-150 hover:scale-125">
+        <button
+          @click="toggleSettings"
+          class="px-4 py-2 text-white rounded-md duration-150 hover:scale-125"
+        >
           <img src="/icons/gear-solid.svg" alt="" class="w-4 gear-icon cursor-pointer" />
         </button>
       </div>
 
       <!-- Setting Dashboard -->
-      <div v-if="showSettings" class="bg-tPurple p-4 rounded-lg shadow-xl absolute top-0 -right-[25em]">
+      <div
+        v-if="showSettings"
+        class="bg-tPurple p-4 rounded-lg shadow-xl absolute top-0 -right-[25em]"
+      >
         <div class="grid grid-cols-3 grid-rows-2 gap-2 mb-4 -mt-6">
-          <label class="text-white w-28 font-semibold flex justify-center items-end">Pomodoro</label>
-          <label class="text-white w-28 font-semibold flex justify-center items-end">Short Break</label>
-          <label class="text-white w-28 font-semibold flex justify-center items-end">Long Break</label>
-          <input type="number" v-model="sessions.pomo" @change="manualToggleSession('pomo')" :disabled="isRunning"
-            class="flex w-28 rounded-lg" min="15" max="90" />
-          <input type="number" v-model="sessions.short" @change="manualToggleSession('short')" :disabled="isRunning"
-            class="flex w-28 rounded-lg" min="5" max="45" />
-          <input type="number" v-model="sessions.long" @change="manualToggleSession('long')" :disabled="isRunning"
-            class="flex w-28 rounded-lg" min="5" max="45" />
+          <label class="text-white w-28 font-semibold flex justify-center items-end"
+            >Pomodoro</label
+          >
+          <label class="text-white w-28 font-semibold flex justify-center items-end"
+            >Short Break</label
+          >
+          <label class="text-white w-28 font-semibold flex justify-center items-end"
+            >Long Break</label
+          >
+          <input
+            type="number"
+            v-model="sessions.pomo"
+            @change="manualToggleSession('pomo')"
+            :disabled="isRunning"
+            class="flex w-28 rounded-lg"
+            min="15"
+            max="90"
+          />
+          <input
+            type="number"
+            v-model="sessions.short"
+            @change="manualToggleSession('short')"
+            :disabled="isRunning"
+            class="flex w-28 rounded-lg"
+            min="5"
+            max="45"
+          />
+          <input
+            type="number"
+            v-model="sessions.long"
+            @change="manualToggleSession('long')"
+            :disabled="isRunning"
+            class="flex w-28 rounded-lg"
+            min="5"
+            max="45"
+          />
         </div>
         <div class="flex justify-between">
           <button @click="saveSettings" class="px-4 py-2 bg-tYellow text-white rounded-md mr-2">
@@ -54,7 +102,15 @@
         </div>
         <div class="pb-4 pt-6 flex flex-row gap-3">
           <label class="text-white w-28 font-semibold text-nowrap">Audio Level</label>
-          <input type="range" min="0" max="1" step="0.01" v-model="volume" @input="updateVolume" class="flex w-full" />
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            v-model="volume"
+            @input="updateVolume"
+            class="flex w-full"
+          />
         </div>
         <div class="pt-2 flex flex-row items-center gap-3">
           <label class="text-white font-semibold text-nowrap">Audio File</label>
@@ -83,7 +139,15 @@
 <script>
 import firebaseApp from '../firebase.js'
 import Button from '../components/Button.vue'
-import { doc, getFirestore, updateDoc, addDoc, collection, increment, getDocs } from 'firebase/firestore'
+import {
+  doc,
+  getFirestore,
+  updateDoc,
+  addDoc,
+  collection,
+  increment,
+  getDocs
+} from 'firebase/firestore'
 
 const db = getFirestore(firebaseApp)
 
@@ -271,26 +335,26 @@ export default {
 
     // Check if the value is within the range
     checkValueInRange(sessionType) {
-      let min, max;
+      let min, max
 
       switch (sessionType) {
         case 'pomo':
-          min = 15;
-          max = 90;
-          break;
+          min = 15
+          max = 90
+          break
         case 'short':
-          min = 5;
-          max = 45;
-          break;
+          min = 5
+          max = 45
+          break
         case 'long':
-          min = 5;
-          max = 45;
-          break;
+          min = 5
+          max = 45
+          break
       }
       if (this.sessions[sessionType] < min) {
-        this.sessions[sessionType] = min;
+        this.sessions[sessionType] = min
       } else if (this.sessions[sessionType] > max) {
-        this.sessions[sessionType] = max;
+        this.sessions[sessionType] = max
       }
     },
 
@@ -337,7 +401,7 @@ export default {
           // found the document to update
           docToUpdate = doc
         }
-      });
+      })
 
       if (docToUpdate) {
         // update the document
@@ -348,7 +412,7 @@ export default {
           })
           .catch((error) => {
             console.error('Error updating duration: ', error)
-          });
+          })
       } else {
         // No document with today's date, create new one
         const dateFocused = { Date: new Date(), FocusedMinute: duration }
@@ -358,7 +422,7 @@ export default {
           })
           .catch((error) => {
             console.error('Error adding duration: ', error)
-          });
+          })
       }
     },
 

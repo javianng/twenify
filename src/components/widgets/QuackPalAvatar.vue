@@ -1,15 +1,11 @@
 <template>
-  <div 
-    @mousedown="startDrag"
-    @mouseup="endDrag"
-    @mousemove="drag"
-  >
+  <div @mousedown="startDrag" @mouseup="endDrag" @mousemove="drag">
     <!-- Display DuckUp when dragging -->
-    <img 
-      v-if="petAccessoryData && duckImage" 
-      :src="duckImage" 
-      alt="Duck image" 
-      style="max-width: 100%; height: auto;" 
+    <img
+      v-if="petAccessoryData && duckImage"
+      :src="duckImage"
+      alt="Duck image"
+      style="max-width: 100%; height: auto"
       ref="draggableImage"
       class="draggable"
       draggable="false"
@@ -85,7 +81,7 @@ export default {
         console.error('Error fetching pet accessory:', error)
       }
     },
-    
+
     setupPetAccessoryListener(activePetAccessoryId) {
       const docRef = doc(db, 'Pet Accessories', activePetAccessoryId)
       onSnapshot(docRef, (doc) => {
@@ -94,7 +90,7 @@ export default {
         }
       })
     },
-    
+
     startDuckImageTimer() {
       let isDuck1 = true
       this.duckImageInterval = setInterval(() => {
@@ -120,31 +116,30 @@ export default {
     },
 
     endDrag() {
-      this.isDragging = false;
-      const bottomOffset = window.innerHeight - this.$refs.draggableImage.offsetHeight;
-      const currentOffsetTop = this.$refs.draggableImage.offsetTop;
-      const distance = bottomOffset - currentOffsetTop;
-      const duration = 1000; // Duration in milliseconds
-      const startTime = performance.now();
-      
-      const animate = (currentTime) => {
-        const elapsedTime = currentTime - startTime;
-        if (elapsedTime < duration) {
-          const progress = elapsedTime / duration;
-          const newY = currentOffsetTop + progress * distance;
-          this.$refs.draggableImage.style.top = `${newY}px`;
-          requestAnimationFrame(animate);
-        } else {
-          this.$refs.draggableImage.style.top = `${bottomOffset}px`;
-        }
-      };
+      this.isDragging = false
+      const bottomOffset = window.innerHeight - this.$refs.draggableImage.offsetHeight
+      const currentOffsetTop = this.$refs.draggableImage.offsetTop
+      const distance = bottomOffset - currentOffsetTop
+      const duration = 1000 // Duration in milliseconds
+      const startTime = performance.now()
 
-      requestAnimationFrame(animate);
+      const animate = (currentTime) => {
+        const elapsedTime = currentTime - startTime
+        if (elapsedTime < duration) {
+          const progress = elapsedTime / duration
+          const newY = currentOffsetTop + progress * distance
+          this.$refs.draggableImage.style.top = `${newY}px`
+          requestAnimationFrame(animate)
+        } else {
+          this.$refs.draggableImage.style.top = `${bottomOffset}px`
+        }
+      }
+
+      requestAnimationFrame(animate)
 
       // Resume animation
       this.startDuckImageTimer()
     },
-    
 
     drag(event) {
       if (this.isDragging) {
@@ -154,13 +149,13 @@ export default {
         this.$refs.draggableImage.style.top = `${this.initialImageOffset.y + dy}px`
 
         // Dynamic image change based on cursor movement direction
-        const deltaX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+        const deltaX = event.movementX || event.mozMovementX || event.webkitMovementX || 0
         if (deltaX > 0) {
-          this.duckImage = this.petAccessoryData.DuckRight;
+          this.duckImage = this.petAccessoryData.DuckRight
         } else if (deltaX < 0) {
-          this.duckImage = this.petAccessoryData.DuckLeft;
+          this.duckImage = this.petAccessoryData.DuckLeft
         } else {
-          this.duckImage = this.petAccessoryData.DuckUp;
+          this.duckImage = this.petAccessoryData.DuckUp
         }
       }
     }
@@ -173,6 +168,6 @@ export default {
   position: absolute;
   cursor: grab;
   clip-path: polygon(35% 10%, 65% 10%, 65% 100%, 35% 100%);
-  z-index: 9; 
+  z-index: 9;
 }
 </style>

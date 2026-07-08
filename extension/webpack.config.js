@@ -1,10 +1,10 @@
-const path = require('path');
+const path = require('path')
 
 module.exports = {
   entry: './background.js', // The entry point of your background script
   output: {
     path: path.resolve(__dirname, 'dist'), // The output directory for your bundled files
-    filename: 'background.bundle.js', // The name of the bundled background script
+    filename: 'background.bundle.js' // The name of the bundled background script
   },
   module: {
     rules: [
@@ -14,11 +14,11 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env'], // Preset used for env setup
-          },
-        },
-      },
-    ],
+            presets: ['@babel/preset-env'] // Preset used for env setup
+          }
+        }
+      }
+    ]
   },
-  mode: 'production', // 'development' if you want the source maps
-};
+  mode: 'production' // 'development' if you want the source maps
+}
