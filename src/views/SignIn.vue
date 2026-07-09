@@ -114,6 +114,5 @@ const signInWithGoogle = () => {
       const errorMessage = error.message
       console.alert(errorMessage)
     })
-
 }
 </script>

@@ -1,156 +1,161 @@
 <template>
-    <div class="blocker-widget" ref="blockerWidget">
-      <div class="widget-header">Website Blocker</div>
-      <div class="url-list-container" ref="urlContainer">
-        <ul>
-          <li v-for="(item, index) in blockedUrls" :key="index" class="url-item">
-            <span class="url-text">{{ item }}</span>
-            <button @click="deleteUrl(index)" class="delete-button">Delete</button>
-          </li>
-        </ul>
-      </div>
-      <div class="widget-footer">
-        <input
-          type="text"
-          v-model="newUrl"
-          placeholder="Enter Website URL"
-          @keypress.enter.prevent="addUrl"
-          class="url-input"
-        />
-        <button @click="addUrl" class="block-button">Enter</button>
-        <button :class="{ 'block': !isBlockingActive, 'unblock': isBlockingActive }" @click="toggleBlocking">
-          {{ isBlockingActive ? 'Unblock' : 'Block' }}
-        </button>
-      </div>
+  <div class="blocker-widget" ref="blockerWidget">
+    <div class="widget-header">Website Blocker</div>
+    <div class="url-list-container" ref="urlContainer">
+      <ul>
+        <li v-for="(item, index) in blockedUrls" :key="index" class="url-item">
+          <span class="url-text">{{ item }}</span>
+          <button @click="deleteUrl(index)" class="delete-button">Delete</button>
+        </li>
+      </ul>
     </div>
+    <div class="widget-footer">
+      <input
+        type="text"
+        v-model="newUrl"
+        placeholder="Enter Website URL"
+        @keypress.enter.prevent="addUrl"
+        class="url-input"
+      />
+      <button @click="addUrl" class="block-button">Enter</button>
+      <button
+        :class="{ block: !isBlockingActive, unblock: isBlockingActive }"
+        @click="toggleBlocking"
+      >
+        {{ isBlockingActive ? 'Unblock' : 'Block' }}
+      </button>
+    </div>
+  </div>
 </template>
-  
-  
+
 <script>
-    import { ref, reactive, onMounted, watchEffect } from 'vue';
-    import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
-    import { getAuth, onAuthStateChanged } from 'firebase/auth';
-    import { initializeApp } from 'firebase/app';
-    import { updateDoc } from 'firebase/firestore';
-  
-    var firebaseConfig = {
-        apiKey: 'AIzaSyBNS5lPob943BHz34F2YrNUKbmxHv-3pX4',
-        authDomain: 'twenify.firebaseapp.com',
-        projectId: 'twenify',
-        storageBucket: 'twenify.appspot.com',
-        messagingSenderId: '271571950873',
-        appId: '1:271571950873:web:1f13a731c00db955beb988',
-        measurementId: 'G-524KVXZE3M'
-    };
-    
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth();
-  
-    export default {
-      setup() {
-        const user = ref(null);
-        const useremail = ref('');
-        const newUrl = ref('');
-        const blockedUrls = reactive([]);
-        const blockerWidget = ref(null);
-        const isBlockingActive = ref(false); 
+import { ref, reactive, onMounted, watchEffect } from 'vue'
+import { collection, addDoc, deleteDoc, doc, onSnapshot } from 'firebase/firestore'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { updateDoc } from 'firebase/firestore'
+import firebaseApp, { db } from '@/firebase'
 
-        onAuthStateChanged(auth, (userAuth) => {
-            if (userAuth) {
-                user.value = userAuth;
-                useremail.value = userAuth.email;
-                // Watch the user document for changes once authenticated
-                watchUserDocument(useremail.value);
+const auth = getAuth(firebaseApp)
+
+export default {
+  setup() {
+    const user = ref(null)
+    const useremail = ref('')
+    const newUrl = ref('')
+    const blockedUrls = reactive([])
+    const blockerWidget = ref(null)
+    const isBlockingActive = ref(false)
+
+    onAuthStateChanged(auth, (userAuth) => {
+      if (userAuth) {
+        user.value = userAuth
+        useremail.value = userAuth.email
+        // Watch the user document for changes once authenticated
+        watchUserDocument(useremail.value)
+      }
+    })
+
+    watchEffect(() => {
+      if (useremail.value) {
+        const userDocRef = doc(db, 'Users', useremail.value)
+        onSnapshot(
+          userDocRef,
+          (docSnapshot) => {
+            if (docSnapshot.exists() && docSnapshot.data().BlockedWebsite) {
+              blockedUrls.splice(0, blockedUrls.length, ...docSnapshot.data().BlockedWebsite)
             }
-        });
-
-        watchEffect(() => {
-          if (useremail.value) {
-            const userDocRef = doc(db, 'Users', useremail.value);
-            onSnapshot(userDocRef, (docSnapshot) => {
-              if (docSnapshot.exists() && docSnapshot.data().BlockedWebsite) {
-                blockedUrls.splice(0, blockedUrls.length, ...docSnapshot.data().BlockedWebsite);
-              }
-            }, (error) => {
-            console.error("Error fetching document: ", error);
-            });
+          },
+          (error) => {
+            console.error('Error fetching document: ', error)
           }
-        });
+        )
+      }
+    })
 
-        const toggleBlocking = async () => {
-          const userDocRef = doc(db, 'Users', useremail.value);
-          const newState = !isBlockingActive.value;
-          await updateDoc(userDocRef, {
-              blocker_status: newState // Make sure to use the correct field name in your Firestore
-          });
-          isBlockingActive.value = newState;
-        };
+    const toggleBlocking = async () => {
+      const userDocRef = doc(db, 'Users', useremail.value)
+      const newState = !isBlockingActive.value
+      await updateDoc(userDocRef, {
+        blocker_status: newState // Make sure to use the correct field name in your Firestore
+      })
+      isBlockingActive.value = newState
+    }
 
-        onMounted(() => {
-            if (blockerWidget.value) {
-                dragElement(blockerWidget.value);
-            }
-        });
+    onMounted(() => {
+      if (blockerWidget.value) {
+        dragElement(blockerWidget.value)
+      }
+    })
 
-        const addUrl = async () => {
-            if (newUrl.value.trim() === '') return;
-            const updatedBlockedUrls = [...blockedUrls, newUrl.value]; // Create a new array with the new URL
-            const userDocRef = doc(db, 'Users', useremail.value);
-            await updateDoc(userDocRef, {
-                BlockedWebsite: updatedBlockedUrls
-            });
-            newUrl.value = ''; // Clear the input
-        };
+    const addUrl = async () => {
+      if (newUrl.value.trim() === '') return
+      const updatedBlockedUrls = [...blockedUrls, newUrl.value] // Create a new array with the new URL
+      const userDocRef = doc(db, 'Users', useremail.value)
+      await updateDoc(userDocRef, {
+        BlockedWebsite: updatedBlockedUrls
+      })
+      newUrl.value = '' // Clear the input
+    }
 
-        const deleteUrl = async (index) => {
-          // Use index to identify the URL to delete
-          const urlToDelete = blockedUrls[index];
-          if (urlToDelete !== undefined) {
-            const updatedBlockedUrls = blockedUrls.filter((url) => url !== urlToDelete);
-            const userDocRef = doc(db, 'Users', useremail.value);
-            await updateDoc(userDocRef, {
-              BlockedWebsite: updatedBlockedUrls
-            });
-          }
-        };
+    const deleteUrl = async (index) => {
+      // Use index to identify the URL to delete
+      const urlToDelete = blockedUrls[index]
+      if (urlToDelete !== undefined) {
+        const updatedBlockedUrls = blockedUrls.filter((url) => url !== urlToDelete)
+        const userDocRef = doc(db, 'Users', useremail.value)
+        await updateDoc(userDocRef, {
+          BlockedWebsite: updatedBlockedUrls
+        })
+      }
+    }
 
-        const dragElement = (elmnt) => {
-            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            const header = elmnt.querySelector('.widget-header');
-            header.onmousedown = dragMouseDown;
+    const dragElement = (elmnt) => {
+      let pos1 = 0,
+        pos2 = 0,
+        pos3 = 0,
+        pos4 = 0
+      const header = elmnt.querySelector('.widget-header')
+      header.onmousedown = dragMouseDown
 
-            function dragMouseDown(e) {
-                e = e || window.event;
-                e.preventDefault();
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                document.onmousemove = elementDrag;
-            }
+      function dragMouseDown(e) {
+        e = e || window.event
+        e.preventDefault()
+        pos3 = e.clientX
+        pos4 = e.clientY
+        document.onmouseup = closeDragElement
+        document.onmousemove = elementDrag
+      }
 
-            function elementDrag(e) {
-                e = e || window.event;
-                e.preventDefault();
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px';
-                elmnt.style.top = (elmnt.offsetTop - pos2) + 'px';
-            }
+      function elementDrag(e) {
+        e = e || window.event
+        e.preventDefault()
+        pos1 = pos3 - e.clientX
+        pos2 = pos4 - e.clientY
+        pos3 = e.clientX
+        pos4 = e.clientY
+        elmnt.style.left = elmnt.offsetLeft - pos1 + 'px'
+        elmnt.style.top = elmnt.offsetTop - pos2 + 'px'
+      }
 
-            function closeDragElement() {
-                document.onmouseup = null;
-                document.onmousemove = null;
-            }
-        };
-    
-        return { newUrl, blockedUrls, addUrl, deleteUrl, toggleBlocking, blockerWidget, isBlockingActive };
-        }
-  };
+      function closeDragElement() {
+        document.onmouseup = null
+        document.onmousemove = null
+      }
+    }
+
+    return {
+      newUrl,
+      blockedUrls,
+      addUrl,
+      deleteUrl,
+      toggleBlocking,
+      blockerWidget,
+      isBlockingActive
+    }
+  }
+}
 </script>
-  
+
 <style scoped>
 body {
   display: flex;
@@ -200,7 +205,8 @@ body {
   margin-right: 10px; /* Add space between the URL and the delete button */
 }
 
-.delete-button, .widget-footer button {
+.delete-button,
+.widget-footer button {
   background-color: #ffc54e; /* Maintain yellow color for all buttons */
   color: black;
   border: none;
@@ -233,7 +239,8 @@ body {
   gap: 10px; /* This adds space between the buttons */
 }
 
-.block-button, .toggle-button {
+.block-button,
+.toggle-button {
   padding: 10px 20px; /* Adjust padding to increase button size */
   margin: 0 5px; /* Add a little margin to each side of the buttons */
   flex: 1; /* This will make the buttons share the available space equally */
@@ -258,9 +265,9 @@ body {
 }
 
 /* Increased specificity for the Unblock button to ensure it overrides other styles */
-.delete-button.unblock, .widget-footer button.unblock {
+.delete-button.unblock,
+.widget-footer button.unblock {
   background-color: grey; /* Set background color to grey for unblock button */
   color: black;
 }
-
 </style>

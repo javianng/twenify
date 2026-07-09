@@ -8,10 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "format": "prettier --write src/",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "format": "prettier --write src/"
   },
   "dependencies": {
     "@fullcalendar/daygrid": "^6.1.11",
@@ -43,15 +40,11 @@
     "prettier": "^3.0.3",
     "tailwindcss": "^3.4.1",
     "vite": "^5.0.11",
-    "vitepress": "^1.0.0-rc.44",
     "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4"
   },
   "description": "<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->",
   "main": "postcss.config.js",
-  "directories": {
-    "doc": "docs"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC"

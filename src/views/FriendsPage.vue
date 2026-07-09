@@ -1,307 +1,352 @@
 <template>
-    <PageLayout>
-      <div class="grid grid-cols-2 gap-10 p-8 text-center">
+  <PageLayout>
+    <div class="grid grid-cols-2 gap-10 p-8 text-center">
       <div class="items-center flex flex-col justify-end duration-150 hover:scale-105">
         <h1 class="text-tLightPurple text-6xl font-bold">Send Friend Requests</h1>
         <p class="text-white">Input another user's email to send a friend request</p>
       </div>
       <div class="items-center flex flex-col justify-end duration-150 hover:scale-105">
         <h1 class="text-tLightPurple text-6xl font-bold">Pending Requests</h1>
-        <p class="text-white" id = "friend-request-description">See who has sent you friend requests and who has accepted your requests</p>
+        <p class="text-white" id="friend-request-description">
+          See who has sent you friend requests and who has accepted your requests
+        </p>
       </div>
 
       <!-- Sending Request part 1-->
-      <div class="flex flex-col items-center align-top" id ="sendFR">
+      <div class="flex flex-col items-center align-top" id="sendFR">
         <div class="flex items-center gap-4 w-80 justify-center">
-            <p class="font-bold text-white w-20">Friend's Email</p>
-            <input
-              type="text"
-              v-model="friendsEmail"
-              placeholder="Email"
-              class="rounded-lg p-2"
-              @input = "handleInputChange"
-            />
-            <Button id="btn" @click=" fetchData(friendsEmail)" v-if="user" buttonText="Search"></Button>
+          <p class="font-bold text-white w-20">Friend's Email</p>
+          <input
+            type="text"
+            v-model="friendsEmail"
+            placeholder="Email"
+            class="rounded-lg p-2"
+            @input="handleInputChange"
+          />
+          <Button
+            id="btn"
+            @click="fetchData(friendsEmail)"
+            v-if="user"
+            buttonText="Search"
+          ></Button>
         </div>
-        
-
       </div>
       <!-- Incoming requests-->
       <div class="flex items-start justify-center">
-        <div  v-if="RequestEmail.length > 0 " class="flex flex-col gap-2 w-[80%]">
-          <div  class="flex px-3">
-            <p class="flex w-[25%] text-start font-bold text-white"> Username</p>
-            <p class="flex w-[45%] text-start font-bold text-white"> Incoming Request from: </p>
+        <div v-if="RequestEmail.length > 0" class="flex flex-col gap-2 w-[80%]">
+          <div class="flex px-3">
+            <p class="flex w-[25%] text-start font-bold text-white">Username</p>
+            <p class="flex w-[45%] text-start font-bold text-white">Incoming Request from:</p>
           </div>
           <div
-            v-for= "(email, index) in RequestEmail" :key = "email" 
-            class=
-              'bg-tPurple text-white p-3 w-full rounded-md duration-150 hover:scale-105'>
+            v-for="(email, index) in RequestEmail"
+            :key="email"
+            class="bg-tPurple text-white p-3 w-full rounded-md duration-150 hover:scale-105"
+          >
             <div class="flex px-3">
-              <div class="flex w-[25%] text-start font-bold">{{RequestNames[index]}}</div>
-              <div class="flex w-[45%] text-start font-bold">{{email}} </div>
+              <div class="flex w-[25%] text-start font-bold">{{ RequestNames[index] }}</div>
+              <div class="flex w-[45%] text-start font-bold">{{ email }}</div>
               <div class="flex w-[15%] justify-start font-bold">
-                <button class = "acceptBtn" id = "acceptBtn" @click="acceptFriend(email)"> Accept</button>
+                <button class="acceptBtn" id="acceptBtn" @click="acceptFriend(email)">
+                  Accept
+                </button>
               </div>
               <div class="flex w-[15%] justify-end font-bold">
-                <button class = "declineBtn" id = "declineBtn" @click="declineFriend(email)"> Decline</button>
+                <button class="declineBtn" id="declineBtn" @click="declineFriend(email)">
+                  Decline
+                </button>
               </div>
             </div>
           </div>
         </div>
-        
-        <p class="font-bold text-white w-70 items-left" v-else>
-                No Incoming Requests!
-        </p>
-      </div> 
+
+        <p class="font-bold text-white w-70 items-left" v-else>No Incoming Requests!</p>
+      </div>
       <!-- Sending Request part 2-->
       <div class="flex items-start justify-center">
-            <p v-if= "isAlreadyFriend  && friendsEmail !== '' && searchedPressed" class="font-bold text-white"> Is Already A Friend!</p>
-            <p v-if = "isMyself  && friendsEmail !== '' && searchedPressed" class="font-bold text-white"> Can't be friends with yourself</p>
-            <p v-if ="friendExists === true && friendsEmail !== '' && searchedPressed && !isAlreadyFriend && !isMyself" class="font-bold text-white">
-            Send Friend Request to {{friendUsername}}
-            <Button id="btnSendReq"  @click="sendRequest(friendsEmail)" buttonText="Send Request" > </Button>
-            </p>
-            <p v-if ="friendExists === false && friendsEmail !== '' && searchedPressed && !isAlreadyFriend && !isMyself" class="font-bold text-white">
-            Email was not found
-            </p>
+        <p
+          v-if="isAlreadyFriend && friendsEmail !== '' && searchedPressed"
+          class="font-bold text-white"
+        >
+          Is Already A Friend!
+        </p>
+        <p v-if="isMyself && friendsEmail !== '' && searchedPressed" class="font-bold text-white">
+          Can't be friends with yourself
+        </p>
+        <p
+          v-if="
+            friendExists === true &&
+            friendsEmail !== '' &&
+            searchedPressed &&
+            !isAlreadyFriend &&
+            !isMyself
+          "
+          class="font-bold text-white"
+        >
+          Send Friend Request to {{ friendUsername }}
+          <Button id="btnSendReq" @click="sendRequest(friendsEmail)" buttonText="Send Request">
+          </Button>
+        </p>
+        <p
+          v-if="
+            friendExists === false &&
+            friendsEmail !== '' &&
+            searchedPressed &&
+            !isAlreadyFriend &&
+            !isMyself
+          "
+          class="font-bold text-white"
+        >
+          Email was not found
+        </p>
       </div>
       <!-- New Friends Table -->
       <div class="flex items-start justify-center">
-        <div v-if="newFriendsEmail.length > 0 " class="flex flex-col gap-2 w-[80%]">
-          <div  class="flex px-3">
+        <div v-if="newFriendsEmail.length > 0" class="flex flex-col gap-2 w-[80%]">
+          <div class="flex px-3">
             <p class="flex w-[25%] text-start font-bold text-white">Username</p>
             <p class="flex w-[45%] text-start font-bold text-white">New Friend's Email</p>
           </div>
-          <div v-for = "(email, index) in newFriendsEmail" :key = "email" class= 'bg-tPurple text-white p-3 w-full rounded-md duration-150 hover:scale-105'>
+          <div
+            v-for="(email, index) in newFriendsEmail"
+            :key="email"
+            class="bg-tPurple text-white p-3 w-full rounded-md duration-150 hover:scale-105"
+          >
             <div class="flex px-3">
-              <div class="flex w-[25%] text-start font-bold">{{newFriendsName[index]}}</div>
-              <div class="flex w-[75%] text-start font-bold">{{email}}</div>
+              <div class="flex w-[25%] text-start font-bold">{{ newFriendsName[index] }}</div>
+              <div class="flex w-[75%] text-start font-bold">{{ email }}</div>
             </div>
           </div>
-          <div class = "flex px-3">
-            <p class="flex w-[90%] font-bold text-white"> </p>
-            <button id = "dismissBtn" class = "flex w-[10%] font-bold" @click="dismiss()"> Dismiss </button>
+          <div class="flex px-3">
+            <p class="flex w-[90%] font-bold text-white"></p>
+            <button id="dismissBtn" class="flex w-[10%] font-bold" @click="dismiss()">
+              Dismiss
+            </button>
           </div>
         </div>
-        
+
         <p class="font-bold text-white w-90 items-left" v-else>
-                <br>
-                No New Friends!
+          <br />
+          No New Friends!
         </p>
       </div>
     </div>
-      
-    </PageLayout>
-  </template>
-  
-  <script>
-  import firebaseApp from '../firebase.js'
-  import PageLayout from '@/components/PageLayout.vue'
-  import Button from '@/components/Button.vue'
-  import { doc, getFirestore, updateDoc, getDoc, arrayUnion } from 'firebase/firestore'
-  import { getAuth, onAuthStateChanged, updatePassword } from 'firebase/auth'
-  
-  const db = getFirestore(firebaseApp)
-  
-  export default {
-    name: 'FriendsPage',
-    components: {
-      PageLayout,
-      Button
-    },
-    computed: {
-      usernamePlaceholder() {
-        return this.userData && this.userData.Name ? this.userData.Name : 'New Username'
+  </PageLayout>
+</template>
+
+<script>
+import firebaseApp from '../firebase.js'
+import PageLayout from '@/components/PageLayout.vue'
+import Button from '@/components/Button.vue'
+import { doc, getFirestore, updateDoc, getDoc, arrayUnion } from 'firebase/firestore'
+import { getAuth, onAuthStateChanged, updatePassword } from 'firebase/auth'
+
+const db = getFirestore(firebaseApp)
+
+export default {
+  name: 'FriendsPage',
+  components: {
+    PageLayout,
+    Button
+  },
+  computed: {
+    usernamePlaceholder() {
+      return this.userData && this.userData.Name ? this.userData.Name : 'New Username'
+    }
+  },
+  data() {
+    return {
+      user: false,
+      useremail: null,
+      newPassword: '',
+      friendsEmail: '',
+      friendExists: '',
+      friendUsername: '',
+      searchedPressed: false,
+      isMyself: false,
+      isAlreadyFriend: false,
+      RequestEmail: [],
+      RequestNames: [],
+      newFriendsEmail: [],
+      newFriendsName: []
+    }
+  },
+  async mounted() {
+    const auth = getAuth()
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        this.user = user
+        this.useremail = auth.currentUser.email
+        await this.refreshTables()
       }
-    },
-    data() {
-      return {
-        user: false,
-        useremail: null,
-        newPassword: '',
-        friendsEmail: '',
-        friendExists: '',
-        friendUsername:'',
-        searchedPressed: false,
-        isMyself: false,
-        isAlreadyFriend: false,
-        RequestEmail: [],
-        RequestNames:[],
-        newFriendsEmail:[],
-        newFriendsName:[],
-      }
-    },
-    async mounted() {
-      const auth = getAuth()
-      onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          this.user = user
-          this.useremail = auth.currentUser.email
-          await this.refreshTables()
-        }
-      })
-    },
-  
-    methods: {
-      /*checks the validity of emailimpuct by user. Checks if the  imput email is:
+    })
+  },
+
+  methods: {
+    /*checks the validity of emailimpuct by user. Checks if the  imput email is:
       1. Is not the users own email
       2. Is a resgistered email in Twenify
       3. Is not already a friend
       */
-      async fetchData(friendsEmail) {
-        this.searchedPressed = true;
-        try {
-          const docRef = doc(db, 'Users', friendsEmail);
-          const docSnap = await getDoc(docRef);
-          const docRef2 = doc(db, 'Friends', this.useremail);
-          const docSnap2 = await getDoc(docRef2);
-          if (docSnap.exists()) {
-            this.friendExists = true;
-            this.friendUsername = docSnap.data().Name;
-            if (friendsEmail == this.useremail) {
-                this.isMyself = true;
-            } else {
-                this.isMyself = false;
-            }
-            if (docSnap2.data().Friends.includes(friendsEmail)){
-                this.isAlreadyFriend = true; 
-            } else {
-                this.isAlreadyFriend = false;
-            }
+    async fetchData(friendsEmail) {
+      this.searchedPressed = true
+      try {
+        const docRef = doc(db, 'Users', friendsEmail)
+        const docSnap = await getDoc(docRef)
+        const docRef2 = doc(db, 'Friends', this.useremail)
+        const docSnap2 = await getDoc(docRef2)
+        if (docSnap.exists()) {
+          this.friendExists = true
+          this.friendUsername = docSnap.data().Name
+          if (friendsEmail == this.useremail) {
+            this.isMyself = true
           } else {
-            this.friendExists = false;
-            this.isAlreadyFriend = false;
-            this.isMyself = false; 
+            this.isMyself = false
           }
-        } catch (error) {
-          console.error('Error fetching user:', error)
+          if (docSnap2.data().Friends.includes(friendsEmail)) {
+            this.isAlreadyFriend = true
+          } else {
+            this.isAlreadyFriend = false
+          }
+        } else {
+          this.friendExists = false
+          this.isAlreadyFriend = false
+          this.isMyself = false
         }
-      },
-      /* Handles the reset of the text box */
-      handleInputChange() {
-        if(this.friendsEmail ==='') {
-            this.searchedPressed = false;
-            this.isAlreadyFriend = false;
-            this.isMyself = false; 
-        }
+      } catch (error) {
+        console.error('Error fetching user:', error)
+      }
+    },
+    /* Handles the reset of the text box */
+    handleInputChange() {
+      if (this.friendsEmail === '') {
+        this.searchedPressed = false
+        this.isAlreadyFriend = false
+        this.isMyself = false
+      }
     },
     /* Send the friend request to the other user to wait for their acceptance */
     async sendRequest(friendsEmail) {
-        const docRef1 = doc(db, 'Friends', this.useremail);
-        const docSnap1 = await getDoc(docRef1)
-        const oldCopy1 = docSnap1.data().PendingAcceptance;
-        oldCopy1.push(friendsEmail);
-        //update the user's pending acceptance list
-        await updateDoc(docRef1,{PendingAcceptance: oldCopy1});
+      const docRef1 = doc(db, 'Friends', this.useremail)
+      const docSnap1 = await getDoc(docRef1)
+      const oldCopy1 = docSnap1.data().PendingAcceptance
+      oldCopy1.push(friendsEmail)
+      //update the user's pending acceptance list
+      await updateDoc(docRef1, { PendingAcceptance: oldCopy1 })
 
-        const docRef2 = doc(db, 'Friends', friendsEmail);
-        const docSnap2 = await getDoc(docRef2);
-        const oldCopy2 = docSnap2.data().IncomingRequests;
-        oldCopy2.push(this.useremail);
-        //update the other end's incoming acceptance list
-        await updateDoc(docRef2,{IncomingRequests: oldCopy2});
+      const docRef2 = doc(db, 'Friends', friendsEmail)
+      const docSnap2 = await getDoc(docRef2)
+      const oldCopy2 = docSnap2.data().IncomingRequests
+      oldCopy2.push(this.useremail)
+      //update the other end's incoming acceptance list
+      await updateDoc(docRef2, { IncomingRequests: oldCopy2 })
 
-        this.friendsEmail = '';
-        this.handleInputChange();
-        await this.refreshTables();
-
+      this.friendsEmail = ''
+      this.handleInputChange()
+      await this.refreshTables()
     },
     /* Update tables when a new input is expected */
     async refreshTables() {
-        this.RequestEmail=[];
-        this.RequestNames=[];
-        this.newFriendsEmail=[];
-        this.newFriendsName= [];
+      this.RequestEmail = []
+      this.RequestNames = []
+      this.newFriendsEmail = []
+      this.newFriendsName = []
 
-        const DocRef = doc(db, 'Friends', this.useremail);
-        const docSnap = await getDoc(DocRef);
-        this.RequestEmail = docSnap.data().IncomingRequests;
-        for (const email of this.RequestEmail) {
-            const DocRef2 = doc(db, 'Users', email);
-            const docSnap2 =  await getDoc(DocRef2);
-            this.RequestNames.push(docSnap2.data().Name);
-        }  
-        this.newFriendsEmail = docSnap.data().NewFriends;
-        for (const email of this.newFriendsEmail) {
-            const DocRef3 = doc(db, 'Users', email);
-            const docSnap3 =  await getDoc(DocRef3);
-            this.newFriendsName.push(docSnap3.data().Name);
-        }
+      const DocRef = doc(db, 'Friends', this.useremail)
+      const docSnap = await getDoc(DocRef)
+      this.RequestEmail = docSnap.data().IncomingRequests
+      for (const email of this.RequestEmail) {
+        const DocRef2 = doc(db, 'Users', email)
+        const docSnap2 = await getDoc(DocRef2)
+        this.RequestNames.push(docSnap2.data().Name)
+      }
+      this.newFriendsEmail = docSnap.data().NewFriends
+      for (const email of this.newFriendsEmail) {
+        const DocRef3 = doc(db, 'Users', email)
+        const docSnap3 = await getDoc(DocRef3)
+        this.newFriendsName.push(docSnap3.data().Name)
+      }
     },
     // relevent updates to Firestore fields when the user accepts a friend request
     async acceptFriend(email) {
-        const DocRef = doc(db, 'Friends', this.useremail);
-        const docSnap = await getDoc(DocRef);
-        
-        const Friends = docSnap.data().Friends;
-        Friends.push(email);
-        await updateDoc(DocRef, {Friends: Friends});
-        const newFriends = docSnap.data().NewFriends;
-        
-        newFriends.push(email);
-        await updateDoc(DocRef, {Friends: Friends});
-        await updateDoc(DocRef, {NewFriends: newFriends});
+      const DocRef = doc(db, 'Friends', this.useremail)
+      const docSnap = await getDoc(DocRef)
 
-        const IncomingRequestsUpdated = docSnap.data().IncomingRequests.filter(item => item !== email);
-        await updateDoc(DocRef, {IncomingRequests: IncomingRequestsUpdated});
+      const Friends = docSnap.data().Friends
+      Friends.push(email)
+      await updateDoc(DocRef, { Friends: Friends })
+      const newFriends = docSnap.data().NewFriends
 
-        const DocRef2 = doc(db, 'Friends', email);
-        const docSnap2 = await getDoc(DocRef2);
-        const Friends2 = docSnap2.data().Friends;
-        Friends2.push(this.useremail);
+      newFriends.push(email)
+      await updateDoc(DocRef, { Friends: Friends })
+      await updateDoc(DocRef, { NewFriends: newFriends })
 
-        const newFriends2 = docSnap2.data().NewFriends;
-        newFriends2.push(this.useremail);
-        await updateDoc(DocRef2, {Friends: Friends2});
-        await updateDoc(DocRef2, {NewFriends: newFriends2});
-        
-        const PendingAcceptanceUpdated = docSnap2.data().PendingAcceptance.filter(item => item !== this.useremail);
-        await updateDoc(DocRef2, {PendingAcceptance: PendingAcceptanceUpdated});
+      const IncomingRequestsUpdated = docSnap
+        .data()
+        .IncomingRequests.filter((item) => item !== email)
+      await updateDoc(DocRef, { IncomingRequests: IncomingRequestsUpdated })
 
+      const DocRef2 = doc(db, 'Friends', email)
+      const docSnap2 = await getDoc(DocRef2)
+      const Friends2 = docSnap2.data().Friends
+      Friends2.push(this.useremail)
 
+      const newFriends2 = docSnap2.data().NewFriends
+      newFriends2.push(this.useremail)
+      await updateDoc(DocRef2, { Friends: Friends2 })
+      await updateDoc(DocRef2, { NewFriends: newFriends2 })
 
-        const index = this.RequestEmail.indexOf(email);
-        if( index != -1) {
-            this.RequestEmail.splice(index,-1);
-        }
-        this.refreshTables();
-        document.getElementById("acceptBtn").disabled = true;
+      const PendingAcceptanceUpdated = docSnap2
+        .data()
+        .PendingAcceptance.filter((item) => item !== this.useremail)
+      await updateDoc(DocRef2, { PendingAcceptance: PendingAcceptanceUpdated })
+
+      const index = this.RequestEmail.indexOf(email)
+      if (index != -1) {
+        this.RequestEmail.splice(index, -1)
+      }
+      this.refreshTables()
+      document.getElementById('acceptBtn').disabled = true
     },
     // relevent updates to Firestore fields when the user declines a friend request
     async declineFriend(email) {
-        //remove from my incoming requests
-        const DocRef = doc(db, 'Friends', this.useremail);
-        const docSnap = await getDoc(DocRef);
-        const IncomingRequestsUpdated = docSnap.data().IncomingRequests.filter(item => item !== email);
-        await updateDoc(DocRef, {IncomingRequests: IncomingRequestsUpdated});
+      //remove from my incoming requests
+      const DocRef = doc(db, 'Friends', this.useremail)
+      const docSnap = await getDoc(DocRef)
+      const IncomingRequestsUpdated = docSnap
+        .data()
+        .IncomingRequests.filter((item) => item !== email)
+      await updateDoc(DocRef, { IncomingRequests: IncomingRequestsUpdated })
 
-        //remove from their pending acceptance
-        const DocRef2 = doc(db, 'Friends', email);
-        const docSnap2 = await getDoc(DocRef2);
-        const PendingAcceptanceUpdated = docSnap2.data().PendingAcceptance.filter(item => item !== this.useremail);
-        await updateDoc(DocRef2, {PendingAcceptance: PendingAcceptanceUpdated});
-        this.refreshTables();
-        document.getElementById("declineBtn").disabled = true;
+      //remove from their pending acceptance
+      const DocRef2 = doc(db, 'Friends', email)
+      const docSnap2 = await getDoc(DocRef2)
+      const PendingAcceptanceUpdated = docSnap2
+        .data()
+        .PendingAcceptance.filter((item) => item !== this.useremail)
+      await updateDoc(DocRef2, { PendingAcceptance: PendingAcceptanceUpdated })
+      this.refreshTables()
+      document.getElementById('declineBtn').disabled = true
     },
     async dismiss() {
-        const DocRef = doc(db, 'Friends', this.useremail);
-        await updateDoc(DocRef, {NewFriends: []});
-        this.refreshTables();
-    }
+      const DocRef = doc(db, 'Friends', this.useremail)
+      await updateDoc(DocRef, { NewFriends: [] })
+      this.refreshTables()
     }
   }
-  </script>
+}
+</script>
 
 <style>
 #btnSend {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
-#btnPending, #btnSendReq {
-    margin-left: 10px;
+#btnPending,
+#btnSendReq {
+  margin-left: 10px;
 }
-.incomingRequestTable, 
+.incomingRequestTable,
 .acceptedRequestTable {
   width: 100%;
   border-collapse: collapse;
@@ -310,24 +355,24 @@
 .incomingRequestTable th,
 .incomingRequestTable td,
 .acceptedRequestTable th,
-.acceptedRequestTable td{
+.acceptedRequestTable td {
   padding: 8px;
-  
+
   width: 120px;
 }
 
-.incomingRequestTable th, 
+.incomingRequestTable th,
 .acceptedRequestTable th {
   font-weight: bold;
   text-align: left;
 }
 .acceptBtn {
-    color: rgb(0, 180, 161);
+  color: rgb(0, 180, 161);
 }
-.declineBtn{
-    color:rgb(186, 50, 83);
+.declineBtn {
+  color: rgb(186, 50, 83);
 }
-#dismissBtn{
-    color: #ffc665
+#dismissBtn {
+  color: #ffc665;
 }
 </style>
