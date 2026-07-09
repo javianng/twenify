@@ -30,24 +30,12 @@
 
 <script>
 import { ref, reactive, onMounted, watchEffect } from 'vue'
-import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from 'firebase/firestore'
+import { collection, addDoc, deleteDoc, doc, onSnapshot } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { initializeApp } from 'firebase/app'
 import { updateDoc } from 'firebase/firestore'
+import firebaseApp, { db } from '@/firebase'
 
-var firebaseConfig = {
-  apiKey: 'AIzaSyBNS5lPob943BHz34F2YrNUKbmxHv-3pX4',
-  authDomain: 'twenify.firebaseapp.com',
-  projectId: 'twenify',
-  storageBucket: 'twenify.appspot.com',
-  messagingSenderId: '271571950873',
-  appId: '1:271571950873:web:1f13a731c00db955beb988',
-  measurementId: 'G-524KVXZE3M'
-}
-
-const app = initializeApp(firebaseConfig)
-const db = getFirestore(app)
-const auth = getAuth()
+const auth = getAuth(firebaseApp)
 
 export default {
   setup() {

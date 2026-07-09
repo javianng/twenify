@@ -1,15 +1,17 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyBNS5lPob943BHz34F2YrNUKbmxHv-3pX4',
-  authDomain: 'twenify.firebaseapp.com',
-  projectId: 'twenify',
-  storageBucket: 'twenify.appspot.com',
-  messagingSenderId: '271571950873',
-  appId: '1:271571950873:web:1f13a731c00db955beb988',
-  measurementId: 'G-524KVXZE3M'
-}
+  apiKey: "AIzaSyBHlZvRfNILvxtW_OMVmaVbBRxDFKfyqbA",
+  authDomain: "twenify-b4ade.firebaseapp.com",
+  projectId: "twenify-b4ade",
+  storageBucket: "twenify-b4ade.firebasestorage.app",
+  messagingSenderId: "255865635270",
+  appId: "1:255865635270:web:e11195b2683df594c4f2c7",
+  measurementId: "G-E49Y0Z93N1"
+};
 
 console.log('Initializing Firebase...')
 const firebaseApp = initializeApp(firebaseConfig)

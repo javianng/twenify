@@ -38,7 +38,7 @@
 <script>
 import firebaseApp from '../firebase.js'
 import PageLayout from '@/components/PageLayout.vue'
-import { doc, getFirestore, updateDoc } from 'firebase/firestore'
+import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import Button from '@/components/Button.vue'
 
@@ -69,6 +69,19 @@ export default {
   },
 
   methods: {
+    async fetchData(useremail) {
+      try {
+        const docRef = doc(db, 'Users', useremail)
+        const docSnap = await getDoc(docRef)
+        if (docSnap.exists()) {
+          this.userData = docSnap.data()
+        } else {
+          console.log('User not found')
+        }
+      } catch (error) {
+        console.error('Error fetching user:', error)
+      }
+    },
     async changePetName() {
       const docRef = doc(db, 'Users', this.useremail)
       await updateDoc(docRef, {
